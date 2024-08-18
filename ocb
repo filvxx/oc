@@ -1,4 +1,4 @@
--- UI Library Script
+-- UI Library
 
 local Library = {}
 
@@ -80,7 +80,7 @@ function Library.CreateLib(title)
     ContentsFrameCorner.Parent = ContentsFrame
 
     local TabButtons = {}
-    
+
     local function createTab(name, position)
         local TabButton = Instance.new("TextButton")
         TabButton.Name = name .. "Button"
