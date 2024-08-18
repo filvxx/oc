@@ -1,3 +1,5 @@
+--wowa
+
 local Library = {}
 
 function Library.CreateLib(title)
@@ -130,10 +132,7 @@ function Library.CreateLib(title)
     -- Dynamic positioning function for buttons/toggles
     local function getNextPosition(tabContent)
         local numChildren = #tabContent:GetChildren()
-        if numChildren == 0 then
-            return UDim2.new(0, 10, 0, 10) -- First button at position (0, 10, 0, 10)
-        end
-        return UDim2.new(0, 10, 0, numChildren * 50) -- Stack each new element with 50 pixels of vertical spacing
+        return UDim2.new(0, 10, 0, numChildren * 45) -- Stack each new element with 45 pixels of vertical spacing
     end
 
     local function createButton(tabName, buttonName, callback)
@@ -192,11 +191,12 @@ function Library.CreateLib(title)
         end
     end
 
-return {
-    NewTab = createTab,
-    NewButton = createButton,
-    NewToggle = createToggle
-}
+    return {
+        NewTab = createTab,
+        NewButton = createButton,
+        NewToggle = createToggle
+    }
 end
 
 return Library
+
