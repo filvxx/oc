@@ -1,7 +1,6 @@
--- UI Library Script
-
 local Library = {}
 
+-- Function to create a new library window (Hub)
 function Library.CreateLib(title)
     local ScreenGui = Instance.new("ScreenGui")
     ScreenGui.Name = "ExampleHub"
@@ -17,43 +16,16 @@ function Library.CreateLib(title)
     MainFrame.Active = true
     MainFrame.Draggable = true
 
-    local MainFrameCorner = Instance.new("UICorner")
-    MainFrameCorner.CornerRadius = UDim.new(0, 12)
-    MainFrameCorner.Parent = MainFrame
-
-    local CloseButton = Instance.new("TextButton")
-    CloseButton.Name = "CloseButton"
-    CloseButton.Parent = MainFrame
-    CloseButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    CloseButton.BackgroundTransparency = 1
-    CloseButton.Position = UDim2.new(1, -25, 0, 5)
-    CloseButton.Size = UDim2.new(0, 20, 0, 20)
-    CloseButton.Font = Enum.Font.SourceSansBold
-    CloseButton.Text = "X"
-    CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    CloseButton.TextSize = 18
-    CloseButton.BorderSizePixel = 0
-    CloseButton.ZIndex = 2
-
-    CloseButton.MouseButton1Click:Connect(function()
-        ScreenGui:Destroy()
-    end)
-
     local TitleBar = Instance.new("TextLabel")
     TitleBar.Name = "TitleBar"
     TitleBar.Parent = MainFrame
     TitleBar.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
-    TitleBar.BorderColor3 = Color3.fromRGB(50, 55, 85)
     TitleBar.Size = UDim2.new(1, 0, 0, 40)
     TitleBar.Font = Enum.Font.SourceSansBold
     TitleBar.Text = title
     TitleBar.TextColor3 = Color3.fromRGB(255, 255, 255)
     TitleBar.TextSize = 18
     TitleBar.BorderSizePixel = 0
-
-    local TitleBarCorner = Instance.new("UICorner")
-    TitleBarCorner.CornerRadius = UDim.new(0, 12)
-    TitleBarCorner.Parent = TitleBar
 
     local TabsFrame = Instance.new("Frame")
     TabsFrame.Name = "TabsFrame"
@@ -63,10 +35,6 @@ function Library.CreateLib(title)
     TabsFrame.Size = UDim2.new(0.3, 0, 1, -40)
     TabsFrame.BorderSizePixel = 0
 
-    local TabsFrameCorner = Instance.new("UICorner")
-    TabsFrameCorner.CornerRadius = UDim.new(0, 12)
-    TabsFrameCorner.Parent = TabsFrame
-
     local ContentsFrame = Instance.new("Frame")
     ContentsFrame.Name = "ContentsFrame"
     ContentsFrame.Parent = MainFrame
@@ -75,12 +43,7 @@ function Library.CreateLib(title)
     ContentsFrame.Size = UDim2.new(0.7, -12, 1, -40)
     ContentsFrame.BorderSizePixel = 0
 
-    local ContentsFrameCorner = Instance.new("UICorner")
-    ContentsFrameCorner.CornerRadius = UDim.new(0, 12)
-    ContentsFrameCorner.Parent = ContentsFrame
-
     local TabButtons = {}
-
     local function createTab(name, position)
         local TabButton = Instance.new("TextButton")
         TabButton.Name = name .. "Button"
@@ -94,10 +57,6 @@ function Library.CreateLib(title)
         TabButton.TextSize = 18
         TabButton.BorderSizePixel = 0
 
-        local TabButtonCorner = Instance.new("UICorner")
-        TabButtonCorner.CornerRadius = UDim.new(0, 12)
-        TabButtonCorner.Parent = TabButton
-
         local ContentFrame = Instance.new("Frame")
         ContentFrame.Name = name .. "Content"
         ContentFrame.Parent = ContentsFrame
@@ -107,24 +66,17 @@ function Library.CreateLib(title)
         ContentFrame.Visible = false
         ContentFrame.BorderSizePixel = 0
 
-        local ContentFrameCorner = Instance.new("UICorner")
-        ContentFrameCorner.CornerRadius = UDim.new(0, 12)
-        ContentFrameCorner.Parent = ContentFrame
-
-        TabButtons[name] = TabButton
-
-        TabButton.MouseButton1Click:Connect(function()
+        local function showContent()
             for _, child in pairs(ContentsFrame:GetChildren()) do
                 if child:IsA("Frame") then
                     child.Visible = false
                 end
             end
             ContentFrame.Visible = true
-            for _, btn in pairs(TabButtons) do
-                btn.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
-            end
-            TabButton.BackgroundColor3 = Color3.fromRGB(90, 100, 150)
-        end)
+        end
+
+        TabButton.MouseButton1Click:Connect(showContent)
+        TabButtons[name] = TabButton
 
         return ContentFrame
     end
@@ -136,17 +88,13 @@ function Library.CreateLib(title)
             Button.Name = buttonName .. "Button"
             Button.Parent = tabContent
             Button.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-            Button.Position = UDim2.new(0, 10, 0, #tabContent:GetChildren() * 45)
+            Button.Position = UDim2.new(0, 10, 0, (tabContent:GetChildren() and #tabContent:GetChildren() * 45) or 0)
             Button.Size = UDim2.new(1, -20, 0, 40)
             Button.Font = Enum.Font.SourceSans
             Button.Text = buttonName
             Button.TextColor3 = Color3.fromRGB(255, 255, 255)
             Button.TextSize = 18
             Button.BorderSizePixel = 0
-
-            local ButtonCorner = Instance.new("UICorner")
-            ButtonCorner.CornerRadius = UDim.new(0, 12)
-            ButtonCorner.Parent = Button
 
             Button.MouseButton1Click:Connect(callback)
         end
@@ -159,17 +107,13 @@ function Library.CreateLib(title)
             Toggle.Name = toggleName .. "Toggle"
             Toggle.Parent = tabContent
             Toggle.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-            Toggle.Position = UDim2.new(0, 10, 0, #tabContent:GetChildren() * 45)
+            Toggle.Position = UDim2.new(0, 10, 0, (tabContent:GetChildren() and #tabContent:GetChildren() * 45) or 0)
             Toggle.Size = UDim2.new(1, -20, 0, 40)
             Toggle.Font = Enum.Font.SourceSans
             Toggle.Text = toggleName
             Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
             Toggle.TextSize = 18
             Toggle.BorderSizePixel = 0
-
-            local ToggleCorner = Instance.new("UICorner")
-            ToggleCorner.CornerRadius = UDim.new(0, 12)
-            ToggleCorner.Parent = Toggle
 
             local isToggled = false
             Toggle.MouseButton1Click:Connect(function()
@@ -181,10 +125,31 @@ function Library.CreateLib(title)
         end
     end
 
+    local function showTab(tabName)
+        for name, button in pairs(TabButtons) do
+            button.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
+        end
+
+        for _, child in pairs(ContentsFrame:GetChildren()) do
+            if child:IsA("Frame") then
+                child.Visible = false
+            end
+        end
+
+        if TabButtons[tabName] then
+            local contentFrame = ContentsFrame:FindFirstChild(tabName .. "Content")
+            if contentFrame then
+                contentFrame.Visible = true
+                TabButtons[tabName].BackgroundColor3 = Color3.fromRGB(80, 85, 115)
+            end
+        end
+    end
+
     return {
         NewTab = createTab,
         NewButton = createButton,
-        NewToggle = createToggle
+        NewToggle = createToggle,
+        ShowTab = showTab
     }
 end
 
