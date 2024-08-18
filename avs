@@ -1,4 +1,3 @@
---update
 local Library = {}
 
 function Library.CreateLib(title)
@@ -219,6 +218,7 @@ function Library.CreateLib(title)
             DropdownList.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
             DropdownList.Position = UDim2.new(0, 0, 1, 0)
             DropdownList.Size = UDim2.new(1, 0, 0, 0) -- Start with height 0 for animation
+            DropdownList.ClipsDescendants = true
             DropdownList.Visible = false
             DropdownList.BorderSizePixel = 0
 
@@ -245,6 +245,7 @@ function Library.CreateLib(title)
                 OptionButton.MouseButton1Click:Connect(function()
                     DropdownButton.Text = "Selected Option: " .. optionName
                     DropdownList.Visible = false
+                    DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
                     callback(optionName)
                 end)
             end
@@ -255,13 +256,11 @@ function Library.CreateLib(title)
 
             DropdownButton.MouseButton1Click:Connect(function()
                 if DropdownList.Visible then
-                    -- Animate the dropdown list to collapse
                     DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true, function()
                         DropdownList.Visible = false
                     end)
                 else
                     DropdownList.Visible = true
-                    -- Animate the dropdown list to expand
                     DropdownList:TweenSize(UDim2.new(1, 0, 0, #options * 40), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
                 end
             end)
