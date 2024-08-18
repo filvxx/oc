@@ -1,6 +1,13 @@
+--[[
+
+    This is the updated version of the library script.
+    Make sure to replace this with the correct URL content.
+
+--]]
+
 local Library = {}
 
-function Library:CreateLib(title)
+function Library.CreateLib(title)
     local ScreenGui = Instance.new("ScreenGui")
     ScreenGui.Name = "ExampleHub"
     ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
@@ -15,43 +22,16 @@ function Library:CreateLib(title)
     MainFrame.Active = true
     MainFrame.Draggable = true
 
-    local MainFrameCorner = Instance.new("UICorner")
-    MainFrameCorner.CornerRadius = UDim.new(0, 12)
-    MainFrameCorner.Parent = MainFrame
-
-    local CloseButton = Instance.new("TextButton")
-    CloseButton.Name = "CloseButton"
-    CloseButton.Parent = MainFrame
-    CloseButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    CloseButton.BackgroundTransparency = 1
-    CloseButton.Position = UDim2.new(1, -25, 0, 5)
-    CloseButton.Size = UDim2.new(0, 20, 0, 20)
-    CloseButton.Font = Enum.Font.SourceSansBold
-    CloseButton.Text = "X"
-    CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    CloseButton.TextSize = 18
-    CloseButton.BorderSizePixel = 0
-    CloseButton.ZIndex = 2
-
-    CloseButton.MouseButton1Click:Connect(function()
-        ScreenGui:Destroy()
-    end)
-
     local TitleBar = Instance.new("TextLabel")
     TitleBar.Name = "TitleBar"
     TitleBar.Parent = MainFrame
     TitleBar.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
-    TitleBar.BorderColor3 = Color3.fromRGB(50, 55, 85)
     TitleBar.Size = UDim2.new(1, 0, 0, 40)
     TitleBar.Font = Enum.Font.SourceSansBold
     TitleBar.Text = title
     TitleBar.TextColor3 = Color3.fromRGB(255, 255, 255)
     TitleBar.TextSize = 18
     TitleBar.BorderSizePixel = 0
-
-    local TitleBarCorner = Instance.new("UICorner")
-    TitleBarCorner.CornerRadius = UDim.new(0, 12)
-    TitleBarCorner.Parent = TitleBar
 
     local TabsFrame = Instance.new("Frame")
     TabsFrame.Name = "TabsFrame"
@@ -61,10 +41,6 @@ function Library:CreateLib(title)
     TabsFrame.Size = UDim2.new(0.3, 0, 1, -40)
     TabsFrame.BorderSizePixel = 0
 
-    local TabsFrameCorner = Instance.new("UICorner")
-    TabsFrameCorner.CornerRadius = UDim.new(0, 12)
-    TabsFrameCorner.Parent = TabsFrame
-
     local ContentsFrame = Instance.new("Frame")
     ContentsFrame.Name = "ContentsFrame"
     ContentsFrame.Parent = MainFrame
@@ -72,10 +48,6 @@ function Library:CreateLib(title)
     ContentsFrame.Position = UDim2.new(0.3, 10, 0, 40)
     ContentsFrame.Size = UDim2.new(0.7, -12, 1, -40)
     ContentsFrame.BorderSizePixel = 0
-
-    local ContentsFrameCorner = Instance.new("UICorner")
-    ContentsFrameCorner.CornerRadius = UDim.new(0, 12)
-    ContentsFrameCorner.Parent = ContentsFrame
 
     local TabButtons = {}
 
@@ -92,22 +64,13 @@ function Library:CreateLib(title)
         TabButton.TextSize = 18
         TabButton.BorderSizePixel = 0
 
-        local TabButtonCorner = Instance.new("UICorner")
-        TabButtonCorner.CornerRadius = UDim.new(0, 12)
-        TabButtonCorner.Parent = TabButton
-
         local ContentFrame = Instance.new("Frame")
         ContentFrame.Name = name .. "Content"
         ContentFrame.Parent = ContentsFrame
         ContentFrame.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
-        ContentFrame.Position = UDim2.new(0, 0, 0, 0)
         ContentFrame.Size = UDim2.new(1, 0, 1, 0)
         ContentFrame.Visible = false
         ContentFrame.BorderSizePixel = 0
-
-        local ContentFrameCorner = Instance.new("UICorner")
-        ContentFrameCorner.CornerRadius = UDim.new(0, 12)
-        ContentFrameCorner.Parent = ContentFrame
 
         TabButtons[name] = TabButton
 
@@ -152,10 +115,6 @@ function Library:CreateLib(title)
             Button.TextSize = 18
             Button.BorderSizePixel = 0
 
-            local ButtonCorner = Instance.new("UICorner")
-            ButtonCorner.CornerRadius = UDim.new(0, 12)
-            ButtonCorner.Parent = Button
-
             Button.MouseButton1Click:Connect(callback)
         else
             warn("Tab '" .. tabName .. "' not found.")
@@ -177,10 +136,6 @@ function Library:CreateLib(title)
             Toggle.TextSize = 18
             Toggle.BorderSizePixel = 0
 
-            local ToggleCorner = Instance.new("UICorner")
-            ToggleCorner.CornerRadius = UDim.new(0, 12)
-            ToggleCorner.Parent = Toggle
-
             local isToggled = false
             Toggle.MouseButton1Click:Connect(function()
                 isToggled = not isToggled
@@ -196,71 +151,74 @@ function Library:CreateLib(title)
     local function createDropdown(tabName, dropdownName, dropdownInfo, options, callback)
         local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
         if tabContent then
-            local Dropdown = Instance.new("TextButton")
+            local Dropdown = Instance.new("Frame")
             Dropdown.Name = dropdownName .. "Dropdown"
             Dropdown.Parent = tabContent
             Dropdown.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
             Dropdown.Position = getNextPosition(tabContent)
             Dropdown.Size = UDim2.new(1, -20, 0, 40)
-            Dropdown.Font = Enum.Font.SourceSans
-            Dropdown.Text = dropdownName
-            Dropdown.TextColor3 = Color3.fromRGB(255, 255, 255)
-            Dropdown.TextSize = 18
-            Dropdown.BorderSizePixel = 0
 
-            local DropdownCorner = Instance.new("UICorner")
-            DropdownCorner.CornerRadius = UDim.new(0, 12)
-            DropdownCorner.Parent = Dropdown
+            local DropdownButton = Instance.new("TextButton")
+            DropdownButton.Parent = Dropdown
+            DropdownButton.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
+            DropdownButton.Size = UDim2.new(1, 0, 0, 20)
+            DropdownButton.Font = Enum.Font.SourceSans
+            DropdownButton.Text = dropdownName
+            DropdownButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+            DropdownButton.TextSize = 18
+            DropdownButton.BorderSizePixel = 0
 
             local DropdownList = Instance.new("Frame")
-            DropdownList.Name = "DropdownList"
-            DropdownList.Parent = tabContent
-            DropdownList.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
-            DropdownList.Position = UDim2.new(0, 0, 0, 40)
-            DropdownList.Size = UDim2.new(1, 0, 0, #options * 40)
+            DropdownList.Parent = Dropdown
+            DropdownList.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
+            DropdownList.Size = UDim2.new(1, 0, 0, 0)
             DropdownList.Visible = false
-            DropdownList.BorderSizePixel = 0
 
-            local DropdownListCorner = Instance.new("UICorner")
-            DropdownListCorner.CornerRadius = UDim.new(0, 12)
-            DropdownListCorner.Parent = DropdownList
+            local function updateDropdownList()
+                local yPos = 0
+                for _, option in ipairs(options) do
+                    local OptionButton = Instance.new("TextButton")
+                    OptionButton.Parent = DropdownList
+                    OptionButton.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
+                    OptionButton.Position = UDim2.new(0, 0, 0, yPos)
+                    OptionButton.Size = UDim2.new(1, 0, 0, 20)
+                    OptionButton.Font = Enum.Font.SourceSans
+                    OptionButton.Text = option
+                    OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+                    OptionButton.TextSize = 18
+                    OptionButton.BorderSizePixel = 0
 
-            for i, option in ipairs(options) do
-                local OptionButton = Instance.new("TextButton")
-                OptionButton.Name = option .. "Option"
-                OptionButton.Parent = DropdownList
-                OptionButton.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-                OptionButton.Position = UDim2.new(0, 0, 0, (i - 1) * 40)
-                OptionButton.Size = UDim2.new(1, 0, 0, 40)
-                OptionButton.Font = Enum.Font.SourceSans
-                OptionButton.Text = option
-                OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-                OptionButton.TextSize = 18
-                OptionButton.BorderSizePixel = 0
+                    OptionButton.MouseButton1Click:Connect(function()
+                        DropdownButton.Text = option
+                        DropdownList.Visible = false
+                        callback(option)
+                    end)
 
-                local OptionButtonCorner = Instance.new("UICorner")
-                OptionButtonCorner.CornerRadius = UDim.new(0, 12)
-                OptionButtonCorner.Parent = OptionButton
-
-                OptionButton.MouseButton1Click:Connect(function()
-                    Dropdown.Text = option
-                    DropdownList.Visible = false
-                    callback(option)
-                end)
+                    yPos = yPos + 20
+                end
             end
 
-            Dropdown.MouseButton1Click:Connect(function()
+            DropdownButton.MouseButton1Click:Connect(function()
                 DropdownList.Visible = not DropdownList.Visible
+                if not DropdownList.Visible then
+                    DropdownList.Size = UDim2.new(1, 0, 0, 0)
+                else
+                    DropdownList.Size = UDim2.new(1, 0, 0, #options * 20)
+                end
             end)
+
+            updateDropdownList()
         else
             warn("Tab '" .. tabName .. "' not found.")
         end
     end
 
-    return {
-        NewTab = createTab,
-        NewButton = createButton,
-        NewToggle = createToggle,
-        NewDropdown = createDropdown
-    }
+    Library.NewTab = createTab
+    Library.NewButton = createButton
+    Library.NewToggle = createToggle
+    Library.NewDropdown = createDropdown
+
+    return Library
 end
+
+return Library
