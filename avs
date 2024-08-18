@@ -1,3 +1,4 @@
+--update
 local Library = {}
 
 function Library.CreateLib(title)
@@ -196,7 +197,6 @@ function Library.CreateLib(title)
     local function createDropdown(tabName, dropdownName, options, callback)
         local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
         if tabContent then
-            -- Create Dropdown Button
             local DropdownButton = Instance.new("TextButton")
             DropdownButton.Name = dropdownName .. "Dropdown"
             DropdownButton.Parent = tabContent
@@ -213,13 +213,12 @@ function Library.CreateLib(title)
             DropdownButtonCorner.CornerRadius = UDim.new(0, 12)
             DropdownButtonCorner.Parent = DropdownButton
 
-            -- Create Dropdown List
             local DropdownList = Instance.new("Frame")
             DropdownList.Name = dropdownName .. "List"
             DropdownList.Parent = tabContent
             DropdownList.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
             DropdownList.Position = UDim2.new(0, 0, 1, 0)
-            DropdownList.Size = UDim2.new(1, 0, 0, #options * 40)
+            DropdownList.Size = UDim2.new(1, 0, 0, 0) -- Start with height 0 for animation
             DropdownList.Visible = false
             DropdownList.BorderSizePixel = 0
 
@@ -227,7 +226,6 @@ function Library.CreateLib(title)
             DropdownListCorner.CornerRadius = UDim.new(0, 12)
             DropdownListCorner.Parent = DropdownList
 
-            -- Add Options to Dropdown List
             local function createOption(optionName)
                 local OptionButton = Instance.new("TextButton")
                 OptionButton.Name = optionName .. "Option"
@@ -245,7 +243,7 @@ function Library.CreateLib(title)
                 OptionButtonCorner.Parent = OptionButton
 
                 OptionButton.MouseButton1Click:Connect(function()
-                    DropdownButton.Text = optionName
+                    DropdownButton.Text = "Selected Option: " .. optionName
                     DropdownList.Visible = false
                     callback(optionName)
                 end)
@@ -255,9 +253,17 @@ function Library.CreateLib(title)
                 createOption(option)
             end
 
-            -- Toggle Dropdown List Visibility
             DropdownButton.MouseButton1Click:Connect(function()
-                DropdownList.Visible = not DropdownList.Visible
+                if DropdownList.Visible then
+                    -- Animate the dropdown list to collapse
+                    DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true, function()
+                        DropdownList.Visible = false
+                    end)
+                else
+                    DropdownList.Visible = true
+                    -- Animate the dropdown list to expand
+                    DropdownList:TweenSize(UDim2.new(1, 0, 0, #options * 40), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                end
             end)
         else
             warn("Tab '" .. tabName .. "' not found.")
