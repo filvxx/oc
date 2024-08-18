@@ -130,7 +130,7 @@ function Library.CreateLib(title)
     local function getNextPosition(tabContent)
         local yPos = 5
         for _, child in ipairs(tabContent:GetChildren()) do
-            if child:IsA("TextButton") then
+            if child:IsA("TextButton") or child:IsA("TextLabel") then
                 yPos = yPos + child.Size.Y.Offset + 5
             end
         end
@@ -203,7 +203,7 @@ function Library.CreateLib(title)
             DropdownButton.Position = getNextPosition(tabContent)
             DropdownButton.Size = UDim2.new(1, -20, 0, 40)
             DropdownButton.Font = Enum.Font.SourceSans
-            DropdownButton.Text = dropdownName
+            DropdownButton.Text = "Select Option"
             DropdownButton.TextColor3 = Color3.fromRGB(255, 255, 255)
             DropdownButton.TextSize = 18
             DropdownButton.BorderSizePixel = 0
@@ -231,7 +231,7 @@ function Library.CreateLib(title)
                 OptionButton.Name = optionName .. "Option"
                 OptionButton.Parent = DropdownList
                 OptionButton.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-                OptionButton.Size = UDim2.new(1, 0, 0, 40)
+                OptionButton.Size = UDim2.new(1, 0, 0, 30)
                 OptionButton.Font = Enum.Font.SourceSans
                 OptionButton.Text = optionName
                 OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -244,8 +244,9 @@ function Library.CreateLib(title)
 
                 OptionButton.MouseButton1Click:Connect(function()
                     DropdownButton.Text = "Selected Option: " .. optionName
-                    DropdownList.Visible = false
-                    DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                    DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true, function()
+                        DropdownList.Visible = false
+                    end)
                     callback(optionName)
                 end)
             end
@@ -261,7 +262,7 @@ function Library.CreateLib(title)
                     end)
                 else
                     DropdownList.Visible = true
-                    DropdownList:TweenSize(UDim2.new(1, 0, 0, #options * 40), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                    DropdownList:TweenSize(UDim2.new(1, 0, 0, #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
                 end
             end)
         else
