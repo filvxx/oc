@@ -1,4 +1,5 @@
 -- UI Library Script
+
 local Library = {}
 
 function Library.CreateLib(title)
@@ -135,7 +136,7 @@ function Library.CreateLib(title)
             Button.Name = buttonName .. "Button"
             Button.Parent = tabContent
             Button.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-            Button.Position = UDim2.new(0, 10, 0, (tabContent:GetChildren() and #tabContent:GetChildren() * 45) or 0)
+            Button.Position = UDim2.new(0, 10, 0, #tabContent:GetChildren() * 45)
             Button.Size = UDim2.new(1, -20, 0, 40)
             Button.Font = Enum.Font.SourceSans
             Button.Text = buttonName
@@ -158,7 +159,7 @@ function Library.CreateLib(title)
             Toggle.Name = toggleName .. "Toggle"
             Toggle.Parent = tabContent
             Toggle.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-            Toggle.Position = UDim2.new(0, 10, 0, (tabContent:GetChildren() and #tabContent:GetChildren() * 45) or 0)
+            Toggle.Position = UDim2.new(0, 10, 0, #tabContent:GetChildren() * 45)
             Toggle.Size = UDim2.new(1, -20, 0, 40)
             Toggle.Font = Enum.Font.SourceSans
             Toggle.Text = toggleName
