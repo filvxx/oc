@@ -1,5 +1,4 @@
--- UI Library Script
-
+-- UI Library New
 local Library = {}
 
 function Library.CreateLib(title)
@@ -193,40 +192,10 @@ function Library.CreateLib(title)
         end
     end
 
-    local function showTab(tabName)
-        -- Debug print statement
-        print("Showing tab:", tabName)
-
-        for name, button in pairs(TabButtons) do
-            button.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
-        end
-
-        for _, child in pairs(ContentsFrame:GetChildren()) do
-            if child:IsA("Frame") then
-                child.Visible = false
-            end
-        end
-
-        local contentFrame = ContentsFrame:FindFirstChild(tabName .. "Content")
-        if contentFrame then
-            contentFrame.Visible = true
-            for _, btn in pairs(TabButtons) do
-                btn.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
-            end
-            TabButtons[tabName].BackgroundColor3 = Color3.fromRGB(90, 100, 150)
-        end
-    end
-
-    local firstTab = next(TabButtons)
-    if firstTab then
-        showTab(firstTab)
-    end
-
     return {
         NewTab = createTab,
         NewButton = createButton,
-        NewToggle = createToggle,
-        ShowTab = showTab
+        NewToggle = createToggle
     }
 end
 
