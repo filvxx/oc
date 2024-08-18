@@ -197,7 +197,7 @@ function Library.CreateLib(title)
         local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
         if tabContent then
             local DropdownButton = Instance.new("TextButton")
-            DropdownButton.Name = dropdownName .. "Dropdown"
+            DropdownButton.Name = dropdownName .. "Button"
             DropdownButton.Parent = tabContent
             DropdownButton.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
             DropdownButton.Position = getNextPosition(tabContent)
@@ -217,7 +217,7 @@ function Library.CreateLib(title)
             DropdownList.Parent = tabContent
             DropdownList.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
             DropdownList.Position = UDim2.new(0, 0, 1, 0)
-            DropdownList.Size = UDim2.new(1, 0, 0, 0) -- Start with height 0 for animation
+            DropdownList.Size = UDim2.new(1, 0, 0, 0)
             DropdownList.ClipsDescendants = true
             DropdownList.Visible = false
             DropdownList.BorderSizePixel = 0
