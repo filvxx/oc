@@ -1,3 +1,4 @@
+--change
 local Library = {}
 
 function Library.CreateLib(title)
@@ -129,10 +130,10 @@ function Library.CreateLib(title)
 
 -- Adjusted dynamic positioning function for buttons/toggles
 local function getNextPosition(tabContent)
-    local yPos = 10
+    local yPos = 5
     for _, child in ipairs(tabContent:GetChildren()) do
         if child:IsA("TextButton") then
-            yPos = yPos + child.Size.Y.Offset + 35 -- Adjust spacing between buttons (5 pixels)
+            yPos = yPos + child.Size.Y.Offset + 5 -- Adjust spacing between buttons (5 pixels)
         end
     end
     return UDim2.new(0, 10, 0, yPos)
