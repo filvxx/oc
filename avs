@@ -127,15 +127,16 @@ function Library.CreateLib(title)
         return ContentFrame
     end
 
-    -- Adjusted dynamic positioning function for buttons/toggles
-    local function getNextPosition(tabContent)
-        local numChildren = #tabContent:GetChildren()
-        if numChildren == 0 then
-            return UDim2.new(0, 10, 0, 10) -- First button position
-        else
-            return UDim2.new(0, 10, 0, 10 + (numChildren - 1) * 45) -- Subsequent buttons
+-- Adjusted dynamic positioning function for buttons/toggles
+local function getNextPosition(tabContent)
+    local yPos = 10
+    for _, child in ipairs(tabContent:GetChildren()) do
+        if child:IsA("TextButton") then
+            yPos = yPos + child.Size.Y.Offset + 35 -- Adjust spacing between buttons (5 pixels)
         end
     end
+    return UDim2.new(0, 10, 0, yPos)
+end
 
     local function createButton(tabName, buttonName, callback)
         local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
