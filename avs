@@ -1,3 +1,4 @@
+--up!!
 local Library = {}
 
 function Library.CreateLib(title)
@@ -232,7 +233,7 @@ function Library.CreateLib(title)
                 OptionButton.Parent = DropdownList
                 OptionButton.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
                 OptionButton.Size = UDim2.new(1, 0, 0, 30)
-                OptionButton.Position = UDim2.new(0, 0, 0, (index - 1) * 30)
+                OptionButton.Position = UDim2.new(0, 0, 0, (index - 1) * 5)
                 OptionButton.Font = Enum.Font.SourceSans
                 OptionButton.Text = optionName
                 OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
