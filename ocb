@@ -1,4 +1,4 @@
--- UI Library
+-- UI
 
 local Library = {}
 
@@ -80,12 +80,14 @@ function Library.CreateLib(title)
     ContentsFrameCorner.CornerRadius = UDim.new(0, 12)
     ContentsFrameCorner.Parent = ContentsFrame
 
-    local function createTabButton(name, position)
+    local TabButtons = {}
+    
+    local function createTab(name)
         local TabButton = Instance.new("TextButton")
         TabButton.Name = name .. "Button"
         TabButton.Parent = TabsFrame
         TabButton.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
-        TabButton.Position = UDim2.new(0, 10, 0, position + 10)
+        TabButton.Position = UDim2.new(0, 10, 0, #TabButtons * 50 + 10)
         TabButton.Size = UDim2.new(1, -20, 0, 40)
         TabButton.Font = Enum.Font.SourceSans
         TabButton.Text = name
@@ -96,14 +98,6 @@ function Library.CreateLib(title)
         local TabButtonCorner = Instance.new("UICorner")
         TabButtonCorner.CornerRadius = UDim.new(0, 12)
         TabButtonCorner.Parent = TabButton
-
-        return TabButton
-    end
-
-    local TabButtons = {}
-    local function createTab(name, position)
-        local TabButton = createTabButton(name, position)
-        TabButtons[name] = TabButton
 
         local ContentFrame = Instance.new("Frame")
         ContentFrame.Name = name .. "Content"
@@ -118,16 +112,20 @@ function Library.CreateLib(title)
         ContentFrameCorner.CornerRadius = UDim.new(0, 12)
         ContentFrameCorner.Parent = ContentFrame
 
-        local function showContent()
+        TabButtons[name] = TabButton
+
+        TabButton.MouseButton1Click:Connect(function()
             for _, child in pairs(ContentsFrame:GetChildren()) do
                 if child:IsA("Frame") then
                     child.Visible = false
                 end
             end
             ContentFrame.Visible = true
-        end
-
-        TabButton.MouseButton1Click:Connect(showContent)
+            for _, btn in pairs(TabButtons) do
+                btn.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
+            end
+            TabButton.BackgroundColor3 = Color3.fromRGB(90, 100, 150)
+        end)
 
         return ContentFrame
     end
@@ -185,23 +183,13 @@ function Library.CreateLib(title)
     end
 
     local function showTab(tabName)
-        -- Reset all tab colors to the unselected state
-        for name, button in pairs(TabButtons) do
-            button.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
-        end
-
-        -- Hide all content
-        for _, child in pairs(ContentsFrame:GetChildren()) do
-            if child:IsA("Frame") then
-                child.Visible = false
-            end
-        end
-
-        -- Show content based on the tab and highlight the selected tab
         if TabButtons[tabName] then
             local contentFrame = ContentsFrame:FindFirstChild(tabName .. "Content")
             if contentFrame then
                 contentFrame.Visible = true
+                for _, btn in pairs(TabButtons) do
+                    btn.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
+                end
                 TabButtons[tabName].BackgroundColor3 = Color3.fromRGB(90, 100, 150)
             end
         end
