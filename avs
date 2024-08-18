@@ -1,4 +1,3 @@
--- UI Library Script
 local Library = {}
 
 function Library.CreateLib(title)
@@ -148,6 +147,8 @@ function Library.CreateLib(title)
             ButtonCorner.Parent = Button
 
             Button.MouseButton1Click:Connect(callback)
+        else
+            warn("Tab '" .. tabName .. "' not found.")
         end
     end
 
@@ -177,6 +178,8 @@ function Library.CreateLib(title)
                 Toggle.Text = toggleName .. (isToggled and " (Enabled)" or "")
                 callback(isToggled)
             end)
+        else
+            warn("Tab '" .. tabName .. "' not found.")
         end
     end
 
