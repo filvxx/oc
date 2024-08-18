@@ -1,4 +1,3 @@
--- UI Library Script
 local Library = {}
 
 function Library.CreateLib(title)
@@ -128,6 +127,17 @@ function Library.CreateLib(title)
         return ContentFrame
     end
 
+-- Adjusted dynamic positioning function for buttons/toggles
+local function getNextPosition(tabContent)
+    local yPos = 5
+    for _, child in ipairs(tabContent:GetChildren()) do
+        if child:IsA("TextButton") then
+            yPos = yPos + child.Size.Y.Offset + 5 -- Adjust spacing between buttons (5 pixels)
+        end
+    end
+    return UDim2.new(0, 10, 0, yPos)
+end
+
     local function createButton(tabName, buttonName, callback)
         local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
         if tabContent then
@@ -135,7 +145,7 @@ function Library.CreateLib(title)
             Button.Name = buttonName .. "Button"
             Button.Parent = tabContent
             Button.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-            Button.Position = UDim2.new(0, 10, 0, #tabContent:GetChildren() * 45)
+            Button.Position = getNextPosition(tabContent)
             Button.Size = UDim2.new(1, -20, 0, 40)
             Button.Font = Enum.Font.SourceSans
             Button.Text = buttonName
@@ -148,6 +158,8 @@ function Library.CreateLib(title)
             ButtonCorner.Parent = Button
 
             Button.MouseButton1Click:Connect(callback)
+        else
+            warn("Tab '" .. tabName .. "' not found.")
         end
     end
 
@@ -158,7 +170,7 @@ function Library.CreateLib(title)
             Toggle.Name = toggleName .. "Toggle"
             Toggle.Parent = tabContent
             Toggle.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-            Toggle.Position = UDim2.new(0, 10, 0, #tabContent:GetChildren() * 45)
+            Toggle.Position = getNextPosition(tabContent) -- Adjust dynamic vertical spacing
             Toggle.Size = UDim2.new(1, -20, 0, 40)
             Toggle.Font = Enum.Font.SourceSans
             Toggle.Text = toggleName
@@ -177,78 +189,6 @@ function Library.CreateLib(title)
                 Toggle.Text = toggleName .. (isToggled and " (Enabled)" or "")
                 callback(isToggled)
             end)
-        end
-    end
-
-    local function createDropdown(tabName, dropdownName, dropdownInfo, options, callback)
-        local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
-        if tabContent then
-            local Dropdown = Instance.new("Frame")
-            Dropdown.Name = dropdownName .. "Dropdown"
-            Dropdown.Parent = tabContent
-            Dropdown.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-            Dropdown.Position = UDim2.new(0, 10, 0, #tabContent:GetChildren() * 45)
-            Dropdown.Size = UDim2.new(1, -20, 0, 40)
-
-            local DropdownCorner = Instance.new("UICorner")
-            DropdownCorner.CornerRadius = UDim.new(0, 12)
-            DropdownCorner.Parent = Dropdown
-
-            local DropdownButton = Instance.new("TextButton")
-            DropdownButton.Name = dropdownName .. "Button"
-            DropdownButton.Parent = Dropdown
-            DropdownButton.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
-            DropdownButton.Size = UDim2.new(1, 0, 0.5, 0)
-            DropdownButton.Font = Enum.Font.SourceSans
-            DropdownButton.Text = dropdownName
-            DropdownButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-            DropdownButton.TextSize = 18
-            DropdownButton.BorderSizePixel = 0
-
-            local DropdownList = Instance.new("Frame")
-            DropdownList.Name = dropdownName .. "List"
-            DropdownList.Parent = Dropdown
-            DropdownList.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
-            DropdownList.Position = UDim2.new(0, 0, 0.5, 0)
-            DropdownList.Size = UDim2.new(1, 0, 0, 0)
-            DropdownList.ClipsDescendants = true
-            DropdownList.Visible = false
-
-            local DropdownListCorner = Instance.new("UICorner")
-            DropdownListCorner.CornerRadius = UDim.new(0, 12)
-            DropdownListCorner.Parent = DropdownList
-
-            for _, option in ipairs(options) do
-                local OptionButton = Instance.new("TextButton")
-                OptionButton.Name = option
-                OptionButton.Parent = DropdownList
-                OptionButton.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-                OptionButton.Size = UDim2.new(1, 0, 0, 20)
-                OptionButton.Font = Enum.Font.SourceSans
-                OptionButton.Text = option
-                OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-                OptionButton.TextSize = 18
-                OptionButton.BorderSizePixel = 0
-
-                local OptionButtonCorner = Instance.new("UICorner")
-                OptionButtonCorner.CornerRadius = UDim.new(0, 12)
-                OptionButtonCorner.Parent = OptionButton
-
-                OptionButton.MouseButton1Click:Connect(function()
-                    DropdownButton.Text = option
-                    DropdownList.Visible = false
-                    callback(option)
-                end)
-            end
-
-            DropdownButton.MouseButton1Click:Connect(function()
-                DropdownList.Visible = not DropdownList.Visible
-                if not DropdownList.Visible then
-                    DropdownList.Size = UDim2.new(1, 0, 0, 0)
-                else
-                    DropdownList.Size = UDim2.new(1, 0, 0, #options * 20)
-                end
-            end)
         else
             warn("Tab '" .. tabName .. "' not found.")
         end
@@ -257,8 +197,7 @@ function Library.CreateLib(title)
     return {
         NewTab = createTab,
         NewButton = createButton,
-        NewToggle = createToggle,
-        NewDropdown = createDropdown
+        NewToggle = createToggle
     }
 end
 
