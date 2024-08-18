@@ -1,3 +1,5 @@
+-- Att
+
 local Library = {}
 
 function Library.CreateLib(title)
@@ -127,61 +129,62 @@ function Library.CreateLib(title)
         return ContentFrame
     end
 
-    local function createButton(tabName, buttonName, callback)
-        local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
-        if tabContent then
-            local Button = Instance.new("TextButton")
-            Button.Name = buttonName .. "Button"
-            Button.Parent = tabContent
-            Button.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-            Button.Position = UDim2.new(0, 10, 0, #tabContent:GetChildren() * 45)
-            Button.Size = UDim2.new(1, -20, 0, 40)
-            Button.Font = Enum.Font.SourceSans
-            Button.Text = buttonName
-            Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-            Button.TextSize = 18
-            Button.BorderSizePixel = 0
+local function createButton(tabName, buttonName, callback)
+    local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
+    if tabContent then
+        local Button = Instance.new("TextButton")
+        Button.Name = buttonName .. "Button"
+        Button.Parent = tabContent
+        Button.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
+        Button.Position = UDim2.new(0, 10, 0, 10) -- Adjust this to control vertical spacing
+        Button.Size = UDim2.new(1, -20, 0, 40)
+        Button.Font = Enum.Font.SourceSans
+        Button.Text = buttonName
+        Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Button.TextSize = 18
+        Button.BorderSizePixel = 0
 
-            local ButtonCorner = Instance.new("UICorner")
-            ButtonCorner.CornerRadius = UDim.new(0, 12)
-            ButtonCorner.Parent = Button
+        local ButtonCorner = Instance.new("UICorner")
+        ButtonCorner.CornerRadius = UDim.new(0, 12)
+        ButtonCorner.Parent = Button
 
-            Button.MouseButton1Click:Connect(callback)
-        else
-            warn("Tab '" .. tabName .. "' not found.")
-        end
+        Button.MouseButton1Click:Connect(callback)
+    else
+        warn("Tab '" .. tabName .. "' not found.")
     end
+end
 
-    local function createToggle(tabName, toggleName, callback)
-        local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
-        if tabContent then
-            local Toggle = Instance.new("TextButton")
-            Toggle.Name = toggleName .. "Toggle"
-            Toggle.Parent = tabContent
-            Toggle.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-            Toggle.Position = UDim2.new(0, 10, 0, #tabContent:GetChildren() * 45)
-            Toggle.Size = UDim2.new(1, -20, 0, 40)
-            Toggle.Font = Enum.Font.SourceSans
-            Toggle.Text = toggleName
-            Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
-            Toggle.TextSize = 18
-            Toggle.BorderSizePixel = 0
+local function createToggle(tabName, toggleName, callback)
+    local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
+    if tabContent then
+        local Toggle = Instance.new("TextButton")
+        Toggle.Name = toggleName .. "Toggle"
+        Toggle.Parent = tabContent
+        Toggle.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
+        Toggle.Position = UDim2.new(0, 10, 0, 10) -- Adjust this to control vertical spacing
+        Toggle.Size = UDim2.new(1, -20, 0, 40)
+        Toggle.Font = Enum.Font.SourceSans
+        Toggle.Text = toggleName
+        Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Toggle.TextSize = 18
+        Toggle.BorderSizePixel = 0
 
-            local ToggleCorner = Instance.new("UICorner")
-            ToggleCorner.CornerRadius = UDim.new(0, 12)
-            ToggleCorner.Parent = Toggle
+        local ToggleCorner = Instance.new("UICorner")
+        ToggleCorner.CornerRadius = UDim.new(0, 12)
+        ToggleCorner.Parent = Toggle
 
-            local isToggled = false
-            Toggle.MouseButton1Click:Connect(function()
-                isToggled = not isToggled
-                Toggle.BackgroundColor3 = isToggled and Color3.fromRGB(90, 180, 90) or Color3.fromRGB(70, 75, 105)
-                Toggle.Text = toggleName .. (isToggled and " (Enabled)" or "")
-                callback(isToggled)
-            end)
-        else
-            warn("Tab '" .. tabName .. "' not found.")
-        end
+        local isToggled = false
+        Toggle.MouseButton1Click:Connect(function()
+            isToggled = not isToggled
+            Toggle.BackgroundColor3 = isToggled and Color3.fromRGB(90, 180, 90) or Color3.fromRGB(70, 75, 105)
+            Toggle.Text = toggleName .. (isToggled and " (Enabled)" or "")
+            callback(isToggled)
+        end)
+    else
+        warn("Tab '" .. tabName .. "' not found.")
     end
+end
+
 
     return {
         NewTab = createTab,
