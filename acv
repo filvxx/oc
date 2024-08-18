@@ -1,4 +1,4 @@
--- UI Library New
+-- UI Library Script
 local Library = {}
 
 function Library.CreateLib(title)
@@ -81,9 +81,6 @@ function Library.CreateLib(title)
     local TabButtons = {}
 
     local function createTab(name, position)
-        -- Debug print statement
-        print("Creating tab:", name)
-
         local TabButton = Instance.new("TextButton")
         TabButton.Name = name .. "Button"
         TabButton.Parent = TabsFrame
@@ -116,9 +113,6 @@ function Library.CreateLib(title)
         TabButtons[name] = TabButton
 
         TabButton.MouseButton1Click:Connect(function()
-            -- Debug print statement
-            print("Tab clicked:", name)
-
             for _, child in pairs(ContentsFrame:GetChildren()) do
                 if child:IsA("Frame") then
                     child.Visible = false
@@ -137,9 +131,6 @@ function Library.CreateLib(title)
     local function createButton(tabName, buttonName, callback)
         local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
         if tabContent then
-            -- Debug print statement
-            print("Creating button:", buttonName)
-
             local Button = Instance.new("TextButton")
             Button.Name = buttonName .. "Button"
             Button.Parent = tabContent
@@ -163,9 +154,6 @@ function Library.CreateLib(title)
     local function createToggle(tabName, toggleName, callback)
         local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
         if tabContent then
-            -- Debug print statement
-            print("Creating toggle:", toggleName)
-
             local Toggle = Instance.new("TextButton")
             Toggle.Name = toggleName .. "Toggle"
             Toggle.Parent = tabContent
