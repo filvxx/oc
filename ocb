@@ -1,8 +1,7 @@
--- UI
+-- UI Library Script
 
 local Library = {}
 
--- Function to create a new library window (Hub)
 function Library.CreateLib(title)
     local ScreenGui = Instance.new("ScreenGui")
     ScreenGui.Name = "ExampleHub"
@@ -82,12 +81,12 @@ function Library.CreateLib(title)
 
     local TabButtons = {}
     
-    local function createTab(name)
+    local function createTab(name, position)
         local TabButton = Instance.new("TextButton")
         TabButton.Name = name .. "Button"
         TabButton.Parent = TabsFrame
         TabButton.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
-        TabButton.Position = UDim2.new(0, 10, 0, #TabButtons * 50 + 10)
+        TabButton.Position = UDim2.new(0, 10, 0, position)
         TabButton.Size = UDim2.new(1, -20, 0, 40)
         TabButton.Font = Enum.Font.SourceSans
         TabButton.Text = name
