@@ -127,12 +127,11 @@ function Library.CreateLib(title)
         return ContentFrame
     end
 
-    -- Adjusted dynamic positioning function for buttons/toggles/dropdowns
     local function getNextPosition(tabContent)
         local yPos = 5
         for _, child in ipairs(tabContent:GetChildren()) do
             if child:IsA("TextButton") or child:IsA("Frame") then
-                yPos = yPos + child.Size.Y.Offset + 5 -- Adjust spacing between elements (5 pixels)
+                yPos = yPos + child.Size.Y.Offset + 5
             end
         end
         return UDim2.new(0, 10, 0, yPos)
@@ -170,7 +169,7 @@ function Library.CreateLib(title)
             Toggle.Name = toggleName .. "Toggle"
             Toggle.Parent = tabContent
             Toggle.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-            Toggle.Position = getNextPosition(tabContent) -- Adjust dynamic vertical spacing
+            Toggle.Position = getNextPosition(tabContent)
             Toggle.Size = UDim2.new(1, -20, 0, 40)
             Toggle.Font = Enum.Font.SourceSans
             Toggle.Text = toggleName
@@ -194,7 +193,7 @@ function Library.CreateLib(title)
         end
     end
 
-    -- New function to create a dropdown menu
+    -- Create a dropdown menu
     local function createDropdown(tabName, dropdownText, dropdownInf, options, callback)
         local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
         if tabContent then
@@ -202,7 +201,7 @@ function Library.CreateLib(title)
             Dropdown.Name = dropdownText .. "Dropdown"
             Dropdown.Parent = tabContent
             Dropdown.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-            Dropdown.Position = getNextPosition(tabContent) -- Adjust dynamic vertical spacing
+            Dropdown.Position = getNextPosition(tabContent)
             Dropdown.Size = UDim2.new(1, -20, 0, 40)
             Dropdown.Font = Enum.Font.SourceSans
             Dropdown.Text = dropdownText
@@ -214,26 +213,29 @@ function Library.CreateLib(title)
             DropdownCorner.CornerRadius = UDim.new(0, 12)
             DropdownCorner.Parent = Dropdown
 
+            -- Dropdown Content Frame
             local DropdownContent = Instance.new("Frame")
             DropdownContent.Name = dropdownText .. "Content"
-            DropdownContent.Parent = tabContent
+            DropdownContent.Parent = Dropdown
             DropdownContent.BackgroundColor3 = Color3.fromRGB(60, 65, 95)
-            DropdownContent.Position = UDim2.new(0, 10, 0, Dropdown.Position.Y.Offset + 45)
-            DropdownContent.Size = UDim2.new(1, -20, 0, #options * 35)
+            DropdownContent.Position = UDim2.new(0, 0, 1, 2)  -- Positioned directly below the dropdown
+            DropdownContent.Size = UDim2.new(1, 0, 0, #options * 35)
             DropdownContent.Visible = false
             DropdownContent.BorderSizePixel = 0
+            DropdownContent.ClipsDescendants = true
 
             local DropdownContentCorner = Instance.new("UICorner")
             DropdownContentCorner.CornerRadius = UDim.new(0, 12)
             DropdownContentCorner.Parent = DropdownContent
 
+            -- Create Options
             for i, option in ipairs(options) do
                 local OptionButton = Instance.new("TextButton")
                 OptionButton.Name = option .. "Option"
                 OptionButton.Parent = DropdownContent
                 OptionButton.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-                OptionButton.Position = UDim2.new(0, 10, 0, (i - 1) * 35)
-                OptionButton.Size = UDim2.new(1, -20, 0, 30)
+                OptionButton.Position = UDim2.new(0, 0, 0, (i - 1) * 35)
+                OptionButton.Size = UDim2.new(1, 0, 0, 30)
                 OptionButton.Font = Enum.Font.SourceSans
                 OptionButton.Text = option
                 OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -244,6 +246,7 @@ function Library.CreateLib(title)
                 OptionButtonCorner.CornerRadius = UDim.new(0, 12)
                 OptionButtonCorner.Parent = OptionButton
 
+                -- Option selected callback
                 OptionButton.MouseButton1Click:Connect(function()
                     Dropdown.Text = dropdownText .. ": " .. option
                     DropdownContent.Visible = false
@@ -251,6 +254,7 @@ function Library.CreateLib(title)
                 end)
             end
 
+            -- Toggle visibility of dropdown options
             Dropdown.MouseButton1Click:Connect(function()
                 DropdownContent.Visible = not DropdownContent.Visible
             end)
@@ -259,12 +263,26 @@ function Library.CreateLib(title)
         end
     end
 
+    local function newTab(tabName)
+        return createTab(tabName, #TabButtons * 45)
+    end
+
+    local function newButton(tabName, buttonName, callback)
+        createButton(tabName, buttonName, callback)
+    end
+
+    local function newToggle(tabName, toggleName, callback)
+        createToggle(tabName, toggleName, callback)
+    end
+
+    local function newDropdown(tabName, dropdownText, dropdownInf, options, callback)
+        createDropdown(tabName, dropdownText, dropdownInf, options, callback)
+    end
+
     return {
-        NewTab = createTab,
-        NewButton = createButton,
-        NewToggle = createToggle,
-        NewDropdown = createDropdown
+        NewTab = newTab,
+        NewButton = newButton,
+        NewToggle = newToggle,
+        NewDropdown = newDropdown
     }
 end
-
-return Library
