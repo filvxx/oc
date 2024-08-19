@@ -1,4 +1,4 @@
---fixss
+--fixis
 
 local Library = {}
 
@@ -205,7 +205,7 @@ local function createDropdown(tabName, dropdownName, options, callback)
         DropdownButton.Position = getNextPosition(tabContent)
         DropdownButton.Size = UDim2.new(1, -20, 0, 40)
         DropdownButton.Font = Enum.Font.SourceSans
-        DropdownButton.Text = "Select Option"
+        DropdownButton.Text = dropdownName  -- Keep the original dropdown name
         DropdownButton.TextColor3 = Color3.fromRGB(255, 255, 255)
         DropdownButton.TextSize = 18
         DropdownButton.BorderSizePixel = 0
@@ -216,9 +216,9 @@ local function createDropdown(tabName, dropdownName, options, callback)
 
         local DropdownList = Instance.new("Frame")
         DropdownList.Name = dropdownName .. "List"
-        DropdownList.Parent = DropdownButton  -- Parent to the button
+        DropdownList.Parent = DropdownButton
         DropdownList.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
-        DropdownList.Position = UDim2.new(0, 0, 1, 0) -- Position directly below the button
+        DropdownList.Position = UDim2.new(0, 0, 1, 0)
         DropdownList.Size = UDim2.new(1, 0, 0, 0)
         DropdownList.ClipsDescendants = true
         DropdownList.Visible = false
@@ -228,16 +228,7 @@ local function createDropdown(tabName, dropdownName, options, callback)
         DropdownListCorner.CornerRadius = UDim.new(0, 12)
         DropdownListCorner.Parent = DropdownList
 
-        -- Function to split the dropdownName and get the second word
-        local function getSecondWord(name)
-            local words = {}
-            for word in name:gmatch("%S+") do
-                table.insert(words, word)
-            end
-            return words[2] or "Option" -- Return the second word or "Option" if there's no second word
-        end
-
-        local secondWord = getSecondWord(dropdownName)
+        local selectedOption
 
         local function createOption(optionName, index)
             local OptionButton = Instance.new("TextButton")
@@ -257,11 +248,16 @@ local function createDropdown(tabName, dropdownName, options, callback)
             OptionButtonCorner.Parent = OptionButton
 
             OptionButton.MouseButton1Click:Connect(function()
-                DropdownButton.Text = "Selected " .. secondWord .. ": " .. optionName
+                if selectedOption then
+                    selectedOption.BackgroundColor3 = Color3.fromRGB(70, 75, 105)  -- Reset the previous selected option's color
+                end
+                OptionButton.BackgroundColor3 = Color3.fromRGB(90, 180, 90)  -- Highlight the selected option
+                selectedOption = OptionButton
+
                 DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true, function()
                     DropdownList.Visible = false
                     -- Animate the elements below the dropdown to move back up
-                    for i, v in ipairs(tabContent:GetChildren()) do
+                    for _, v in ipairs(tabContent:GetChildren()) do
                         if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
                             v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset - #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
                         end
@@ -280,7 +276,7 @@ local function createDropdown(tabName, dropdownName, options, callback)
                 -- Collapse the dropdown and move the elements back up
                 DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true, function()
                     DropdownList.Visible = false
-                    for i, v in ipairs(tabContent:GetChildren()) do
+                    for _, v in ipairs(tabContent:GetChildren()) do
                         if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
                             v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset - #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
                         end
@@ -290,7 +286,7 @@ local function createDropdown(tabName, dropdownName, options, callback)
                 -- Expand the dropdown and move the elements below it down
                 DropdownList.Visible = true
                 DropdownList:TweenSize(UDim2.new(1, 0, 0, #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
-                for i, v in ipairs(tabContent:GetChildren()) do
+                for _, v in ipairs(tabContent:GetChildren()) do
                     if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
                         v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset + #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
                     end
