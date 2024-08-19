@@ -137,66 +137,61 @@ function Library.CreateLib(title)
         return UDim2.new(0, 10, 0, yPos)
     end
 
-local function createButton(tabName, buttonName, callback)
-    local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
-    if tabContent then
-        local Button = Instance.new("TextButton")
-        Button.Name = buttonName .. "Button"
-        Button.Parent = tabContent
-        Button.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-        Button.Position = getNextPosition(tabContent)
-        Button.Size = UDim2.new(1, -20, 0, 40)
-        Button.Font = Enum.Font.SourceSans
-        Button.Text = buttonName
-        Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Button.TextSize = 18
-        Button.BorderSizePixel = 0
-        Button.TextXAlignment = Enum.TextXAlignment.Left -- Align text to the left
-        Button.TextPadding = UDim2.new(0, 10, 0, 0) -- Add padding from the left side
+    local function createButton(tabName, buttonName, callback)
+        local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
+        if tabContent then
+            local Button = Instance.new("TextButton")
+            Button.Name = buttonName .. "Button"
+            Button.Parent = tabContent
+            Button.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
+            Button.Position = getNextPosition(tabContent)
+            Button.Size = UDim2.new(1, -20, 0, 40)
+            Button.Font = Enum.Font.SourceSans
+            Button.Text = buttonName
+            Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+            Button.TextSize = 18
+            Button.BorderSizePixel = 0
 
-        local ButtonCorner = Instance.new("UICorner")
-        ButtonCorner.CornerRadius = UDim.new(0, 12)
-        ButtonCorner.Parent = Button
+            local ButtonCorner = Instance.new("UICorner")
+            ButtonCorner.CornerRadius = UDim.new(0, 12)
+            ButtonCorner.Parent = Button
 
-        Button.MouseButton1Click:Connect(callback)
-    else
-        warn("Tab '" .. tabName .. "' not found.")
+            Button.MouseButton1Click:Connect(callback)
+        else
+            warn("Tab '" .. tabName .. "' not found.")
+        end
     end
-end
 
-local function createToggle(tabName, toggleName, callback)
-    local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
-    if tabContent then
-        local Toggle = Instance.new("TextButton")
-        Toggle.Name = toggleName .. "Toggle"
-        Toggle.Parent = tabContent
-        Toggle.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-        Toggle.Position = getNextPosition(tabContent)
-        Toggle.Size = UDim2.new(1, -20, 0, 40)
-        Toggle.Font = Enum.Font.SourceSans
-        Toggle.Text = toggleName
-        Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Toggle.TextSize = 18
-        Toggle.BorderSizePixel = 0
-        Toggle.TextXAlignment = Enum.TextXAlignment.Left -- Align text to the left
-        Toggle.TextPadding = UDim2.new(0, 10, 0, 0) -- Add padding from the left side
+    local function createToggle(tabName, toggleName, callback)
+        local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
+        if tabContent then
+            local Toggle = Instance.new("TextButton")
+            Toggle.Name = toggleName .. "Toggle"
+            Toggle.Parent = tabContent
+            Toggle.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
+            Toggle.Position = getNextPosition(tabContent)
+            Toggle.Size = UDim2.new(1, -20, 0, 40)
+            Toggle.Font = Enum.Font.SourceSans
+            Toggle.Text = toggleName
+            Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+            Toggle.TextSize = 18
+            Toggle.BorderSizePixel = 0
 
-        local ToggleCorner = Instance.new("UICorner")
-        ToggleCorner.CornerRadius = UDim.new(0, 12)
-        ToggleCorner.Parent = Toggle
+            local ToggleCorner = Instance.new("UICorner")
+            ToggleCorner.CornerRadius = UDim.new(0, 12)
+            ToggleCorner.Parent = Toggle
 
-        local isToggled = false
-        Toggle.MouseButton1Click:Connect(function()
-            isToggled = not isToggled
-            Toggle.BackgroundColor3 = isToggled and Color3.fromRGB(90, 180, 90) or Color3.fromRGB(70, 75, 105)
-            Toggle.Text = toggleName .. (isToggled and " (Enabled)" or "")
-            callback(isToggled)
-        end)
-    else
-        warn("Tab '" .. tabName .. "' not found.")
+            local isToggled = false
+            Toggle.MouseButton1Click:Connect(function()
+                isToggled = not isToggled
+                Toggle.BackgroundColor3 = isToggled and Color3.fromRGB(90, 180, 90) or Color3.fromRGB(70, 75, 105)
+                Toggle.Text = toggleName .. (isToggled and " (Enabled)" or "")
+                callback(isToggled)
+            end)
+        else
+            warn("Tab '" .. tabName .. "' not found.")
+        end
     end
-end
-
 
 local function createDropdown(tabName, dropdownName, options, callback)
     local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
@@ -208,15 +203,10 @@ local function createDropdown(tabName, dropdownName, options, callback)
         DropdownButton.Position = getNextPosition(tabContent)
         DropdownButton.Size = UDim2.new(1, -20, 0, 40)
         DropdownButton.Font = Enum.Font.SourceSans
-        DropdownButton.Text = dropdownName
+        DropdownButton.Text = dropdownName  -- Keep the original dropdown name
         DropdownButton.TextColor3 = Color3.fromRGB(255, 255, 255)
         DropdownButton.TextSize = 18
         DropdownButton.BorderSizePixel = 0
-        DropdownButton.TextXAlignment = Enum.TextXAlignment.Left  -- Align text to the left
-        DropdownButton.TextStrokeTransparency = 0.75
-        DropdownButton.TextStrokeColor3 = Color3.fromRGB(50, 55, 85) -- Adding stroke color for the text
-        DropdownButton.TextSize = 20
-        DropdownButton.Text = "   " .. dropdownName -- Add padding
 
         local DropdownButtonCorner = Instance.new("UICorner")
         DropdownButtonCorner.CornerRadius = UDim.new(0, 12)
@@ -250,8 +240,6 @@ local function createDropdown(tabName, dropdownName, options, callback)
             OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
             OptionButton.TextSize = 18
             OptionButton.BorderSizePixel = 0
-            OptionButton.TextXAlignment = Enum.TextXAlignment.Left  -- Align text to the left
-            OptionButton.Text = "   " .. optionName -- Add padding to the option text
 
             local OptionButtonCorner = Instance.new("UICorner")
             OptionButtonCorner.CornerRadius = UDim.new(0, 12)
