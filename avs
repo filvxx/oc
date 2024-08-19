@@ -162,7 +162,7 @@ local function createButton(tabName, buttonName, callback)
         Decal.Size = UDim2.new(0, 30, 0, 30)
         Decal.Position = UDim2.new(0, 2, 0.4, -10)  -- Position the decal where needed
         Decal.BackgroundTransparency = 1  -- Make sure background is transparent
-        Decal.Image = "rbxassetid://19004812083"  -- Replace with your decal ID
+        Decal.Image = "rbxassetid://121362887907702"  -- Replace with a white image asset ID
         Decal.ImageColor3 = Color3.fromRGB(255, 255, 255)  -- Initial color (white)
         Decal.Parent = Button
 
@@ -202,8 +202,8 @@ local function createToggle(tabName, toggleName, callback)
         local Dot = Instance.new("Frame")
         Dot.Size = UDim2.new(0, 20, 0, 20)
         Dot.Position = UDim2.new(0, 10, 0.5, -10)  -- Positioned on the left
-        Dot.BackgroundColor3 = Color3.fromRGB(90, 100, 150)  -- Border color of the dot
-        Dot.BackgroundTransparency = 0.5  -- Make the border semi-transparent
+        Dot.BackgroundColor3 = Color3.fromRGB(90, 100, 150)  -- Border color
+        Dot.BorderSizePixel = 0
         Dot.Parent = Toggle
 
         local DotCorner = Instance.new("UICorner")
@@ -212,10 +212,11 @@ local function createToggle(tabName, toggleName, callback)
 
         -- Create an inner frame for the filled state
         local DotInner = Instance.new("Frame")
-        DotInner.Size = UDim2.new(1, -4, 1, -4)  -- Slightly smaller than Dot to fit within
+        DotInner.Size = UDim2.new(1, -4, 1, -4)  -- Slightly smaller to fit inside Dot
         DotInner.Position = UDim2.new(0, 2, 0, 2)  -- Centered within Dot
         DotInner.BackgroundColor3 = Color3.fromRGB(90, 100, 150)  -- Fill color when toggled
         DotInner.BackgroundTransparency = 1  -- Start as fully transparent
+        DotInner.BorderSizePixel = 0
         DotInner.Parent = Dot
 
         local DotInnerCorner = Instance.new("UICorner")
@@ -225,14 +226,13 @@ local function createToggle(tabName, toggleName, callback)
         local isToggled = false
         Toggle.MouseButton1Click:Connect(function()
             isToggled = not isToggled
-            DotInner.BackgroundTransparency = isToggled and 0 or 1  -- Show or hide the fill color based on toggle state
+            DotInner.BackgroundTransparency = isToggled and 0 or 1  -- Fully visible or invisible based on toggle state
             callback(isToggled)
         end)
     else
         warn("Tab '" .. tabName .. "' not found.")
     end
 end
-
 
 local function createDropdown(tabName, dropdownName, options, callback)
     local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
@@ -253,13 +253,16 @@ local function createDropdown(tabName, dropdownName, options, callback)
         DropdownButtonCorner.CornerRadius = UDim.new(0, 12)
         DropdownButtonCorner.Parent = DropdownButton
 
-        -- Create the ImageLabel to act as the decal
+      -- Create the ImageLabel for the dropdown icon
         local Decal = Instance.new("ImageLabel")
-        Decal.Size = UDim2.new(0, 55, 0, 55)
-        Decal.Position = UDim2.new(0, -7, 0.1, -10)  -- Position the decal where the dot was
-        Decal.BackgroundTransparency = 1  -- Make sure background is transparent
-        Decal.Image = "rbxassetid://19004888193"  -- Replace with your decal ID
+        Decal.Size = UDim2.new(0, 30, 0, 30)  -- Adjust size as needed
+        Decal.Position = UDim2.new(1, -40, 0.5, -15)  -- Adjust position to fit within the button
+        Decal.BackgroundTransparency = 1  -- Ensure the background is transparent
+        Decal.Image = "rbxassetid://86728155667911"  -- Replace with your decal ID
+        Decal.ImageColor3 = Color3.fromRGB(90, 100, 150)  -- Set the image color if needed
+        Decal.AnchorPoint = Vector2.new(1, 0.5)  -- Anchor to the right and center vertically
         Decal.Parent = DropdownButton
+
 
         local DropdownList = Instance.new("Frame")
         DropdownList.Name = dropdownName .. "List"
