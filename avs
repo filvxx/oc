@@ -1,5 +1,3 @@
---is
-
 local Library = {}
 
 function Library.CreateLib(title)
@@ -205,7 +203,7 @@ local function createDropdown(tabName, dropdownName, options, callback)
         DropdownButton.Position = getNextPosition(tabContent)
         DropdownButton.Size = UDim2.new(1, -20, 0, 40)
         DropdownButton.Font = Enum.Font.SourceSans
-        DropdownButton.Text = dropdownName
+        DropdownButton.Text = dropdownName  -- Keep the original dropdown name
         DropdownButton.TextColor3 = Color3.fromRGB(255, 255, 255)
         DropdownButton.TextSize = 18
         DropdownButton.BorderSizePixel = 0
@@ -216,9 +214,9 @@ local function createDropdown(tabName, dropdownName, options, callback)
 
         local DropdownList = Instance.new("Frame")
         DropdownList.Name = dropdownName .. "List"
-        DropdownList.Parent = tabContent
+        DropdownList.Parent = DropdownButton
         DropdownList.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
-        DropdownList.Position = UDim2.new(0, DropdownButton.Position.X.Offset, 0, DropdownButton.Position.Y.Offset + DropdownButton.Size.Y.Offset)
+        DropdownList.Position = UDim2.new(0, 0, 1, 0)
         DropdownList.Size = UDim2.new(1, 0, 0, 0)
         DropdownList.ClipsDescendants = true
         DropdownList.Visible = false
@@ -256,7 +254,12 @@ local function createDropdown(tabName, dropdownName, options, callback)
 
                 DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true, function()
                     DropdownList.Visible = false
-                    -- No need to move other elements, since they are not affected
+                    -- Animate the elements below the dropdown to move back up
+                    for _, v in ipairs(tabContent:GetChildren()) do
+                        if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
+                            v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset - #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                        end
+                    end
                 end)
                 callback(optionName)
             end)
@@ -268,15 +271,24 @@ local function createDropdown(tabName, dropdownName, options, callback)
 
         DropdownButton.MouseButton1Click:Connect(function()
             if DropdownList.Visible then
-                -- Collapse the dropdown
+                -- Collapse the dropdown and move the elements back up
                 DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true, function()
                     DropdownList.Visible = false
+                    for _, v in ipairs(tabContent:GetChildren()) do
+                        if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
+                            v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset - #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                        end
+                    end
                 end)
             else
-                -- Expand the dropdown
+                -- Expand the dropdown and move the elements below it down
                 DropdownList.Visible = true
-                local dropdownHeight = #options * 30
-                DropdownList:TweenSize(UDim2.new(1, 0, 0, dropdownHeight), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                DropdownList:TweenSize(UDim2.new(1, 0, 0, #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                for _, v in ipairs(tabContent:GetChildren()) do
+                    if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
+                        v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset + #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                    end
+                end
             end
         end)
     else
