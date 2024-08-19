@@ -241,10 +241,9 @@ local function createDropdown(tabName, dropdownName, options, callback)
         DropdownListCorner.CornerRadius = UDim.new(0, 12)
         DropdownListCorner.Parent = DropdownList
 
-            -- Add UIPadding to align text to the left but not too close to the edge
             local padding = Instance.new("UIPadding")
-            padding.Parent = Button
-            padding.PaddingLeft = UDim.new(0, -150) -- Adjust this value as needed
+            padding.Parent = DropdownButton  -- Correct reference
+            padding.PaddingLeft = UDim.new(0, -150)  -- Adjust as needed
 
 
         local selectedOption
