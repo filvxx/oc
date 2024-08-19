@@ -159,8 +159,8 @@ local function createButton(tabName, buttonName, callback)
 
         -- Create the ImageLabel to act as the decal
         local Decal = Instance.new("ImageLabel")
-        Decal.Size = UDim2.new(0, 20, 0, 20)
-        Decal.Position = UDim2.new(0, 10, 0.5, -10)  -- Position the decal where the dot was
+        Decal.Size = UDim2.new(0, 30, 0, 30)
+        Decal.Position = UDim2.new(0, 2, 0.4, -10)  -- Position the decal where the dot was
         Decal.BackgroundTransparency = 1  -- Make sure background is transparent
         Decal.Image = "rbxassetid://19004812083"  -- Replace with your decal ID
         Decal.Parent = Button
@@ -233,6 +233,14 @@ local function createDropdown(tabName, dropdownName, options, callback)
         local DropdownButtonCorner = Instance.new("UICorner")
         DropdownButtonCorner.CornerRadius = UDim.new(0, 12)
         DropdownButtonCorner.Parent = DropdownButton
+
+        -- Create the ImageLabel to act as the decal
+        local Decal = Instance.new("ImageLabel")
+        Decal.Size = UDim2.new(0, 30, 0, 30)
+        Decal.Position = UDim2.new(0, 2, 0.4, -10)  -- Position the decal where the dot was
+        Decal.BackgroundTransparency = 1  -- Make sure background is transparent
+        Decal.Image = "rbxassetid://19004936023"  -- Replace with your decal ID
+        Decal.Parent = DropdownButton
 
         local DropdownList = Instance.new("Frame")
         DropdownList.Name = dropdownName .. "List"
