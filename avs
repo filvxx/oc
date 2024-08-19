@@ -163,37 +163,47 @@ function Library.CreateLib(title)
         end
     end
 
-    local function createToggle(tabName, toggleName, callback)
-        local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
-        if tabContent then
-            local Toggle = Instance.new("TextButton")
-            Toggle.Name = toggleName .. "Toggle"
-            Toggle.Parent = tabContent
-            Toggle.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-            Toggle.Position = getNextPosition(tabContent)
-            Toggle.Size = UDim2.new(1, -20, 0, 40)
-            Toggle.Font = Enum.Font.SourceSans
-            Toggle.Text = toggleName
-            Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
-            Toggle.TextSize = 18
-            Toggle.BorderSizePixel = 0
+ local function createToggle(tabName, toggleName, callback)
+    local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
+    if tabContent then
+        local Toggle = Instance.new("TextButton")
+        Toggle.Name = toggleName .. "Toggle"
+        Toggle.Parent = tabContent
+        Toggle.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
+        Toggle.Position = getNextPosition(tabContent)
+        Toggle.Size = UDim2.new(1, -20, 0, 40)
+        Toggle.Font = Enum.Font.SourceSans
+        Toggle.Text = toggleName
+        Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Toggle.TextSize = 18
+        Toggle.BorderSizePixel = 0
 
+        local ToggleCorner = Instance.new("UICorner")
+        ToggleCorner.CornerRadius = UDim.new(0, 12)
+        ToggleCorner.Parent = Toggle
 
-            local ToggleCorner = Instance.new("UICorner")
-            ToggleCorner.CornerRadius = UDim.new(0, 12)
-            ToggleCorner.Parent = Toggle
+        -- Create a dot frame
+        local Dot = Instance.new("Frame")
+        Dot.Size = UDim2.new(0, 20, 0, 20)
+        Dot.Position = UDim2.new(1, -30, 0.5, -10)
+        Dot.BackgroundColor3 = Color3.fromRGB(255, 0, 0)  -- Initial color (Red)
+        Dot.Parent = Toggle
 
-            local isToggled = false
-            Toggle.MouseButton1Click:Connect(function()
-                isToggled = not isToggled
-                Toggle.BackgroundColor3 = isToggled and Color3.fromRGB(90, 180, 90) or Color3.fromRGB(70, 75, 105)
-                Toggle.Text = toggleName .. (isToggled and " (Enabled)" or "")
-                callback(isToggled)
-            end)
-        else
-            warn("Tab '" .. tabName .. "' not found.")
-        end
+        local DotCorner = Instance.new("UICorner")
+        DotCorner.CornerRadius = UDim.new(1, 0)  -- Fully rounded corners to make it a dot
+        DotCorner.Parent = Dot
+
+        local isToggled = false
+        Toggle.MouseButton1Click:Connect(function()
+            isToggled = not isToggled
+            Dot.BackgroundColor3 = isToggled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)  -- Green if toggled, Red if not
+            callback(isToggled)
+        end)
+    else
+        warn("Tab '" .. tabName .. "' not found.")
     end
+end
+
 
 local function createDropdown(tabName, dropdownName, options, callback)
     local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
