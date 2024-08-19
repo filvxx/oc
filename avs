@@ -1,5 +1,11 @@
 local Library = {}
 
+-- Image IDs (replace these with actual image asset IDs)
+local buttonImageId = "rbxassetid://19004812116"  -- Replace with your button image ID
+local dropdownImageId = "rbxassetid://19004936041"  -- Replace with your dropdown image ID
+local toggleOnImageId = "rbxassetid://19004892360"  -- Replace with your green toggle image ID
+local toggleOffImageId = "rbxassetid://19004898108"  -- Replace with your red toggle image ID
+
 function Library.CreateLib(title)
     local ScreenGui = Instance.new("ScreenGui")
     ScreenGui.Name = "ExampleHub"
@@ -137,6 +143,16 @@ function Library.CreateLib(title)
         return UDim2.new(0, 10, 0, yPos)
     end
 
+    -- Function to add an image next to the button
+    local function addImage(parent, imageId)
+        local Image = Instance.new("ImageLabel")
+        Image.Parent = parent
+        Image.Size = UDim2.new(0, 30, 0, 30)
+        Image.Position = UDim2.new(0, -35, 0.5, -15)  -- Position it to the left of the element
+        Image.Image = imageId
+        Image.BackgroundTransparency = 1
+    end
+
     local function createButton(tabName, buttonName, callback)
         local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
         if tabContent then
@@ -155,6 +171,9 @@ function Library.CreateLib(title)
             local ButtonCorner = Instance.new("UICorner")
             ButtonCorner.CornerRadius = UDim.new(0, 12)
             ButtonCorner.Parent = Button
+
+            -- Add image to the button
+            addImage(Button, buttonImageId)
 
             Button.MouseButton1Click:Connect(callback)
         else
@@ -181,126 +200,96 @@ function Library.CreateLib(title)
             ToggleCorner.CornerRadius = UDim.new(0, 12)
             ToggleCorner.Parent = Toggle
 
-            local isToggled = false
+            -- Create the image that represents the toggle state
+            local ToggleImage = Instance.new("ImageLabel")
+            ToggleImage.Parent = Toggle
+            ToggleImage.Size = UDim2.new(0, 20, 0, 20)
+            ToggleImage.Position = UDim2.new(1, -30, 0.5, -10) -- Adjust position to the right
+            ToggleImage.Image = toggleOffImageId -- Default to off
+            ToggleImage.BackgroundTransparency = 1
+
+            local isOn = false
             Toggle.MouseButton1Click:Connect(function()
-                isToggled = not isToggled
-                Toggle.BackgroundColor3 = isToggled and Color3.fromRGB(90, 180, 90) or Color3.fromRGB(70, 75, 105)
-                Toggle.Text = toggleName .. (isToggled and " (Enabled)" or "")
-                callback(isToggled)
+                isOn = not isOn
+                ToggleImage.Image = isOn and toggleOnImageId or toggleOffImageId
+                callback(isOn)
             end)
         else
             warn("Tab '" .. tabName .. "' not found.")
         end
     end
 
-local function createDropdown(tabName, dropdownName, options, callback)
-    local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
-    if tabContent then
-        local DropdownButton = Instance.new("TextButton")
-        DropdownButton.Name = dropdownName .. "Button"
-        DropdownButton.Parent = tabContent
-        DropdownButton.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-        DropdownButton.Position = getNextPosition(tabContent)
-        DropdownButton.Size = UDim2.new(1, -20, 0, 40)
-        DropdownButton.Font = Enum.Font.SourceSans
-        DropdownButton.Text = dropdownName  -- Keep the original dropdown name
-        DropdownButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-        DropdownButton.TextSize = 18
-        DropdownButton.BorderSizePixel = 0
+    local function createDropdown(tabName, dropdownName, options, callback)
+        local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
+        if tabContent then
+            local Dropdown = Instance.new("TextButton")
+            Dropdown.Name = dropdownName .. "Dropdown"
+            Dropdown.Parent = tabContent
+            Dropdown.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
+            Dropdown.Position = getNextPosition(tabContent)
+            Dropdown.Size = UDim2.new(1, -20, 0, 40)
+            Dropdown.Font = Enum.Font.SourceSans
+            Dropdown.Text = dropdownName
+            Dropdown.TextColor3 = Color3.fromRGB(255, 255, 255)
+            Dropdown.TextSize = 18
+            Dropdown.BorderSizePixel = 0
 
-        local DropdownButtonCorner = Instance.new("UICorner")
-        DropdownButtonCorner.CornerRadius = UDim.new(0, 12)
-        DropdownButtonCorner.Parent = DropdownButton
+            local DropdownCorner = Instance.new("UICorner")
+            DropdownCorner.CornerRadius = UDim.new(0, 12)
+            DropdownCorner.Parent = Dropdown
 
-        local DropdownList = Instance.new("Frame")
-        DropdownList.Name = dropdownName .. "List"
-        DropdownList.Parent = DropdownButton
-        DropdownList.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
-        DropdownList.Position = UDim2.new(0, 0, 1, 0)
-        DropdownList.Size = UDim2.new(1, 0, 0, 0)
-        DropdownList.ClipsDescendants = true
-        DropdownList.Visible = false
-        DropdownList.BorderSizePixel = 0
+            -- Add image to the dropdown
+            addImage(Dropdown, dropdownImageId)
 
-        local DropdownListCorner = Instance.new("UICorner")
-        DropdownListCorner.CornerRadius = UDim.new(0, 12)
-        DropdownListCorner.Parent = DropdownList
+            local DropdownFrame = Instance.new("Frame")
+            DropdownFrame.Name = dropdownName .. "DropdownFrame"
+            DropdownFrame.Parent = Dropdown
+            DropdownFrame.BackgroundColor3 = Color3.fromRGB(60, 65, 90)
+            DropdownFrame.Position = UDim2.new(0, 0, 1, 0)
+            DropdownFrame.Size = UDim2.new(1, 0, 0, #options * 40)
+            DropdownFrame.Visible = false
+            DropdownFrame.BorderSizePixel = 0
 
-        local selectedOption
+            local DropdownFrameCorner = Instance.new("UICorner")
+            DropdownFrameCorner.CornerRadius = UDim.new(0, 12)
+            DropdownFrameCorner.Parent = DropdownFrame
 
-        local function createOption(optionName, index)
-            local OptionButton = Instance.new("TextButton")
-            OptionButton.Name = optionName .. "Option"
-            OptionButton.Parent = DropdownList
-            OptionButton.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-            OptionButton.Size = UDim2.new(1, 0, 0, 30)
-            OptionButton.Position = UDim2.new(0, 0, 0, (index - 1) * 30)
-            OptionButton.Font = Enum.Font.SourceSans
-            OptionButton.Text = optionName
-            OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-            OptionButton.TextSize = 18
-            OptionButton.BorderSizePixel = 0
+            for i, option in ipairs(options) do
+                local OptionButton = Instance.new("TextButton")
+                OptionButton.Name = option .. "Option"
+                OptionButton.Parent = DropdownFrame
+                OptionButton.BackgroundColor3 = Color3.fromRGB(60, 65, 90)
+                OptionButton.Size = UDim2.new(1, 0, 0, 40)
+                OptionButton.Font = Enum.Font.SourceSans
+                OptionButton.Text = option
+                OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+                OptionButton.TextSize = 18
+                OptionButton.BorderSizePixel = 0
 
-            local OptionButtonCorner = Instance.new("UICorner")
-            OptionButtonCorner.CornerRadius = UDim.new(0, 12)
-            OptionButtonCorner.Parent = OptionButton
+                local OptionButtonCorner = Instance.new("UICorner")
+                OptionButtonCorner.CornerRadius = UDim.new(0, 12)
+                OptionButtonCorner.Parent = OptionButton
 
-            OptionButton.MouseButton1Click:Connect(function()
-                if selectedOption then
-                    selectedOption.BackgroundColor3 = Color3.fromRGB(70, 75, 105)  -- Reset the previous selected option's color
-                end
-                OptionButton.BackgroundColor3 = Color3.fromRGB(90, 180, 90)  -- Highlight the selected option
-                selectedOption = OptionButton
-
-                DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true, function()
-                    DropdownList.Visible = false
-                    -- Animate the elements below the dropdown to move back up
-                    for _, v in ipairs(tabContent:GetChildren()) do
-                        if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
-                            v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset - #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
-                        end
-                    end
+                OptionButton.MouseButton1Click:Connect(function()
+                    Dropdown.Text = dropdownName .. ": " .. option
+                    DropdownFrame.Visible = false
+                    callback(option)
                 end)
-                callback(optionName)
-            end)
-        end
-
-        for index, option in ipairs(options) do
-            createOption(option, index)
-        end
-
-        DropdownButton.MouseButton1Click:Connect(function()
-            if DropdownList.Visible then
-                -- Collapse the dropdown and move the elements back up
-                DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true, function()
-                    DropdownList.Visible = false
-                    for _, v in ipairs(tabContent:GetChildren()) do
-                        if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
-                            v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset - #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
-                        end
-                    end
-                end)
-            else
-                -- Expand the dropdown and move the elements below it down
-                DropdownList.Visible = true
-                DropdownList:TweenSize(UDim2.new(1, 0, 0, #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
-                for _, v in ipairs(tabContent:GetChildren()) do
-                    if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
-                        v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset + #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
-                    end
-                end
             end
-        end)
-    else
-        warn("Tab '" .. tabName .. "' not found.")
+
+            Dropdown.MouseButton1Click:Connect(function()
+                DropdownFrame.Visible = not DropdownFrame.Visible
+            end)
+        else
+            warn("Tab '" .. tabName .. "' not found.")
+        end
     end
-end
 
     return {
-        NewTab = createTab,
-        NewButton = createButton,
-        NewToggle = createToggle,
-        NewDropdown = createDropdown
+        createTab = createTab,
+        createButton = createButton,
+        createToggle = createToggle,
+        createDropdown = createDropdown,
     }
 end
 
