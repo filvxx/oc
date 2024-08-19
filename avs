@@ -90,12 +90,9 @@ function Library.CreateLib(title)
         TabButton.Text = name
         TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
         TabButton.TextSize = 18
+        TabButton.TextStrokeTransparency = 0.5
+        TabButton.TextAlign = Enum.TextXAlignment.Center
         TabButton.BorderSizePixel = 0
-
-        -- Add UIPadding to align text to the left but not too close to the edge
-        local padding = Instance.new("UIPadding")
-        padding.Parent = TabButton
-        padding.PaddingLeft = UDim.new(0, 20) -- Adjust this value as needed
 
         local TabButtonCorner = Instance.new("UICorner")
         TabButtonCorner.CornerRadius = UDim.new(0, 12)
@@ -157,10 +154,14 @@ function Library.CreateLib(title)
             Button.TextSize = 18
             Button.BorderSizePixel = 0
 
-            -- Add UIPadding to align text to the left but not too close to the edge
+            -- Add UIPadding based on content
             local padding = Instance.new("UIPadding")
             padding.Parent = Button
-            padding.PaddingLeft = UDim.new(0, 20) -- Adjust this value as needed
+            if tabName == "MainContent" then
+                padding.PaddingLeft = UDim.new(0, -150)  -- Adjusted padding for MainContent
+            else
+                padding.PaddingLeft = UDim.new(0, 0)   -- No padding for other content
+            end
 
             local ButtonCorner = Instance.new("UICorner")
             ButtonCorner.CornerRadius = UDim.new(0, 12)
@@ -187,10 +188,14 @@ function Library.CreateLib(title)
             Toggle.TextSize = 18
             Toggle.BorderSizePixel = 0
 
-            -- Add UIPadding to align text to the left but not too close to the edge
+            -- Add UIPadding based on content
             local padding = Instance.new("UIPadding")
             padding.Parent = Toggle
-            padding.PaddingLeft = UDim.new(0, 20) -- Adjust this value as needed
+            if tabName == "MainContent" then
+                padding.PaddingLeft = UDim.new(0, -150)  -- Adjusted padding for MainContent
+            else
+                padding.PaddingLeft = UDim.new(0, 0)   -- No padding for other content
+            end
 
             local ToggleCorner = Instance.new("UICorner")
             ToggleCorner.CornerRadius = UDim.new(0, 12)
@@ -223,10 +228,14 @@ function Library.CreateLib(title)
             DropdownButton.TextSize = 18
             DropdownButton.BorderSizePixel = 0
 
-            -- Add UIPadding to align text to the left but not too close to the edge
+            -- Add UIPadding based on content
             local padding = Instance.new("UIPadding")
             padding.Parent = DropdownButton
-            padding.PaddingLeft = UDim.new(0, 20) -- Adjust this value as needed
+            if tabName == "MainContent" then
+                padding.PaddingLeft = UDim.new(0, -150)  -- Adjusted padding for MainContent
+            else
+                padding.PaddingLeft = UDim.new(0, 0)   -- No padding for other content
+            end
 
             local DropdownButtonCorner = Instance.new("UICorner")
             DropdownButtonCorner.CornerRadius = UDim.new(0, 12)
