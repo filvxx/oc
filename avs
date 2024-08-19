@@ -1,4 +1,4 @@
---baz
+
 local Library = {}
 
 function Library.CreateLib(title)
@@ -38,6 +38,35 @@ function Library.CreateLib(title)
         ScreenGui:Destroy()
     end)
 
+local RollButton = Instance.new("TextButton")
+RollButton.Name = "RollButton"
+RollButton.Parent = MainFrame
+RollButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+RollButton.BackgroundTransparency = 1
+RollButton.Position = UDim2.new(1, -50, 0, 5)
+RollButton.Size = UDim2.new(0, 20, 0, 20)
+RollButton.Font = Enum.Font.SourceSansBold
+RollButton.Text = "-"
+RollButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+RollButton.TextSize = 18
+RollButton.BorderSizePixel = 0
+RollButton.ZIndex = 2
+
+local isCollapsed = false
+
+local function toggleFrame()
+    if isCollapsed then
+        MainFrame:TweenSize(UDim2.new(0, 500, 0, 350), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+        RollButton.Text = "-"
+    else
+        MainFrame:TweenSize(UDim2.new(0, 500, 0, 40), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+        RollButton.Text = "+"
+    end
+    isCollapsed = not isCollapsed
+end
+
+RollButton.MouseButton1Click:Connect(toggleFrame)
+
     local TitleBar = Instance.new("TextLabel")
     TitleBar.Name = "TitleBar"
     TitleBar.Parent = MainFrame
@@ -53,6 +82,13 @@ function Library.CreateLib(title)
     local TitleBarCorner = Instance.new("UICorner")
     TitleBarCorner.CornerRadius = UDim.new(0, 12)
     TitleBarCorner.Parent = TitleBar
+
+    local padding = Instance.new("UIPadding")
+    padding.PaddingLeft = UDim.new(0, -250)   
+    padding.PaddingRight = UDim.new(0, 0)
+    padding.PaddingTop = UDim.new(0, 0)
+    padding.PaddingBottom = UDim.new(0, 0)
+    padding.Parent = TitleBar
 
     local TabsFrame = Instance.new("Frame")
     TabsFrame.Name = "TabsFrame"
