@@ -1,4 +1,4 @@
---ov
+--o
 local Library = {}
 
 function Library.CreateLib(title)
@@ -219,10 +219,17 @@ local function createDropdown(tabName, dropdownName, options, callback)
         DropdownButton.Position = getNextPosition(tabContent)
         DropdownButton.Size = UDim2.new(1, -20, 0, 40)
         DropdownButton.Font = Enum.Font.SourceSans
-        DropdownButton.Text = dropdownName  -- Keep the original dropdown name
         DropdownButton.TextColor3 = Color3.fromRGB(255, 255, 255)
         DropdownButton.TextSize = 18
         DropdownButton.BorderSizePixel = 0
+
+        -- Apply UIPadding to adjust the text position
+        local padding = Instance.new("UIPadding")
+        padding.Parent = DropdownButton
+        padding.PaddingLeft = UDim.new(0, -150)  -- Move the text 150 pixels to the left
+        padding.PaddingTop = UDim.new(0, 0)  -- No padding at the top, adjust if necessary
+        padding.PaddingBottom = UDim.new(0, 0)  -- No padding at the bottom, adjust if necessary
+        padding.PaddingRight = UDim.new(0, 0)  -- No padding at the right, adjust if necessary
 
         local DropdownButtonCorner = Instance.new("UICorner")
         DropdownButtonCorner.CornerRadius = UDim.new(0, 12)
@@ -241,10 +248,6 @@ local function createDropdown(tabName, dropdownName, options, callback)
         local DropdownListCorner = Instance.new("UICorner")
         DropdownListCorner.CornerRadius = UDim.new(0, 12)
         DropdownListCorner.Parent = DropdownList
-
-        local padding = Instance.new("UIPadding")
-        padding.Parent = DropdownButton  -- Correct reference
-        padding.PaddingLeft = UDim.new(0, -150)  -- Adjust as needed
 
         local selectedOption
 
@@ -277,7 +280,7 @@ local function createDropdown(tabName, dropdownName, options, callback)
                     -- Animate the elements below the dropdown to move back up
                     for _, v in ipairs(tabContent:GetChildren()) do
                         if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
-                            v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset - (#options * 30)), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                            v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset - #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
                         end
                     end
                 end)
@@ -296,7 +299,7 @@ local function createDropdown(tabName, dropdownName, options, callback)
                     DropdownList.Visible = false
                     for _, v in ipairs(tabContent:GetChildren()) do
                         if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
-                            v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset - (#options * 30)), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                            v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset - #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
                         end
                     end
                 end)
@@ -306,7 +309,7 @@ local function createDropdown(tabName, dropdownName, options, callback)
                 DropdownList:TweenSize(UDim2.new(1, 0, 0, #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
                 for _, v in ipairs(tabContent:GetChildren()) do
                     if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
-                        v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset + (#options * 30)), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                        v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset + #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
                     end
                 end
             end
