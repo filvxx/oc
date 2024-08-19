@@ -1,4 +1,4 @@
---oh
+--ohs
 local Library = {}
 
 function Library.CreateLib(title)
@@ -138,30 +138,39 @@ function Library.CreateLib(title)
         return UDim2.new(0, 10, 0, yPos)
     end
 
-    local function createButton(tabName, buttonName, callback)
-        local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
-        if tabContent then
-            local Button = Instance.new("TextButton")
-            Button.Name = buttonName .. "Button"
-            Button.Parent = tabContent
-            Button.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-            Button.Position = getNextPosition(tabContent)
-            Button.Size = UDim2.new(1, -20, 0, 40)
-            Button.Font = Enum.Font.SourceSans
-            Button.Text = buttonName
-            Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-            Button.TextSize = 18
-            Button.BorderSizePixel = 0
+local function createButton(tabName, buttonName, callback)
+    local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
+    if tabContent then
+        local Button = Instance.new("TextButton")
+        Button.Name = buttonName .. "Button"
+        Button.Parent = tabContent
+        Button.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
+        Button.Position = getNextPosition(tabContent)
+        Button.Size = UDim2.new(1, -20, 0, 40)
+        Button.Font = Enum.Font.SourceSans
+        Button.Text = buttonName
+        Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Button.TextSize = 18
+        Button.BorderSizePixel = 0
 
-            local ButtonCorner = Instance.new("UICorner")
-            ButtonCorner.CornerRadius = UDim.new(0, 12)
-            ButtonCorner.Parent = Button
+        local ButtonCorner = Instance.new("UICorner")
+        ButtonCorner.CornerRadius = UDim.new(0, 12)
+        ButtonCorner.Parent = Button
 
-            Button.MouseButton1Click:Connect(callback)
-        else
-            warn("Tab '" .. tabName .. "' not found.")
-        end
+        -- Create the ImageLabel to act as the decal
+        local Decal = Instance.new("ImageLabel")
+        Decal.Size = UDim2.new(0, 20, 0, 20)
+        Decal.Position = UDim2.new(0, 10, 0.5, -10)  -- Position the decal where the dot was
+        Decal.BackgroundTransparency = 1  -- Make sure background is transparent
+        Decal.Image = "rbxassetid://19004812116"  -- Replace with your decal ID
+        Decal.Parent = Button
+
+        Button.MouseButton1Click:Connect(callback)
+    else
+        warn("Tab '" .. tabName .. "' not found.")
     end
+end
+
 
 local function createToggle(tabName, toggleName, callback)
     local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
