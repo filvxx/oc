@@ -1,4 +1,4 @@
---omg
+--woah
 local Library = {}
 
 function Library.CreateLib(title)
@@ -195,7 +195,8 @@ local function createToggle(tabName, toggleName, callback)
         local Dot = Instance.new("Frame")
         Dot.Size = UDim2.new(0, 20, 0, 20)
         Dot.Position = UDim2.new(0, 10, 0.5, -10)  -- Positioned on the left
-        Dot.BackgroundColor3 = Color3.fromRGB(70, 75, 105)  -- Background color (same as button background)
+        Dot.BackgroundColor3 = Color3.fromRGB(90, 100, 150)  -- Border color of the dot
+        Dot.BackgroundTransparency = 0.5  -- Make the border semi-transparent
         Dot.Parent = Toggle
 
         local DotCorner = Instance.new("UICorner")
@@ -204,23 +205,26 @@ local function createToggle(tabName, toggleName, callback)
 
         -- Create an inner frame for the filled state
         local DotInner = Instance.new("Frame")
-        DotInner.Size = UDim2.new(1, -4, 1, -4)  -- Slightly smaller than Dot to show border
+        DotInner.Size = UDim2.new(1, -4, 1, -4)  -- Slightly smaller than Dot to fit within
         DotInner.Position = UDim2.new(0, 2, 0, 2)  -- Centered within Dot
         DotInner.BackgroundColor3 = Color3.fromRGB(90, 100, 150)  -- Fill color when toggled
+        DotInner.BackgroundTransparency = 1  -- Start as fully transparent
         DotInner.Parent = Dot
-        DotInner.Visible = false  -- Initially hidden
+
+        local DotInnerCorner = Instance.new("UICorner")
+        DotInnerCorner.CornerRadius = UDim.new(1, 0)  -- Fully rounded corners to make it a filled dot
+        DotInnerCorner.Parent = DotInner
 
         local isToggled = false
         Toggle.MouseButton1Click:Connect(function()
             isToggled = not isToggled
-            DotInner.Visible = isToggled  -- Show or hide the inner frame based on toggle state
+            DotInner.BackgroundTransparency = isToggled and 0 or 1  -- Show or hide the fill color based on toggle state
             callback(isToggled)
         end)
     else
         warn("Tab '" .. tabName .. "' not found.")
     end
 end
-
 
 
 
