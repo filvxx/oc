@@ -162,7 +162,7 @@ local function createButton(tabName, buttonName, callback)
         Decal.Size = UDim2.new(0, 20, 0, 20)
         Decal.Position = UDim2.new(0, 10, 0.5, -10)  -- Position the decal where the dot was
         Decal.BackgroundTransparency = 1  -- Make sure background is transparent
-        Decal.Image = "rbxassetid://19004812116"  -- Replace with your decal ID
+        Decal.Image = "rbxassetid://19004812083"  -- Replace with your decal ID
         Decal.Parent = Button
 
         Button.MouseButton1Click:Connect(callback)
