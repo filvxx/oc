@@ -1,4 +1,4 @@
---bazinga
+--baz
 local Library = {}
 
 function Library.CreateLib(title)
@@ -160,16 +160,24 @@ local function createButton(tabName, buttonName, callback)
         -- Create the ImageLabel to act as the decal
         local Decal = Instance.new("ImageLabel")
         Decal.Size = UDim2.new(0, 30, 0, 30)
-        Decal.Position = UDim2.new(0, 2, 0.4, -10)  -- Position the decal where the dot was
+        Decal.Position = UDim2.new(0, 2, 0.4, -10)  -- Position the decal where needed
         Decal.BackgroundTransparency = 1  -- Make sure background is transparent
         Decal.Image = "rbxassetid://19004812083"  -- Replace with your decal ID
+        Decal.ImageColor3 = Color3.fromRGB(255, 255, 255)  -- Initial color (white)
         Decal.Parent = Button
 
-        Button.MouseButton1Click:Connect(callback)
+        -- Set the desired color for the image
+        local desiredColor = Color3.fromRGB(90, 100, 150)  -- The color you want to apply
+
+        Button.MouseButton1Click:Connect(function()
+            Decal.ImageColor3 = desiredColor  -- Apply the color
+            callback()
+        end)
     else
         warn("Tab '" .. tabName .. "' not found.")
     end
 end
+
 
 local function createToggle(tabName, toggleName, callback)
     local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
@@ -194,8 +202,8 @@ local function createToggle(tabName, toggleName, callback)
         local Dot = Instance.new("Frame")
         Dot.Size = UDim2.new(0, 20, 0, 20)
         Dot.Position = UDim2.new(0, 10, 0.5, -10)  -- Positioned on the left
-        Dot.BackgroundColor3 = Color3.fromRGB(90, 100, 150)  -- Border color
-        Dot.BorderSizePixel = 0
+        Dot.BackgroundColor3 = Color3.fromRGB(90, 100, 150)  -- Border color of the dot
+        Dot.BackgroundTransparency = 0.5  -- Make the border semi-transparent
         Dot.Parent = Toggle
 
         local DotCorner = Instance.new("UICorner")
@@ -204,11 +212,10 @@ local function createToggle(tabName, toggleName, callback)
 
         -- Create an inner frame for the filled state
         local DotInner = Instance.new("Frame")
-        DotInner.Size = UDim2.new(1, -4, 1, -4)  -- Slightly smaller to fit inside Dot
+        DotInner.Size = UDim2.new(1, -4, 1, -4)  -- Slightly smaller than Dot to fit within
         DotInner.Position = UDim2.new(0, 2, 0, 2)  -- Centered within Dot
         DotInner.BackgroundColor3 = Color3.fromRGB(90, 100, 150)  -- Fill color when toggled
         DotInner.BackgroundTransparency = 1  -- Start as fully transparent
-        DotInner.BorderSizePixel = 0
         DotInner.Parent = Dot
 
         local DotInnerCorner = Instance.new("UICorner")
@@ -218,15 +225,13 @@ local function createToggle(tabName, toggleName, callback)
         local isToggled = false
         Toggle.MouseButton1Click:Connect(function()
             isToggled = not isToggled
-            DotInner.BackgroundTransparency = isToggled and 0 or 1  -- Fully visible or invisible based on toggle state
+            DotInner.BackgroundTransparency = isToggled and 0 or 1  -- Show or hide the fill color based on toggle state
             callback(isToggled)
         end)
     else
         warn("Tab '" .. tabName .. "' not found.")
     end
 end
-
-
 
 
 local function createDropdown(tabName, dropdownName, options, callback)
