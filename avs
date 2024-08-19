@@ -255,9 +255,10 @@ local function createDropdown(tabName, dropdownName, options, callback)
                 DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true, function()
                     DropdownList.Visible = false
                     -- Reposition elements below the dropdown
+                    local moveDistance = DropdownList.Size.Y.Offset
                     for _, v in ipairs(tabContent:GetChildren()) do
                         if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
-                            v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset - (30 * #options)), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                            v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset - moveDistance), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
                         end
                     end
                 end)
@@ -275,9 +276,10 @@ local function createDropdown(tabName, dropdownName, options, callback)
                 -- Collapse the dropdown and move elements back up
                 DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true, function()
                     DropdownList.Visible = false
+                    local moveDistance = dropdownHeight
                     for _, v in ipairs(tabContent:GetChildren()) do
                         if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
-                            v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset - dropdownHeight), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                            v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset - moveDistance), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
                         end
                     end
                 end)
@@ -285,9 +287,10 @@ local function createDropdown(tabName, dropdownName, options, callback)
                 -- Expand the dropdown and move elements below it down
                 DropdownList.Visible = true
                 DropdownList:TweenSize(UDim2.new(1, 0, 0, dropdownHeight), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                local moveDistance = dropdownHeight
                 for _, v in ipairs(tabContent:GetChildren()) do
                     if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
-                        v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset + dropdownHeight), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                        v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset + moveDistance), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
                     end
                 end
             end
@@ -296,8 +299,7 @@ local function createDropdown(tabName, dropdownName, options, callback)
         warn("Tab '" .. tabName .. "' not found.")
     end
 end
-
-
+--lol
     return {
         NewTab = createTab,
         NewButton = createButton,
