@@ -93,11 +93,6 @@ function Library.CreateLib(title)
         TabButton.TextSize = 18
         TabButton.BorderSizePixel = 0
 
-        -- Add UIPadding to align text to the left but not too close to the edge
-        local padding = Instance.new("UIPadding")
-        padding.Parent = TabButton
-        padding.PaddingLeft = UDim.new(0, 0) -- Adjust this value as needed
-
         local TabButtonCorner = Instance.new("UICorner")
         TabButtonCorner.CornerRadius = UDim.new(0, 12)
         TabButtonCorner.Parent = TabButton
@@ -158,11 +153,6 @@ function Library.CreateLib(title)
             Button.TextSize = 18
             Button.BorderSizePixel = 0
 
-            -- Add UIPadding to align text to the left but not too close to the edge
-            local padding = Instance.new("UIPadding")
-            padding.Parent = Button
-            padding.PaddingLeft = UDim.new(0, -150) -- Adjust this value as needed
-
             local ButtonCorner = Instance.new("UICorner")
             ButtonCorner.CornerRadius = UDim.new(0, 12)
             ButtonCorner.Parent = Button
@@ -188,10 +178,6 @@ function Library.CreateLib(title)
             Toggle.TextSize = 18
             Toggle.BorderSizePixel = 0
 
-            -- Add UIPadding to align text to the left but not too close to the edge
-            local padding = Instance.new("UIPadding")
-            padding.Parent = Toggle
-            padding.PaddingLeft = UDim.new(0, -150) -- Adjust this value as needed
 
             local ToggleCorner = Instance.new("UICorner")
             ToggleCorner.CornerRadius = UDim.new(0, 12)
@@ -219,17 +205,10 @@ local function createDropdown(tabName, dropdownName, options, callback)
         DropdownButton.Position = getNextPosition(tabContent)
         DropdownButton.Size = UDim2.new(1, -20, 0, 40)
         DropdownButton.Font = Enum.Font.SourceSans
+        DropdownButton.Text = dropdownName  -- Keep the original dropdown name
         DropdownButton.TextColor3 = Color3.fromRGB(255, 255, 255)
         DropdownButton.TextSize = 18
         DropdownButton.BorderSizePixel = 0
-
-        -- Apply UIPadding to adjust the text position
-        local padding = Instance.new("UIPadding")
-        padding.Parent = DropdownButton
-        padding.PaddingLeft = UDim.new(0, -150)  -- Move the text 150 pixels to the left
-        padding.PaddingTop = UDim.new(0, 0)  -- No padding at the top, adjust if necessary
-        padding.PaddingBottom = UDim.new(0, 0)  -- No padding at the bottom, adjust if necessary
-        padding.PaddingRight = UDim.new(0, 0)  -- No padding at the right, adjust if necessary
 
         local DropdownButtonCorner = Instance.new("UICorner")
         DropdownButtonCorner.CornerRadius = UDim.new(0, 12)
@@ -318,6 +297,7 @@ local function createDropdown(tabName, dropdownName, options, callback)
         warn("Tab '" .. tabName .. "' not found.")
     end
 end
+
 
 
     return {
