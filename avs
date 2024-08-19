@@ -1,4 +1,4 @@
---o
+--oh
 local Library = {}
 
 function Library.CreateLib(title)
@@ -163,7 +163,7 @@ function Library.CreateLib(title)
         end
     end
 
- local function createToggle(tabName, toggleName, callback)
+local function createToggle(tabName, toggleName, callback)
     local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
     if tabContent then
         local Toggle = Instance.new("TextButton")
@@ -182,10 +182,10 @@ function Library.CreateLib(title)
         ToggleCorner.CornerRadius = UDim.new(0, 12)
         ToggleCorner.Parent = Toggle
 
-        -- Create a dot frame
+        -- Create a dot frame on the left side
         local Dot = Instance.new("Frame")
         Dot.Size = UDim2.new(0, 20, 0, 20)
-        Dot.Position = UDim2.new(1, -30, 0.5, -10)
+        Dot.Position = UDim2.new(0, 10, 0.5, -10)  -- Positioned on the left
         Dot.BackgroundColor3 = Color3.fromRGB(255, 0, 0)  -- Initial color (Red)
         Dot.Parent = Toggle
 
@@ -203,6 +203,7 @@ function Library.CreateLib(title)
         warn("Tab '" .. tabName .. "' not found.")
     end
 end
+
 
 
 local function createDropdown(tabName, dropdownName, options, callback)
