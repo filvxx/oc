@@ -226,7 +226,7 @@ function Library.CreateLib(title)
             -- Add UIPadding to align text to the left but not too close to the edge
             local padding = Instance.new("UIPadding")
             padding.Parent = DropdownButton
-            padding.PaddingLeft = UDim.new(0, 20) -- Adjust this value as needed
+            padding.PaddingLeft = UDim.new(0, -150) -- Adjust this value as needed
 
             local DropdownButtonCorner = Instance.new("UICorner")
             DropdownButtonCorner.CornerRadius = UDim.new(0, 12)
