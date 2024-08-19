@@ -1,4 +1,4 @@
---fix
+--fixss
 
 local Library = {}
 
@@ -228,6 +228,17 @@ local function createDropdown(tabName, dropdownName, options, callback)
         DropdownListCorner.CornerRadius = UDim.new(0, 12)
         DropdownListCorner.Parent = DropdownList
 
+        -- Function to split the dropdownName and get the second word
+        local function getSecondWord(name)
+            local words = {}
+            for word in name:gmatch("%S+") do
+                table.insert(words, word)
+            end
+            return words[2] or "Option" -- Return the second word or "Option" if there's no second word
+        end
+
+        local secondWord = getSecondWord(dropdownName)
+
         local function createOption(optionName, index)
             local OptionButton = Instance.new("TextButton")
             OptionButton.Name = optionName .. "Option"
@@ -246,7 +257,7 @@ local function createDropdown(tabName, dropdownName, options, callback)
             OptionButtonCorner.Parent = OptionButton
 
             OptionButton.MouseButton1Click:Connect(function()
-                DropdownButton.Text = "Selected Option: " .. optionName
+                DropdownButton.Text = "Selected " .. secondWord .. ": " .. optionName
                 DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true, function()
                     DropdownList.Visible = false
                     -- Animate the elements below the dropdown to move back up
