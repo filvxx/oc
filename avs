@@ -1,4 +1,4 @@
---fixed?
+--fix
 
 local Library = {}
 
@@ -249,6 +249,12 @@ local function createDropdown(tabName, dropdownName, options, callback)
                 DropdownButton.Text = "Selected Option: " .. optionName
                 DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true, function()
                     DropdownList.Visible = false
+                    -- Animate the elements below the dropdown to move back up
+                    for i, v in ipairs(tabContent:GetChildren()) do
+                        if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
+                            v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset - #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                        end
+                    end
                 end)
                 callback(optionName)
             end)
@@ -260,12 +266,24 @@ local function createDropdown(tabName, dropdownName, options, callback)
 
         DropdownButton.MouseButton1Click:Connect(function()
             if DropdownList.Visible then
+                -- Collapse the dropdown and move the elements back up
                 DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true, function()
                     DropdownList.Visible = false
+                    for i, v in ipairs(tabContent:GetChildren()) do
+                        if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
+                            v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset - #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                        end
+                    end
                 end)
             else
+                -- Expand the dropdown and move the elements below it down
                 DropdownList.Visible = true
                 DropdownList:TweenSize(UDim2.new(1, 0, 0, #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                for i, v in ipairs(tabContent:GetChildren()) do
+                    if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
+                        v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset + #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                    end
+                end
             end
         end)
     else
