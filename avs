@@ -218,14 +218,10 @@ local function createDropdown(tabName, dropdownName, options, callback)
         DropdownButton.Position = getNextPosition(tabContent)
         DropdownButton.Size = UDim2.new(1, -20, 0, 40)
         DropdownButton.Font = Enum.Font.SourceSans
-        DropdownButton.Text = dropdownName
+        DropdownButton.Text = dropdownName  -- Keep the original dropdown name
         DropdownButton.TextColor3 = Color3.fromRGB(255, 255, 255)
         DropdownButton.TextSize = 18
         DropdownButton.BorderSizePixel = 0
-
-        local padding = Instance.new("UIPadding")
-        padding.Parent = DropdownButton
-        padding.PaddingLeft = UDim.new(0, 10)  -- Adjust this value as needed
 
         local DropdownButtonCorner = Instance.new("UICorner")
         DropdownButtonCorner.CornerRadius = UDim.new(0, 12)
@@ -233,9 +229,9 @@ local function createDropdown(tabName, dropdownName, options, callback)
 
         local DropdownList = Instance.new("Frame")
         DropdownList.Name = dropdownName .. "List"
-        DropdownList.Parent = tabContent
+        DropdownList.Parent = DropdownButton
         DropdownList.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
-        DropdownList.Position = UDim2.new(0, 0, 0, DropdownButton.Position.Y.Offset + DropdownButton.Size.Y.Offset + 5)
+        DropdownList.Position = UDim2.new(0, 0, 1, 0)
         DropdownList.Size = UDim2.new(1, 0, 0, 0)
         DropdownList.ClipsDescendants = true
         DropdownList.Visible = false
@@ -244,6 +240,12 @@ local function createDropdown(tabName, dropdownName, options, callback)
         local DropdownListCorner = Instance.new("UICorner")
         DropdownListCorner.CornerRadius = UDim.new(0, 12)
         DropdownListCorner.Parent = DropdownList
+
+            -- Add UIPadding to align text to the left but not too close to the edge
+            local padding = Instance.new("UIPadding")
+            padding.Parent = Button
+            padding.PaddingLeft = UDim.new(0, -150) -- Adjust this value as needed
+
 
         local selectedOption
 
@@ -259,10 +261,6 @@ local function createDropdown(tabName, dropdownName, options, callback)
             OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
             OptionButton.TextSize = 18
             OptionButton.BorderSizePixel = 0
-
-            local OptionButtonPadding = Instance.new("UIPadding")
-            OptionButtonPadding.Parent = OptionButton
-            OptionButtonPadding.PaddingLeft = UDim.new(0, 10)  -- Adjust this value as needed
 
             local OptionButtonCorner = Instance.new("UICorner")
             OptionButtonCorner.CornerRadius = UDim.new(0, 12)
@@ -288,14 +286,9 @@ local function createDropdown(tabName, dropdownName, options, callback)
             end)
         end
 
-        -- Create options
         for index, option in ipairs(options) do
             createOption(option, index)
         end
-
-        -- Adjust dropdown size and position
-        local dropdownHeight = #options * 30
-        DropdownList.Size = UDim2.new(1, 0, 0, dropdownHeight)
 
         DropdownButton.MouseButton1Click:Connect(function()
             if DropdownList.Visible then
@@ -304,17 +297,17 @@ local function createDropdown(tabName, dropdownName, options, callback)
                     DropdownList.Visible = false
                     for _, v in ipairs(tabContent:GetChildren()) do
                         if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
-                            v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset - dropdownHeight), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                            v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset - #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
                         end
                     end
                 end)
             else
                 -- Expand the dropdown and move the elements below it down
                 DropdownList.Visible = true
-                DropdownList:TweenSize(UDim2.new(1, 0, 0, dropdownHeight), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                DropdownList:TweenSize(UDim2.new(1, 0, 0, #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
                 for _, v in ipairs(tabContent:GetChildren()) do
                     if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
-                        v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset + dropdownHeight), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+                        v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset + #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
                     end
                 end
             end
