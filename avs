@@ -1,5 +1,3 @@
---fixis
-
 local Library = {}
 
 function Library.CreateLib(title)
@@ -132,49 +130,61 @@ function Library.CreateLib(title)
     local function getNextPosition(tabContent)
         local yPos = 5
         for _, child in ipairs(tabContent:GetChildren()) do
-            if child:IsA("TextButton") then
-                yPos = yPos + child.Size.Y.Offset + 5
+            if child:IsA("GuiObject") and child.Position.Y.Offset > yPos then
+                yPos = child.Position.Y.Offset + child.Size.Y.Offset + 5
             end
         end
         return UDim2.new(0, 10, 0, yPos)
     end
 
-local function createButton(tabContent, buttonName, callback)
-    local Button = Instance.new("TextButton")
-    Button.Name = buttonName .. "Button"
-    Button.Parent = tabContent
-    Button.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-    Button.Size = UDim2.new(1, -20, 0, 40)
-    Button.Position = getNextPosition(tabContent)
-    Button.Font = Enum.Font.SourceSans
-    Button.Text = ""
-    Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Button.TextSize = 18
-    Button.BorderSizePixel = 0
+    local function createButton(tabContent, buttonName, callback)
+        local Button = Instance.new("TextButton")
+        Button.Name = buttonName .. "Button"
+        Button.Parent = tabContent
+        Button.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
+        Button.Size = UDim2.new(1, -20, 0, 40)
+        Button.Position = getNextPosition(tabContent)
+        Button.Font = Enum.Font.SourceSans
+        Button.Text = ""
+        Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Button.TextSize = 18
+        Button.BorderSizePixel = 0
 
-    local ButtonIcon = Instance.new("ImageLabel")
-    ButtonIcon.Name = "ButtonIcon"
-    ButtonIcon.Parent = Button
-    ButtonIcon.BackgroundTransparency = 1
-    ButtonIcon.Position = UDim2.new(0, 5, 0.5, -10)
-    ButtonIcon.Size = UDim2.new(0, 20, 0, 20)
-    ButtonIcon.Image = "rbxassetid://19004812116" -- Replace with your button icon asset ID
-    ButtonIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
+        local ButtonIcon = Instance.new("ImageLabel")
+        ButtonIcon.Name = "ButtonIcon"
+        ButtonIcon.Parent = Button
+        ButtonIcon.BackgroundTransparency = 1
+        ButtonIcon.Position = UDim2.new(0, 5, 0.5, -10)
+        ButtonIcon.Size = UDim2.new(0, 20, 0, 20)
+        ButtonIcon.Image = "rbxassetid://19004812116" -- Replace with your button icon asset ID
+        ButtonIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
 
-    local ButtonLabel = Instance.new("TextLabel")
-    ButtonLabel.Name = "ButtonLabel"
-    ButtonLabel.Parent = Button
-    ButtonLabel.BackgroundTransparency = 1
-    ButtonLabel.Position = UDim2.new(0, 30, 0, 0)
-    ButtonLabel.Size = UDim2.new(1, -35, 1, 0)
-    ButtonLabel.Font = Enum.Font.SourceSans
-    ButtonLabel.Text = buttonName
-    ButtonLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    ButtonLabel.TextSize = 18
-    ButtonLabel.TextXAlignment = Enum.TextXAlignment.Left
+        local ButtonLabel = Instance.new("TextLabel")
+        ButtonLabel.Name = "ButtonLabel"
+        ButtonLabel.Parent = Button
+        ButtonLabel.BackgroundTransparency = 1
+        ButtonLabel.Position = UDim2.new(0, 30, 0, 0)
+        ButtonLabel.Size = UDim2.new(1, -35, 1, 0)
+        ButtonLabel.Font = Enum.Font.SourceSans
+        ButtonLabel.Text = buttonName
+        ButtonLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        ButtonLabel.TextSize = 18
+        ButtonLabel.TextXAlignment = Enum.TextXAlignment.Left
+        ButtonLabel.TextYAlignment = Enum.TextYAlignment.Center
+        ButtonLabel.TextTruncate = Enum.TextTruncate.AtEnd
 
-    Button.MouseButton1Click:Connect(callback)
-end
+        local ButtonCorner = Instance.new("UICorner")
+        ButtonCorner.CornerRadius = UDim.new(0, 8)
+        ButtonCorner.Parent = Button
+
+        Button.MouseButton1Click:Connect(function()
+            if callback then
+                callback()
+            end
+        end)
+
+        return Button
+    end
 
 local function createToggle(tabName, toggleName, callback)
     local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
