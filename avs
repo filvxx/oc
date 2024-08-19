@@ -1,4 +1,4 @@
---woah
+--bazinga
 local Library = {}
 
 function Library.CreateLib(title)
@@ -171,7 +171,6 @@ local function createButton(tabName, buttonName, callback)
     end
 end
 
-
 local function createToggle(tabName, toggleName, callback)
     local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
     if tabContent then
@@ -195,8 +194,8 @@ local function createToggle(tabName, toggleName, callback)
         local Dot = Instance.new("Frame")
         Dot.Size = UDim2.new(0, 20, 0, 20)
         Dot.Position = UDim2.new(0, 10, 0.5, -10)  -- Positioned on the left
-        Dot.BackgroundColor3 = Color3.fromRGB(90, 100, 150)  -- Border color of the dot
-        Dot.BackgroundTransparency = 0.5  -- Make the border semi-transparent
+        Dot.BackgroundColor3 = Color3.fromRGB(90, 100, 150)  -- Border color
+        Dot.BorderSizePixel = 0
         Dot.Parent = Toggle
 
         local DotCorner = Instance.new("UICorner")
@@ -205,10 +204,11 @@ local function createToggle(tabName, toggleName, callback)
 
         -- Create an inner frame for the filled state
         local DotInner = Instance.new("Frame")
-        DotInner.Size = UDim2.new(1, -4, 1, -4)  -- Slightly smaller than Dot to fit within
+        DotInner.Size = UDim2.new(1, -4, 1, -4)  -- Slightly smaller to fit inside Dot
         DotInner.Position = UDim2.new(0, 2, 0, 2)  -- Centered within Dot
         DotInner.BackgroundColor3 = Color3.fromRGB(90, 100, 150)  -- Fill color when toggled
         DotInner.BackgroundTransparency = 1  -- Start as fully transparent
+        DotInner.BorderSizePixel = 0
         DotInner.Parent = Dot
 
         local DotInnerCorner = Instance.new("UICorner")
@@ -218,13 +218,14 @@ local function createToggle(tabName, toggleName, callback)
         local isToggled = false
         Toggle.MouseButton1Click:Connect(function()
             isToggled = not isToggled
-            DotInner.BackgroundTransparency = isToggled and 0 or 1  -- Show or hide the fill color based on toggle state
+            DotInner.BackgroundTransparency = isToggled and 0 or 1  -- Fully visible or invisible based on toggle state
             callback(isToggled)
         end)
     else
         warn("Tab '" .. tabName .. "' not found.")
     end
 end
+
 
 
 
