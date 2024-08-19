@@ -225,7 +225,7 @@ local function createDropdown(tabName, dropdownName, options, callback)
 
         local padding = Instance.new("UIPadding")
         padding.Parent = DropdownButton
-        padding.PaddingLeft = UDim.new(0, -150)  -- Adjust this value as needed
+        padding.PaddingLeft = UDim.new(0, 10)
 
         local DropdownButtonCorner = Instance.new("UICorner")
         DropdownButtonCorner.CornerRadius = UDim.new(0, 12)
@@ -235,8 +235,8 @@ local function createDropdown(tabName, dropdownName, options, callback)
         DropdownList.Name = dropdownName .. "List"
         DropdownList.Parent = tabContent
         DropdownList.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
-        DropdownList.Position = UDim2.new(0, 0, 1, 0)
-        DropdownList.Size = UDim2.new(1, 0, 0, 0)
+        DropdownList.Position = UDim2.new(0, 10, 0, DropdownButton.Position.Y.Offset + DropdownButton.Size.Y.Offset + 5)
+        DropdownList.Size = UDim2.new(1, -20, 0, 0)
         DropdownList.ClipsDescendants = true
         DropdownList.Visible = false
         DropdownList.BorderSizePixel = 0
@@ -266,14 +266,13 @@ local function createDropdown(tabName, dropdownName, options, callback)
 
             OptionButton.MouseButton1Click:Connect(function()
                 if selectedOption then
-                    selectedOption.BackgroundColor3 = Color3.fromRGB(70, 75, 105)  -- Reset the previous selected option's color
+                    selectedOption.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
                 end
-                OptionButton.BackgroundColor3 = Color3.fromRGB(90, 180, 90)  -- Highlight the selected option
+                OptionButton.BackgroundColor3 = Color3.fromRGB(90, 180, 90)
                 selectedOption = OptionButton
 
                 DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true, function()
                     DropdownList.Visible = false
-                    -- Animate the elements below the dropdown to move back up
                     for _, v in ipairs(tabContent:GetChildren()) do
                         if v:IsA("GuiObject") and v.Position.Y.Offset > DropdownButton.Position.Y.Offset then
                             v:TweenPosition(UDim2.new(v.Position.X.Scale, v.Position.X.Offset, v.Position.Y.Scale, v.Position.Y.Offset - #options * 30), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
@@ -284,18 +283,15 @@ local function createDropdown(tabName, dropdownName, options, callback)
             end)
         end
 
-        -- Create options
         for index, option in ipairs(options) do
             createOption(option, index)
         end
 
-        -- Adjust dropdown size and position
         local dropdownHeight = #options * 30
         DropdownList.Size = UDim2.new(1, 0, 0, dropdownHeight)
 
         DropdownButton.MouseButton1Click:Connect(function()
             if DropdownList.Visible then
-                -- Collapse the dropdown and move the elements back up
                 DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true, function()
                     DropdownList.Visible = false
                     for _, v in ipairs(tabContent:GetChildren()) do
@@ -305,7 +301,6 @@ local function createDropdown(tabName, dropdownName, options, callback)
                     end
                 end)
             else
-                -- Expand the dropdown and move the elements below it down
                 DropdownList.Visible = true
                 DropdownList:TweenSize(UDim2.new(1, 0, 0, dropdownHeight), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
                 for _, v in ipairs(tabContent:GetChildren()) do
@@ -319,7 +314,6 @@ local function createDropdown(tabName, dropdownName, options, callback)
         warn("Tab '" .. tabName .. "' not found.")
     end
 end
-
 
     return {
         NewTab = createTab,
