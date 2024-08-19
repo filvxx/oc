@@ -236,10 +236,10 @@ local function createDropdown(tabName, dropdownName, options, callback)
 
         -- Create the ImageLabel to act as the decal
         local Decal = Instance.new("ImageLabel")
-        Decal.Size = UDim2.new(0, 30, 0, 30)
-        Decal.Position = UDim2.new(0, 2, 0.4, -10)  -- Position the decal where the dot was
+        Decal.Size = UDim2.new(0, 55, 0, 55)
+        Decal.Position = UDim2.new(0, -7, 0.1, -10)  -- Position the decal where the dot was
         Decal.BackgroundTransparency = 1  -- Make sure background is transparent
-        Decal.Image = "rbxassetid://19004936023"  -- Replace with your decal ID
+        Decal.Image = "rbxassetid://19004888193"  -- Replace with your decal ID
         Decal.Parent = DropdownButton
 
         local DropdownList = Instance.new("Frame")
