@@ -163,7 +163,7 @@ local function createButton(tabName, buttonName, callback)
         Decal.Position = UDim2.new(0, 2, 0.4, -10)  -- Position the decal where needed
         Decal.BackgroundTransparency = 1  -- Make sure background is transparent
         Decal.Image = "rbxassetid://121362887907702"  -- Replace with a white image asset ID
-        Decal.ImageColor3 = Color3.fromRGB(255, 255, 255)  -- Initial color (white)
+        Decal.ImageColor3 = Color3.fromRGB(90, 100, 150)  -- Initial color (white)
         Decal.Parent = Button
 
         -- Set the desired color for the image
