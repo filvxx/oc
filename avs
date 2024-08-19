@@ -1,4 +1,4 @@
---over
+--ov
 local Library = {}
 
 function Library.CreateLib(title)
@@ -244,7 +244,7 @@ local function createDropdown(tabName, dropdownName, options, callback)
 
         local padding = Instance.new("UIPadding")
         padding.Parent = DropdownButton  -- Correct reference
-        padding.PaddingLeft = UDim.new(0, 10)  -- Adjust as needed
+        padding.PaddingLeft = UDim.new(0, -150)  -- Adjust as needed
 
         local selectedOption
 
