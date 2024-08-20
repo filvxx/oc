@@ -1,4 +1,4 @@
-
+--here
 local Library = {}
 
 function Library.CreateLib(title)
@@ -53,13 +53,15 @@ RollButton.BorderSizePixel = 0
 RollButton.ZIndex = 2
 
 local isCollapsed = false
+local originalSize = UDim2.new(0, 500, 0, 350)
+local collapsedSize = UDim2.new(0, 500, 0, 40)
 
 local function toggleFrame()
     if isCollapsed then
-        MainFrame:TweenSize(UDim2.new(0, 500, 0, 350), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+        MainFrame:TweenSize(originalSize, Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
         RollButton.Text = "-"
     else
-        MainFrame:TweenSize(UDim2.new(0, 500, 0, 40), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+        MainFrame:TweenSize(collapsedSize, Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
         RollButton.Text = "+"
     end
     isCollapsed = not isCollapsed
