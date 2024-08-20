@@ -224,7 +224,7 @@ end)
     local function getNextPosition(tabContent)
         local yPos = 5
         for _, child in ipairs(tabContent:GetChildren()) do
-            if child:IsA("TextButton") or child:IsA("TextLabel") or child:IsA("TextBox") then
+            if child:IsA("TextButton") or child:IsA("TextBox") then
                 yPos = yPos + child.Size.Y.Offset + 5
             end
         end
@@ -528,17 +528,6 @@ local function createTextBox(tabName, labelText, placeholderText, callback)
     local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
     if tabContent then
 
-        -- Create the label for the text box
-        local label = Instance.new("TextLabel")
-        label.Name = labelText .. "Label"
-        label.Parent = tabContent
-        label.BackgroundTransparency = 1
-        label.Position = getNextPosition(tabContent)
-        label.Size = UDim2.new(1, -20, 0, 40) -- Adjust size as needed
-        label.Font = Enum.Font.SourceSans
-        label.Text = labelText
-        label.TextColor3 = Color3.fromRGB(255, 255, 255)
-        label.TextSize = 18
         
         -- Create the text box
         local TextBox = Instance.new("TextBox")
@@ -553,7 +542,19 @@ local function createTextBox(tabName, labelText, placeholderText, callback)
         TextBox.TextSize = 18
         TextBox.BorderSizePixel = 0
         TextBox.ClearTextOnFocus = false
-        
+
+        -- Create the label for the text box
+        local label = Instance.new("TextLabel")
+        label.Name = labelText .. "Label"
+        label.Parent = TextBox
+        label.BackgroundTransparency = 1
+        label.Position = getNextPosition(tabContent)
+        label.Size = UDim2.new(1, -20, 0, 40) -- Adjust size as needed
+        label.Font = Enum.Font.SourceSans
+        label.Text = labelText
+        label.TextColor3 = Color3.fromRGB(255, 255, 255)
+        label.TextSize = 18
+
         local TextBoxCorner = Instance.new("UICorner")
         TextBoxCorner.CornerRadius = UDim.new(0, 12)
         TextBoxCorner.Parent = TextBox
