@@ -1,4 +1,4 @@
---heko
+--helpp
 local Library = {}
 
 function Library.CreateLib(title)
@@ -170,7 +170,6 @@ CollapseButton.MouseButton1Click:Connect(function()
     isCollapsed = not isCollapsed
 end)
 
--- Function to update the scrolling frame if needed
 local function updateScrollingFrame()
     -- Find the ContentsFrame within the current script's parent
     local ContentsFrame = script.Parent:FindFirstChild("ContentsFrame")
@@ -189,10 +188,9 @@ local function updateScrollingFrame()
         end
     end
 
-    -- If there are more than 6 elements, add a ScrollingFrame
+    -- Check if a ScrollingFrame already exists
+    local scrollingFrame = ContentsFrame:FindFirstChild("ScrollingFrame")
     if elementCount > 6 then
-        -- Check if a ScrollingFrame already exists
-        local scrollingFrame = ContentsFrame:FindFirstChild("ScrollingFrame")
         if not scrollingFrame then
             -- Create the ScrollingFrame
             scrollingFrame = Instance.new("ScrollingFrame")
@@ -224,7 +222,6 @@ local function updateScrollingFrame()
         
     else
         -- If there are 6 or fewer elements, ensure the ScrollingFrame is removed
-        local scrollingFrame = ContentsFrame:FindFirstChild("ScrollingFrame")
         if scrollingFrame then
             -- Move elements out of the ScrollingFrame and into ContentsFrame
             for _, child in ipairs(scrollingFrame:GetChildren()) do
@@ -240,6 +237,7 @@ end
 
 -- Call the function to update the scrolling frame based on current content
 updateScrollingFrame()
+
 
 
     local TabButtons = {}
