@@ -1,4 +1,4 @@
---wa
+--watt
 local Library = {}
 
 function Library.CreateLib(title)
@@ -438,7 +438,7 @@ end)
         end
     end
 
-local function createKeybind(tabName, keybindName, keyCode, callback)
+local function createKeybind(tabName, keybindName, initialKeyCode, callback)
     local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
     if tabContent then
         local KeybindButton = Instance.new("TextButton")
@@ -448,7 +448,7 @@ local function createKeybind(tabName, keybindName, keyCode, callback)
         KeybindButton.Position = getNextPosition(tabContent)
         KeybindButton.Size = UDim2.new(1, -20, 0, 40)
         KeybindButton.Font = Enum.Font.SourceSans
-        KeybindButton.Text = keybindName .. ": " .. keyCode.Name
+        KeybindButton.Text = keybindName .. ": " .. initialKeyCode.Name
         KeybindButton.TextColor3 = Color3.fromRGB(255, 255, 255)
         KeybindButton.TextSize = 18
         KeybindButton.BorderSizePixel = 0
@@ -459,44 +459,53 @@ local function createKeybind(tabName, keybindName, keyCode, callback)
 
         local UserInputService = game:GetService("UserInputService")
 
-        -- Table to hold current connection
-        local connection = nil
+        -- Store current keybind
+        local currentKeybind = initialKeyCode
+        -- Store the current connection to disconnect later
+        local currentConnection = nil
 
         local function updateKeybind(newKeyCode)
-            keyCode = newKeyCode
-            KeybindButton.Text = keybindName .. ": " .. keyCode.Name
+            currentKeybind = newKeyCode
+            KeybindButton.Text = keybindName .. ": " .. newKeyCode.Name
         end
 
         local function onKeyPress(input)
-            if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == keyCode then
+            if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == currentKeybind then
                 callback()
+            end
+        end
+
+        -- Disconnect any existing connection
+        local function disconnectCurrentConnection()
+            if currentConnection then
+                currentConnection:Disconnect()
+                currentConnection = nil
             end
         end
 
         -- To switch keybind on click
         KeybindButton.MouseButton1Click:Connect(function()
             KeybindButton.Text = keybindName .. ": Press a new key"
-            
-            -- Disconnect any existing connection
-            if connection then
-                connection:Disconnect()
-            end
+
+            -- Disconnect the previous connection if it exists
+            disconnectCurrentConnection()
 
             -- Listen for a new key press
-            connection = UserInputService.InputBegan:Connect(function(input)
+            currentConnection = UserInputService.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.Keyboard then
                     updateKeybind(input.KeyCode)
-                    connection:Disconnect()  -- Disconnect after setting the new keybind
+                    disconnectCurrentConnection()  -- Disconnect after setting the new keybind
                 end
             end)
         end)
 
         -- Connect the key press handler to the UserInputService
-        connection = UserInputService.InputBegan:Connect(onKeyPress)
+        currentConnection = UserInputService.InputBegan:Connect(onKeyPress)
     else
         warn("Tab '" .. tabName .. "' not found.")
     end
 end
+
 
 return {
     NewTab = createTab,
