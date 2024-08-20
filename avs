@@ -546,7 +546,7 @@ local function createTextBox(tabName, labelText, placeholderText, callback)
         label.Name = labelText .. "Label"
         label.Parent = tabContent
         label.BackgroundTransparency = 1
-        label.Position = UDim2.new(TextBox.Position.X.Scale, TextBox.Position.X.Offset - 100, TextBox.Position.Y.Scale, TextBox.Position.Y.Offset) 
+        label.Position = UDim2.new(TextBox.Position.X.Scale, TextBox.Position.X.Offset +35, TextBox.Position.Y.Scale, TextBox.Position.Y.Offset) 
         label.Size = UDim2.new(0, 100, 0, 40) -- Adjust size as needed
         label.Font = Enum.Font.SourceSans
         label.Text = labelText
@@ -569,12 +569,12 @@ local function createTextBox(tabName, labelText, placeholderText, callback)
         -- Create the ImageLabel (Decal) and position it within the TextBox
         local Decal = Instance.new("ImageLabel")
         Decal.Size = UDim2.new(0, 50, 0, 45)
-        Decal.Position = UDim2.new(0, -4, 0.3, -15) -- Adjust position as needed
+        Decal.Position = UDim2.new(TextBox.Position.X.Scale, TextBox.Position.X.Offset -4, TextBox.Position.Y.Scale, TextBox.Position.Y.Offset) 
         Decal.AnchorPoint = Vector2.new(0, 0.5)
         Decal.BackgroundTransparency = 1
         Decal.Image = "rbxassetid://117641907759948"
         Decal.ImageColor3 = Color3.fromRGB(90, 100, 150)
-        Decal.Parent = TextBox
+        Decal.Parent = tabContent
 
         -- Connect the callback function
         TextBox.FocusLost:Connect(function(enterPressed)
