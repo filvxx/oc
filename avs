@@ -1,4 +1,4 @@
---has
+--heko
 local Library = {}
 
 function Library.CreateLib(title)
@@ -170,22 +170,31 @@ CollapseButton.MouseButton1Click:Connect(function()
     isCollapsed = not isCollapsed
 end)
 
+-- Function to update the scrolling frame if needed
 local function updateScrollingFrame()
-    -- Check if ContentsFrame has more than 6 buttons or other elements
+    -- Find the ContentsFrame within the current script's parent
+    local ContentsFrame = script.Parent:FindFirstChild("ContentsFrame")
+    if not ContentsFrame then
+        warn("ContentsFrame not found!")
+        return
+    end
+
+    -- Count the number of elements within ContentsFrame
     local contentFrameChildren = ContentsFrame:GetChildren()
     local elementCount = 0
-    
+
     for _, child in ipairs(contentFrameChildren) do
         if child:IsA("TextButton") or child:IsA("TextBox") or child:IsA("TextLabel") then
             elementCount = elementCount + 1
         end
     end
 
-    -- If there are more than 6 elements, ensure a ScrollingFrame exists
+    -- If there are more than 6 elements, add a ScrollingFrame
     if elementCount > 6 then
-        -- Create the ScrollingFrame if it doesn't already exist
+        -- Check if a ScrollingFrame already exists
         local scrollingFrame = ContentsFrame:FindFirstChild("ScrollingFrame")
         if not scrollingFrame then
+            -- Create the ScrollingFrame
             scrollingFrame = Instance.new("ScrollingFrame")
             scrollingFrame.Name = "ScrollingFrame"
             scrollingFrame.Parent = ContentsFrame
@@ -195,21 +204,26 @@ local function updateScrollingFrame()
             scrollingFrame.BorderSizePixel = 0
             scrollingFrame.ScrollBarThickness = 8
             scrollingFrame.ClipsDescendants = true
-            
+
+            -- Create a UIListLayout inside the ScrollingFrame for arranging elements
             local uiListLayout = Instance.new("UIListLayout")
             uiListLayout.Parent = scrollingFrame
             uiListLayout.SortOrder = Enum.SortOrder.LayoutOrder
             uiListLayout.Padding = UDim.new(0, 5)
         end
 
-        -- Move existing content into ScrollingFrame
+        -- Move all existing content into the ScrollingFrame
         for _, child in ipairs(contentFrameChildren) do
             if child:IsA("TextButton") or child:IsA("TextBox") or child:IsA("TextLabel") then
                 child.Parent = scrollingFrame
             end
         end
+
+        -- Update the CanvasSize of the ScrollingFrame based on its content
+        scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, scrollingFrame.UIListLayout.AbsoluteContentSize.Y)
+        
     else
-        -- If there are 6 or fewer elements, keep the layout without a ScrollingFrame
+        -- If there are 6 or fewer elements, ensure the ScrollingFrame is removed
         local scrollingFrame = ContentsFrame:FindFirstChild("ScrollingFrame")
         if scrollingFrame then
             -- Move elements out of the ScrollingFrame and into ContentsFrame
@@ -224,8 +238,9 @@ local function updateScrollingFrame()
     end
 end
 
--- Call updateScrollingFrame after adding buttons or other elements
-updateScrollingFrame()  -- This line calls the function to update the scrolling frame
+-- Call the function to update the scrolling frame based on current content
+updateScrollingFrame()
+
 
     local TabButtons = {}
 
