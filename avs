@@ -1,4 +1,4 @@
---wow
+--wa
 local Library = {}
 
 function Library.CreateLib(title)
@@ -224,7 +224,7 @@ end)
     local function getNextPosition(tabContent)
         local yPos = 5
         for _, child in ipairs(tabContent:GetChildren()) do
-            if child:IsA("TextButton") or child:IsA("TextLabel") then
+            if child:IsA("TextButton") then
                 yPos = yPos + child.Size.Y.Offset + 5
             end
         end
@@ -441,27 +441,27 @@ end)
 local function createKeybind(tabName, keybindName, keyCode, callback)
     local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
     if tabContent then
-        local KeybindLabel = Instance.new("TextLabel")
-        KeybindLabel.Name = keybindName .. "Keybind"
-        KeybindLabel.Parent = tabContent
-        KeybindLabel.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-        KeybindLabel.Position = getNextPosition(tabContent)
-        KeybindLabel.Size = UDim2.new(1, -20, 0, 40)
-        KeybindLabel.Font = Enum.Font.SourceSans
-        KeybindLabel.Text = keybindName .. ": " .. keyCode.Name
-        KeybindLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-        KeybindLabel.TextSize = 18
-        KeybindLabel.BorderSizePixel = 0
+        local KeybindButton = Instance.new("TextButton")
+        KeybindButton.Name = keybindName .. "Keybind"
+        KeybindButton.Parent = tabContent
+        KeybindButton.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
+        KeybindButton.Position = getNextPosition(tabContent)
+        KeybindButton.Size = UDim2.new(1, -20, 0, 40)
+        KeybindButton.Font = Enum.Font.SourceSans
+        KeybindButton.Text = keybindName .. ": " .. keyCode.Name
+        KeybindButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        KeybindButton.TextSize = 18
+        KeybindButton.BorderSizePixel = 0
 
-        local KeybindCorner = Instance.new("UICorner")
-        KeybindCorner.CornerRadius = UDim.new(0, 12)
-        KeybindCorner.Parent = KeybindLabel
+        local KeybindButtonCorner = Instance.new("UICorner")
+        KeybindButtonCorner.CornerRadius = UDim.new(0, 12)
+        KeybindButtonCorner.Parent = KeybindButton
 
         local UserInputService = game:GetService("UserInputService")
 
         local function updateKeybind(newKeyCode)
             keyCode = newKeyCode
-            KeybindLabel.Text = keybindName .. ": " .. keyCode.Name
+            KeybindButton.Text = keybindName .. ": " .. keyCode.Name
         end
 
         local function onKeyPress(input)
@@ -472,8 +472,8 @@ local function createKeybind(tabName, keybindName, keyCode, callback)
         end
 
         -- To switch keybind on click
-        KeybindLabel.MouseButton1Click:Connect(function()
-            KeybindLabel.Text = keybindName .. ": Press a new key"
+        KeybindButton.MouseButton1Click:Connect(function()
+            KeybindButton.Text = keybindName .. ": Press a new key"
             local connection
             connection = UserInputService.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.Keyboard then
@@ -486,6 +486,7 @@ local function createKeybind(tabName, keybindName, keyCode, callback)
         warn("Tab '" .. tabName .. "' not found.")
     end
 end
+
 
 
 return {
