@@ -459,14 +459,15 @@ local function createKeybind(tabName, keybindName, keyCode, callback)
 
         local UserInputService = game:GetService("UserInputService")
 
+        local connection
+
         local function updateKeybind(newKeyCode)
             keyCode = newKeyCode
             KeybindButton.Text = keybindName .. ": " .. keyCode.Name
         end
 
         local function onKeyPress(input)
-            if input.UserInputType == Enum.UserInputType.Keyboard then
-                updateKeybind(input.KeyCode)
+            if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == keyCode then
                 callback()
             end
         end
@@ -474,7 +475,9 @@ local function createKeybind(tabName, keybindName, keyCode, callback)
         -- To switch keybind on click
         KeybindButton.MouseButton1Click:Connect(function()
             KeybindButton.Text = keybindName .. ": Press a new key"
-            local connection
+            if connection then
+                connection:Disconnect()
+            end
             connection = UserInputService.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.Keyboard then
                     updateKeybind(input.KeyCode)
@@ -482,6 +485,9 @@ local function createKeybind(tabName, keybindName, keyCode, callback)
                 end
             end)
         end)
+
+        -- Connect the key press handler to the UserInputService
+        connection = UserInputService.InputBegan:Connect(onKeyPress)
     else
         warn("Tab '" .. tabName .. "' not found.")
     end
