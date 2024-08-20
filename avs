@@ -459,7 +459,8 @@ local function createKeybind(tabName, keybindName, keyCode, callback)
 
         local UserInputService = game:GetService("UserInputService")
 
-        local connection
+        -- Table to hold current connection
+        local connection = nil
 
         local function updateKeybind(newKeyCode)
             keyCode = newKeyCode
@@ -475,13 +476,17 @@ local function createKeybind(tabName, keybindName, keyCode, callback)
         -- To switch keybind on click
         KeybindButton.MouseButton1Click:Connect(function()
             KeybindButton.Text = keybindName .. ": Press a new key"
+            
+            -- Disconnect any existing connection
             if connection then
                 connection:Disconnect()
             end
+
+            -- Listen for a new key press
             connection = UserInputService.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.Keyboard then
                     updateKeybind(input.KeyCode)
-                    connection:Disconnect()
+                    connection:Disconnect()  -- Disconnect after setting the new keybind
                 end
             end)
         end)
@@ -492,8 +497,6 @@ local function createKeybind(tabName, keybindName, keyCode, callback)
         warn("Tab '" .. tabName .. "' not found.")
     end
 end
-
-
 
 return {
     NewTab = createTab,
