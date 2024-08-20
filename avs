@@ -1,4 +1,4 @@
---here
+--hea
 local Library = {}
 
 function Library.CreateLib(title)
@@ -58,16 +58,33 @@ local collapsedSize = UDim2.new(0, 500, 0, 40)
 
 local function toggleFrame()
     if isCollapsed then
+        -- Expand the MainFrame
         MainFrame:TweenSize(originalSize, Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
         RollButton.Text = "-"
     else
+        -- Collapse the MainFrame
         MainFrame:TweenSize(collapsedSize, Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
         RollButton.Text = "+"
     end
     isCollapsed = not isCollapsed
+
+    -- Adjust the visibility of child elements
+    for _, child in pairs(MainFrame:GetChildren()) do
+        if child ~= RollButton then
+            child.Visible = isCollapsed and false or true
+        end
+    end
 end
 
 RollButton.MouseButton1Click:Connect(toggleFrame)
+
+-- Optional: You may want to adjust the visibility of child elements on initial setup
+for _, child in pairs(MainFrame:GetChildren()) do
+    if child ~= RollButton then
+        child.Visible = true
+    end
+end
+
 
     local TitleBar = Instance.new("TextLabel")
     TitleBar.Name = "TitleBar"
