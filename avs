@@ -438,12 +438,46 @@ end)
         end
     end
 
-    return {
-        NewTab = createTab,
-        NewButton = createButton,
-        NewToggle = createToggle,
-        NewDropdown = createDropdown
-    }
+local function createKeybind(tabName, keybindName, keyCode, callback)
+    local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
+    if tabContent then
+        local KeybindLabel = Instance.new("TextLabel")
+        KeybindLabel.Name = keybindName .. "Keybind"
+        KeybindLabel.Parent = tabContent
+        KeybindLabel.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
+        KeybindLabel.Position = getNextPosition(tabContent)
+        KeybindLabel.Size = UDim2.new(1, -20, 0, 40)
+        KeybindLabel.Font = Enum.Font.SourceSans
+        KeybindLabel.Text = keybindName .. ": " .. keyCode.Name
+        KeybindLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        KeybindLabel.TextSize = 18
+        KeybindLabel.BorderSizePixel = 0
+
+        local KeybindCorner = Instance.new("UICorner")
+        KeybindCorner.CornerRadius = UDim.new(0, 12)
+        KeybindCorner.Parent = KeybindLabel
+
+        local function onKeyPress(input)
+            if input.KeyCode == keyCode then
+                callback()
+            end
+        end
+
+        -- Connect to the UserInputService for key detection
+        local UserInputService = game:GetService("UserInputService")
+        UserInputService.InputBegan:Connect(onKeyPress)
+    else
+        warn("Tab '" .. tabName .. "' not found.")
+    end
+end
+
+return {
+    NewTab = createTab,
+    NewButton = createButton,
+    NewToggle = createToggle,
+    NewDropdown = createDropdown,
+    NewKeybind = createKeybind
+}
 end
 
 return Library
