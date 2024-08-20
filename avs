@@ -346,7 +346,7 @@ end)
 
             -- Create the ImageLabel for the dropdown icon
             local Decal = Instance.new("ImageLabel")
-            Decal.Size = UDim2.new(0, 55, 0, 55)  -- Adjust size as needed
+            Decal.Size = UDim2.new(0, 50, 0, 50)  -- Adjust size as needed
             Decal.Position = UDim2.new(0, 47, 0.757, -10)  -- Adjust position to fit within the button
             Decal.BackgroundTransparency = 1  -- Ensure the background is transparent
             Decal.Image = "rbxassetid://86728155667911"  -- Replace with your decal ID
@@ -459,8 +459,8 @@ local function createKeybind(tabName, keybindName, initialKeyCode, callback)
 
             -- Create the ImageLabel for the dropdown icon
             local Decal = Instance.new("ImageLabel")
-            Decal.Size = UDim2.new(0, 55, 0, 55)  -- Adjust size as needed
-            Decal.Position = UDim2.new(0, 47, 0.757, -10)  -- Adjust position to fit within the button
+            Decal.Size = UDim2.new(0, 25, 0, 25)  -- Adjust size as needed
+            Decal.Position = UDim2.new(0, 35, 0.757, -10)  -- Adjust position to fit within the button
             Decal.BackgroundTransparency = 1  -- Ensure the background is transparent
             Decal.Image = "rbxassetid://125979786113028"  -- Replace with your decal ID
             Decal.ImageColor3 = Color3.fromRGB(90, 100, 150)  -- Set the image color if needed
