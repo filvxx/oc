@@ -1,4 +1,4 @@
---woz
+--wowza
 local Library = {}
 
 function Library.CreateLib(title)
@@ -131,7 +131,8 @@ function Library.CreateLib(title)
 local CollapseButton = Instance.new("TextButton")
 CollapseButton.Name = "CollapseButton"
 CollapseButton.Parent = TitleBar
-CollapseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)  -- Red button for collapsing
+CollapseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) 
+CollapseButton.BackgroundTransparency = 1
 CollapseButton.Position = UDim2.new(1, -50, 0, 5)  -- Position it to the right of the title bar
 CollapseButton.Size = UDim2.new(0, 20, 0, 20)
 CollapseButton.Font = Enum.Font.SourceSansBold
@@ -142,18 +143,25 @@ CollapseButton.BorderSizePixel = 0
 CollapseButton.ZIndex = 2
 
 local isCollapsed = false
+local expandedHeight = 350
+local collapsedHeight = 40
 
 CollapseButton.MouseButton1Click:Connect(function()
     if isCollapsed then
-        -- Expand the GUI
-        MainFrame.Size = UDim2.new(0, 500, 0, 350)
+        -- Expand the GUI with animation
+        MainFrame:TweenSize(UDim2.new(0, 500, 0, expandedHeight), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.3, true)
+        TabsFrame:TweenSize(UDim2.new(0.3, 0, 1, -40), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.3, true)
+        ContentsFrame:TweenSize(UDim2.new(0.7, -12, 1, -40), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.3, true)
         TabsFrame.Visible = true
         ContentsFrame.Visible = true
         TitleBar.Visible = true
         CollapseButton.Text = "-"
     else
-        -- Collapse the GUI
-        MainFrame.Size = UDim2.new(0, 500, 0, 40)  -- Adjust the height to only show the title bar
+        -- Collapse the GUI with animation
+        MainFrame:TweenSize(UDim2.new(0, 500, 0, collapsedHeight), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.3, true)
+        TabsFrame:TweenSize(UDim2.new(0, 0, 1, -40), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.3, true)
+        ContentsFrame:TweenSize(UDim2.new(0, 0, 1, -40), Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.3, true)
+        wait(0.3)  -- Wait for the animation to complete
         TabsFrame.Visible = false
         ContentsFrame.Visible = false
         TitleBar.Visible = true
