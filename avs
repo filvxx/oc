@@ -1,4 +1,4 @@
---lala
+--loll
 local Library = {}
 
 function Library.CreateLib(title)
@@ -468,10 +468,12 @@ local function createKeybind(tabName, keybindName, initialKeyCode, callback)
             currentKeybind = newKeyCode
             KeybindButton.Text = keybindName .. ": " .. newKeyCode.Name
 
-            -- Reconnect the key press handler to use the new keybind
+            -- Disconnect the previous connection
             if currentConnection then
                 currentConnection:Disconnect()
             end
+
+            -- Reconnect the key press handler to use the new keybind
             currentConnection = UserInputService.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == currentKeybind then
                     callback()
@@ -485,17 +487,17 @@ local function createKeybind(tabName, keybindName, initialKeyCode, callback)
             isChangingKeybind = true
             KeybindButton.Text = keybindName .. ": Press a new key"
 
-            -- Disconnect the previous connection if it exists
+            -- Temporarily disconnect the current keybind connection
             if currentConnection then
                 currentConnection:Disconnect()
             end
 
             -- Listen for a new key press
-            currentConnection = UserInputService.InputBegan:Connect(function(input)
+            local newConnection
+            newConnection = UserInputService.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.Keyboard then
                     updateKeybind(input.KeyCode)
-                    -- Immediately disconnect after setting the new keybind
-                    currentConnection:Disconnect()
+                    newConnection:Disconnect()  -- Disconnect this temporary listener
                     isChangingKeybind = false  -- Allow future key changes
                 end
             end)
