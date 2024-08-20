@@ -1,4 +1,4 @@
---hea
+--tea
 local Library = {}
 
 function Library.CreateLib(title)
@@ -38,52 +38,7 @@ function Library.CreateLib(title)
         ScreenGui:Destroy()
     end)
 
-local RollButton = Instance.new("TextButton")
-RollButton.Name = "RollButton"
-RollButton.Parent = MainFrame
-RollButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-RollButton.BackgroundTransparency = 1
-RollButton.Position = UDim2.new(1, -50, 0, 5)
-RollButton.Size = UDim2.new(0, 20, 0, 20)
-RollButton.Font = Enum.Font.SourceSansBold
-RollButton.Text = "-"
-RollButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-RollButton.TextSize = 18
-RollButton.BorderSizePixel = 0
-RollButton.ZIndex = 2
 
-local isCollapsed = false
-local originalSize = UDim2.new(0, 500, 0, 350)
-local collapsedSize = UDim2.new(0, 500, 0, 40)
-
-local function toggleFrame()
-    if isCollapsed then
-        -- Expand the MainFrame
-        MainFrame:TweenSize(originalSize, Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
-        RollButton.Text = "-"
-    else
-        -- Collapse the MainFrame
-        MainFrame:TweenSize(collapsedSize, Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
-        RollButton.Text = "+"
-    end
-    isCollapsed = not isCollapsed
-
-    -- Adjust the visibility of child elements
-    for _, child in pairs(MainFrame:GetChildren()) do
-        if child ~= RollButton then
-            child.Visible = isCollapsed and false or true
-        end
-    end
-end
-
-RollButton.MouseButton1Click:Connect(toggleFrame)
-
--- Optional: You may want to adjust the visibility of child elements on initial setup
-for _, child in pairs(MainFrame:GetChildren()) do
-    if child ~= RollButton then
-        child.Visible = true
-    end
-end
 
 
     local TitleBar = Instance.new("TextLabel")
@@ -402,7 +357,52 @@ local function createDropdown(tabName, dropdownName, options, callback)
     end
 end
 
+local RollButton = Instance.new("TextButton")
+RollButton.Name = "RollButton"
+RollButton.Parent = MainFrame
+RollButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+RollButton.BackgroundTransparency = 1
+RollButton.Position = UDim2.new(1, -50, 0, 5)
+RollButton.Size = UDim2.new(0, 20, 0, 20)
+RollButton.Font = Enum.Font.SourceSansBold
+RollButton.Text = "-"
+RollButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+RollButton.TextSize = 18
+RollButton.BorderSizePixel = 0
+RollButton.ZIndex = 2
 
+local isCollapsed = false
+local originalSize = UDim2.new(0, 500, 0, 350)
+local collapsedSize = UDim2.new(0, 500, 0, 40)
+
+local function toggleFrame()
+    if isCollapsed then
+        -- Expand the MainFrame
+        MainFrame:TweenSize(originalSize, Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+        RollButton.Text = "-"
+    else
+        -- Collapse the MainFrame
+        MainFrame:TweenSize(collapsedSize, Enum.EasingDirection.InOut, Enum.EasingStyle.Quad, 0.2, true)
+        RollButton.Text = "+"
+    end
+    isCollapsed = not isCollapsed
+
+    -- Adjust the visibility of child elements
+    for _, child in pairs(MainFrame:GetChildren()) do
+        if child ~= RollButton then
+            child.Visible = isCollapsed and false or true
+        end
+    end
+end
+
+RollButton.MouseButton1Click:Connect(toggleFrame)
+
+-- Optional: You may want to adjust the visibility of child elements on initial setup
+for _, child in pairs(MainFrame:GetChildren()) do
+    if child ~= RollButton then
+        child.Visible = true
+    end
+end
 
     return {
         NewTab = createTab,
