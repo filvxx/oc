@@ -529,7 +529,7 @@ local function createTextBox(tabName, labelText, placeholderText, callback)
     if tabContent then
         -- Create the text box
         local TextBox = Instance.new("TextBox")
-        TextBox.Name = labelText .. "TextBox"
+        TextBox.Name = labelText .. ""
         TextBox.Parent = tabContent
         TextBox.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
         TextBox.Position = getNextPosition(tabContent) -- Positioned based on your getNextPosition function
@@ -546,25 +546,37 @@ local function createTextBox(tabName, labelText, placeholderText, callback)
         label.Name = labelText .. "Label"
         label.Parent = tabContent
         label.BackgroundTransparency = 1
-        label.Position = UDim2.new(TextBox.Position.X.Scale, TextBox.Position.X.Offset +35, TextBox.Position.Y.Scale, TextBox.Position.Y.Offset) 
+        label.Position = UDim2.new(TextBox.Position.X.Scale, TextBox.Position.X.Offset - 100, TextBox.Position.Y.Scale, TextBox.Position.Y.Offset) 
         label.Size = UDim2.new(0, 100, 0, 40) -- Adjust size as needed
         label.Font = Enum.Font.SourceSans
         label.Text = labelText
         label.TextColor3 = Color3.fromRGB(255, 255, 255)
         label.TextSize = 18
 
+        -- Apply padding to the TextBox
+        local uiPadding = Instance.new("UIPadding")
+        uiPadding.Parent = TextBox
+        uiPadding.PaddingLeft = UDim.new(0, 100)   
+        uiPadding.PaddingRight = UDim.new(0, 0)
+        uiPadding.PaddingTop = UDim.new(0, 0)
+        uiPadding.PaddingBottom = UDim.new(0, 0)
+
+        -- Add rounded corners to the TextBox
         local TextBoxCorner = Instance.new("UICorner")
         TextBoxCorner.CornerRadius = UDim.new(0, 12)
         TextBoxCorner.Parent = TextBox
 
+        -- Create the ImageLabel (Decal) and position it within the TextBox
         local Decal = Instance.new("ImageLabel")
-        Decal.Size = UDim2.new(0, 50, 0, 50)
-        Decal.Position = UDim2.new(0, -2, 0.4, -15)
+        Decal.Size = UDim2.new(0, 50, 0, 45)
+        Decal.Position = UDim2.new(0, -4, 0.3, -15) -- Adjust position as needed
+        Decal.AnchorPoint = Vector2.new(0, 0.5)
         Decal.BackgroundTransparency = 1
         Decal.Image = "rbxassetid://117641907759948"
         Decal.ImageColor3 = Color3.fromRGB(90, 100, 150)
         Decal.Parent = TextBox
 
+        -- Connect the callback function
         TextBox.FocusLost:Connect(function(enterPressed)
             if enterPressed then
                 callback(TextBox.Text)
