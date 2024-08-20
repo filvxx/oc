@@ -1,4 +1,4 @@
---wowza
+--wow
 local Library = {}
 
 function Library.CreateLib(title)
@@ -224,7 +224,7 @@ end)
     local function getNextPosition(tabContent)
         local yPos = 5
         for _, child in ipairs(tabContent:GetChildren()) do
-            if child:IsA("TextButton") then
+            if child:IsA("TextButton") or child:IsA("TextLabel") then
                 yPos = yPos + child.Size.Y.Offset + 5
             end
         end
@@ -457,19 +457,36 @@ local function createKeybind(tabName, keybindName, keyCode, callback)
         KeybindCorner.CornerRadius = UDim.new(0, 12)
         KeybindCorner.Parent = KeybindLabel
 
+        local UserInputService = game:GetService("UserInputService")
+
+        local function updateKeybind(newKeyCode)
+            keyCode = newKeyCode
+            KeybindLabel.Text = keybindName .. ": " .. keyCode.Name
+        end
+
         local function onKeyPress(input)
-            if input.KeyCode == keyCode then
+            if input.UserInputType == Enum.UserInputType.Keyboard then
+                updateKeybind(input.KeyCode)
                 callback()
             end
         end
 
-        -- Connect to the UserInputService for key detection
-        local UserInputService = game:GetService("UserInputService")
-        UserInputService.InputBegan:Connect(onKeyPress)
+        -- To switch keybind on click
+        KeybindLabel.MouseButton1Click:Connect(function()
+            KeybindLabel.Text = keybindName .. ": Press a new key"
+            local connection
+            connection = UserInputService.InputBegan:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.Keyboard then
+                    updateKeybind(input.KeyCode)
+                    connection:Disconnect()
+                end
+            end)
+        end)
     else
         warn("Tab '" .. tabName .. "' not found.")
     end
 end
+
 
 return {
     NewTab = createTab,
