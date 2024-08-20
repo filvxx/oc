@@ -224,7 +224,7 @@ end)
     local function getNextPosition(tabContent)
         local yPos = 5
         for _, child in ipairs(tabContent:GetChildren()) do
-            if child:IsA("TextButton") or child:IsA("TextLabel") then
+            if child:IsA("TextButton") or child:IsA("TextLabel") or child:IsA("TextBox") then
                 yPos = yPos + child.Size.Y.Offset + 5
             end
         end
@@ -543,10 +543,10 @@ local function createTextBox(tabName, labelText, placeholderText, callback)
         -- Create the text box
         local TextBox = Instance.new("TextBox")
         TextBox.Name = labelText .. "TextBox"
-        TextBox.Parent = label
+        TextBox.Parent = tabContent
         TextBox.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-        TextBox.Position = UDim2.new(0, 160, 0, 0) -- Positioned next to the label
-        TextBox.Size = UDim2.new(1, -170, 0, 40)
+        TextBox.Position = getNextPosition(tabContent) -- Positioned next to the label
+        TextBox.Size = UDim2.new(1, -20, 0, 40)
         TextBox.Font = Enum.Font.SourceSans
         TextBox.PlaceholderText = placeholderText or "Enter text here..."
         TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
