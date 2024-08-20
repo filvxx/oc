@@ -527,6 +527,7 @@ end
 local function createTextBox(tabName, textBoxName, callback)
     local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
     if tabContent then
+        -- Create the TextBox
         local TextBox = Instance.new("TextBox")
         TextBox.Name = textBoxName .. "TextBox"
         TextBox.Parent = tabContent
@@ -534,25 +535,50 @@ local function createTextBox(tabName, textBoxName, callback)
         TextBox.Position = getNextPosition(tabContent)
         TextBox.Size = UDim2.new(1, -20, 0, 40)
         TextBox.Font = Enum.Font.SourceSans
-        TextBox.PlaceholderText = textBoxName
+        TextBox.PlaceholderText = textBoxName .. " "
         TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
         TextBox.TextSize = 18
         TextBox.BorderSizePixel = 0
         TextBox.ClearTextOnFocus = false
 
+        -- Create the UICorner for TextBox
         local TextBoxCorner = Instance.new("UICorner")
         TextBoxCorner.CornerRadius = UDim.new(0, 12)
         TextBoxCorner.Parent = TextBox
 
-        -- Create the ImageLabel to act as the decal (optional)
         local Decal = Instance.new("ImageLabel")
-        Decal.Size = UDim2.new(0, 30, 0, 30)
-        Decal.Position = UDim2.new(0, 2, 0.5, -15)  -- Adjust position as needed
+        Decal.Size = UDim2.new(0, 50, 0, 50)
+        Decal.Position = UDim2.new(0, -2, 0.4, -15)
         Decal.BackgroundTransparency = 1
-        Decal.Image = "rbxassetid://117641907759948"  -- Replace with a white image asset ID or other icon
-        Decal.ImageColor3 = Color3.fromRGB(90, 100, 150)  -- Initial color
+        Decal.Image = "rbxassetid://117641907759948"
+        Decal.ImageColor3 = Color3.fromRGB(90, 100, 150)
         Decal.Parent = TextBox
 
+        -- Create the square window frame around the TextBox
+        local WindowFrame = Instance.new("Frame")
+        WindowFrame.Parent = tabContent
+        WindowFrame.Size = UDim2.new(1, -20, 0, 50) -- Size the frame slightly larger than the TextBox
+        WindowFrame.Position = TextBox.Position - UDim2.new(0, 0, 0, 5) -- Adjust position to be centered around the TextBox
+        WindowFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        WindowFrame.BackgroundTransparency = 0.3
+        WindowFrame.BorderSizePixel = 0
+        WindowFrame.ZIndex = 1 -- Make sure it appears behind the TextBox
+
+        -- Create a text label to describe the purpose of the window
+        local Description = Instance.new("TextLabel")
+        Description.Parent = WindowFrame
+        Description.Size = UDim2.new(1, 0, 1, 0)
+        Description.BackgroundTransparency = 1
+        Description.Text = "Enter text here"
+        Description.TextColor3 = Color3.fromRGB(0, 0, 0)
+        Description.TextStrokeTransparency = 0.8
+        Description.TextSize = 14
+        Description.TextWrapped = true
+        Description.TextXAlignment = Enum.TextXAlignment.Center
+        Description.TextYAlignment = Enum.TextYAlignment.Center
+        Description.ZIndex = 2 -- Make sure it appears above the WindowFrame
+
+        -- Connect the TextBox focus lost event to the callback
         TextBox.FocusLost:Connect(function(enterPressed)
             if enterPressed then
                 callback(TextBox.Text)
@@ -562,6 +588,7 @@ local function createTextBox(tabName, textBoxName, callback)
         warn("Tab '" .. tabName .. "' not found.")
     end
 end
+
 
 return {
     NewTab = createTab,
