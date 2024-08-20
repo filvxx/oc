@@ -1,4 +1,4 @@
---was
+--last
 local Library = {}
 
 function Library.CreateLib(title)
@@ -438,6 +438,9 @@ end)
         end
     end
 
+local UserInputService = game:GetService("UserInputService")
+
+-- Function to create a keybind with proper connection management
 local function createKeybind(tabName, keybindName, initialKeyCode, callback)
     local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
     if not tabContent then
@@ -461,8 +464,6 @@ local function createKeybind(tabName, keybindName, initialKeyCode, callback)
     KeybindButtonCorner.CornerRadius = UDim.new(0, 12)
     KeybindButtonCorner.Parent = KeybindButton
 
-    local UserInputService = game:GetService("UserInputService")
-
     -- Track current keybind and connection
     local currentKeybind = initialKeyCode
     local inputConnection = nil
@@ -470,6 +471,7 @@ local function createKeybind(tabName, keybindName, initialKeyCode, callback)
     -- Function to handle key press
     local function onKeyPress(input)
         if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == currentKeybind then
+            print("Keybind triggered: " .. currentKeybind.Name)
             callback()
         end
     end
@@ -478,6 +480,7 @@ local function createKeybind(tabName, keybindName, initialKeyCode, callback)
     local function updateKeybind(newKeyCode)
         currentKeybind = newKeyCode
         KeybindButton.Text = keybindName .. ": " .. newKeyCode.Name
+        print("Keybind updated to: " .. newKeyCode.Name)
     end
 
     -- Function to clear old input connections
@@ -485,15 +488,18 @@ local function createKeybind(tabName, keybindName, initialKeyCode, callback)
         if inputConnection then
             inputConnection:Disconnect()
             inputConnection = nil
+            print("Old keybind connection cleared.")
         end
     end
 
     -- Set up the initial keybind listener
     inputConnection = UserInputService.InputBegan:Connect(onKeyPress)
+    print("Initial keybind connection set up with: " .. currentKeybind.Name)
 
     -- Handle button click to set a new keybind
     KeybindButton.MouseButton1Click:Connect(function()
         KeybindButton.Text = keybindName .. ": Press a new key"
+        print("Waiting for new keybind...")
 
         -- Clear the old input connection
         clearInputConnection()
