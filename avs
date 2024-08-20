@@ -170,6 +170,51 @@ CollapseButton.MouseButton1Click:Connect(function()
     isCollapsed = not isCollapsed
 end)
 
+-- Function to create a ScrollingFrame with dynamic visibility
+local function createDynamicScrollingFrame(parent, elements, position, size)
+    local scrollingFrame = Instance.new("ScrollingFrame")
+    scrollingFrame.Name = "DynamicScrollingFrame"
+    scrollingFrame.Parent = parent
+    scrollingFrame.Position = position
+    scrollingFrame.Size = size
+    scrollingFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    scrollingFrame.BorderSizePixel = 0
+    scrollingFrame.ScrollBarThickness = 8
+    scrollingFrame.Visible = false -- Initially hidden
+    scrollingFrame.ClipsDescendants = true -- Ensure content outside bounds is hidden
+
+    local UIListLayout = Instance.new("UIListLayout")
+    UIListLayout.Parent = scrollingFrame
+    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout.Padding = UDim.new(0, 10) -- Adjust spacing as needed
+
+    -- Add elements to the ScrollingFrame
+    for _, element in ipairs(elements) do
+        local uiElement = Instance.new(element.Type)
+        uiElement.Name = element.Name
+        uiElement.Parent = scrollingFrame
+        uiElement.Size = element.Size
+        uiElement.Position = element.Position
+        uiElement.BackgroundColor3 = element.BackgroundColor3
+        uiElement.TextColor3 = element.TextColor3
+        uiElement.Text = element.Text
+        -- Add additional properties as needed
+    end
+
+    -- Update the CanvasSize based on the content
+    scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, UIListLayout.AbsoluteContentSize.Y)
+    
+    -- Update the visibility of the ScrollingFrame
+    local function updateVisibility()
+        local contentHeight = UIListLayout.AbsoluteContentSize.Y
+        local frameHeight = scrollingFrame.Size.Y.Offset
+        scrollingFrame.Visible = contentHeight > frameHeight
+    end
+
+    -- Update visibility initially and whenever content changes
+    updateVisibility()
+    UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateVisibility)
+end
 
     local TabButtons = {}
 
