@@ -1,4 +1,4 @@
---hatt
+--has
 local Library = {}
 
 function Library.CreateLib(title)
@@ -171,34 +171,38 @@ CollapseButton.MouseButton1Click:Connect(function()
 end)
 
 
+local MainFrame = script.Parent -- Assuming MainFrame is the parent of these scrolling frames
+
+-- Tabs Scrolling Frame
 local TabsScrollingFrame = Instance.new("ScrollingFrame")
 TabsScrollingFrame.Name = "TabsScrollingFrame"
 TabsScrollingFrame.Parent = MainFrame
-TabsScrollingFrame.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
+TabsScrollingFrame.BackgroundTransparency = 1
 TabsScrollingFrame.Position = UDim2.new(0, 0, 0, 40)
 TabsScrollingFrame.Size = UDim2.new(0.3, 0, 1, -40)
 TabsScrollingFrame.BorderSizePixel = 0
 TabsScrollingFrame.ScrollBarThickness = 8
-TabsScrollingFrame.CanvasSize = UDim2.new(0, 0, 1, 0) -- Set initial CanvasSize
-TabsScrollingFrame.ClipsDescendants = true
+TabsScrollingFrame.CanvasSize = UDim2.new(0, 0, 1, 0) -- Will be adjusted based on content
+TabsScrollingFrame.ClipsDescendants = false
 
 local TabsFrame = Instance.new("Frame")
 TabsFrame.Name = "TabsFrame"
 TabsFrame.Parent = TabsScrollingFrame
 TabsFrame.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
-TabsFrame.Size = UDim2.new(0, 200, 1, 0) -- Adjust the size as needed
+TabsFrame.Size = UDim2.new(0, 200, 1, 0) -- Adjust size as needed
 TabsFrame.BorderSizePixel = 0
 
+-- Contents Scrolling Frame
 local ContentsScrollingFrame = Instance.new("ScrollingFrame")
 ContentsScrollingFrame.Name = "ContentsScrollingFrame"
 ContentsScrollingFrame.Parent = MainFrame
-ContentsScrollingFrame.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
+ContentsScrollingFrame.BackgroundTransparency = 1
 ContentsScrollingFrame.Position = UDim2.new(0.3, 10, 0, 40)
 ContentsScrollingFrame.Size = UDim2.new(0.7, -12, 1, -40)
 ContentsScrollingFrame.BorderSizePixel = 0
 ContentsScrollingFrame.ScrollBarThickness = 8
-ContentsScrollingFrame.CanvasSize = UDim2.new(0, 0, 1, 0) -- Set initial CanvasSize
-ContentsScrollingFrame.ClipsDescendants = true
+ContentsScrollingFrame.CanvasSize = UDim2.new(0, 0, 1, 0) -- Will be adjusted based on content
+ContentsScrollingFrame.ClipsDescendants = false
 
 local ContentsFrame = Instance.new("Frame")
 ContentsFrame.Name = "ContentsFrame"
@@ -206,6 +210,22 @@ ContentsFrame.Parent = ContentsScrollingFrame
 ContentsFrame.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
 ContentsFrame.Size = UDim2.new(1, 0, 1, 0)
 ContentsFrame.BorderSizePixel = 0
+
+-- Function to update visibility based on content size
+local function updateScrollFrames()
+    -- Update TabsScrollingFrame visibility
+    TabsScrollingFrame.CanvasSize = UDim2.new(0, TabsFrame.AbsoluteSize.X, 1, 0)
+    TabsScrollingFrame.Visible = TabsFrame.AbsoluteSize.X > TabsScrollingFrame.AbsoluteSize.X
+
+    -- Update ContentsScrollingFrame visibility
+    ContentsScrollingFrame.CanvasSize = UDim2.new(0, ContentsFrame.AbsoluteSize.X, 1, 0)
+    ContentsScrollingFrame.Visible = ContentsFrame.AbsoluteSize.Y > ContentsScrollingFrame.AbsoluteSize.Y
+end
+
+-- Connect the update function to size changes
+MainFrame:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateScrollFrames)
+updateScrollFrames() -- Initial check
+
 
     local TabButtons = {}
 
