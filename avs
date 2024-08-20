@@ -1,4 +1,4 @@
---loll
+
 local Library = {}
 
 function Library.CreateLib(title)
@@ -524,12 +524,52 @@ local function createKeybind(tabName, keybindName, initialKeyCode, callback)
     end
 end
 
+local function createTextBox(tabName, textBoxName, callback)
+    local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
+    if tabContent then
+        local TextBox = Instance.new("TextBox")
+        TextBox.Name = textBoxName .. "TextBox"
+        TextBox.Parent = tabContent
+        TextBox.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
+        TextBox.Position = getNextPosition(tabContent)
+        TextBox.Size = UDim2.new(1, -20, 0, 40)
+        TextBox.Font = Enum.Font.SourceSans
+        TextBox.PlaceholderText = textBoxName
+        TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+        TextBox.TextSize = 18
+        TextBox.BorderSizePixel = 0
+        TextBox.ClearTextOnFocus = false
+
+        local TextBoxCorner = Instance.new("UICorner")
+        TextBoxCorner.CornerRadius = UDim.new(0, 12)
+        TextBoxCorner.Parent = TextBox
+
+        -- Create the ImageLabel to act as the decal (optional)
+        local Decal = Instance.new("ImageLabel")
+        Decal.Size = UDim2.new(0, 30, 0, 30)
+        Decal.Position = UDim2.new(0, 2, 0.5, -15)  -- Adjust position as needed
+        Decal.BackgroundTransparency = 1
+        Decal.Image = "rbxassetid://117641907759948"  -- Replace with a white image asset ID or other icon
+        Decal.ImageColor3 = Color3.fromRGB(90, 100, 150)  -- Initial color
+        Decal.Parent = TextBox
+
+        TextBox.FocusLost:Connect(function(enterPressed)
+            if enterPressed then
+                callback(TextBox.Text)
+            end
+        end)
+    else
+        warn("Tab '" .. tabName .. "' not found.")
+    end
+end
+
 return {
     NewTab = createTab,
     NewButton = createButton,
     NewToggle = createToggle,
     NewDropdown = createDropdown,
-    NewKeybind = createKeybind
+    NewKeybind = createKeybind,
+    NewTextBox = createTextBox
 }
 end
 
