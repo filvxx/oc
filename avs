@@ -462,6 +462,7 @@ local function createKeybind(tabName, keybindName, initialKeyCode, callback)
         -- Track current keybind and connection
         local currentKeybind = initialKeyCode
         local currentConnection = nil
+        local isChangingKeybind = false
 
         local function updateKeybind(newKeyCode)
             currentKeybind = newKeyCode
@@ -483,6 +484,8 @@ local function createKeybind(tabName, keybindName, initialKeyCode, callback)
 
         -- Set up new keybind on button click
         KeybindButton.MouseButton1Click:Connect(function()
+            if isChangingKeybind then return end  -- Prevent multiple key change requests
+            isChangingKeybind = true
             KeybindButton.Text = keybindName .. ": Press a new key"
 
             -- Disconnect the previous connection if it exists
@@ -494,6 +497,7 @@ local function createKeybind(tabName, keybindName, initialKeyCode, callback)
                     updateKeybind(input.KeyCode)
                     -- Immediately disconnect after setting the new keybind
                     disconnectCurrentConnection()
+                    isChangingKeybind = false  -- Allow future key changes
                 end
             end)
         end)
