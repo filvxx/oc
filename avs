@@ -1,4 +1,4 @@
---watt
+--wattss
 local Library = {}
 
 function Library.CreateLib(title)
@@ -459,9 +459,8 @@ local function createKeybind(tabName, keybindName, initialKeyCode, callback)
 
         local UserInputService = game:GetService("UserInputService")
 
-        -- Store current keybind
+        -- Track current keybind and connection
         local currentKeybind = initialKeyCode
-        -- Store the current connection to disconnect later
         local currentConnection = nil
 
         local function updateKeybind(newKeyCode)
@@ -475,7 +474,6 @@ local function createKeybind(tabName, keybindName, initialKeyCode, callback)
             end
         end
 
-        -- Disconnect any existing connection
         local function disconnectCurrentConnection()
             if currentConnection then
                 currentConnection:Disconnect()
@@ -483,7 +481,7 @@ local function createKeybind(tabName, keybindName, initialKeyCode, callback)
             end
         end
 
-        -- To switch keybind on click
+        -- Set up new keybind on button click
         KeybindButton.MouseButton1Click:Connect(function()
             KeybindButton.Text = keybindName .. ": Press a new key"
 
@@ -494,12 +492,14 @@ local function createKeybind(tabName, keybindName, initialKeyCode, callback)
             currentConnection = UserInputService.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.Keyboard then
                     updateKeybind(input.KeyCode)
-                    disconnectCurrentConnection()  -- Disconnect after setting the new keybind
+                    -- Immediately disconnect after setting the new keybind
+                    disconnectCurrentConnection()
                 end
             end)
         end)
 
         -- Connect the key press handler to the UserInputService
+        disconnectCurrentConnection()  -- Ensure no previous listeners are active
         currentConnection = UserInputService.InputBegan:Connect(onKeyPress)
     else
         warn("Tab '" .. tabName .. "' not found.")
