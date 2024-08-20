@@ -457,6 +457,16 @@ local function createKeybind(tabName, keybindName, initialKeyCode, callback)
         KeybindButtonCorner.CornerRadius = UDim.new(0, 12)
         KeybindButtonCorner.Parent = KeybindButton
 
+            -- Create the ImageLabel for the dropdown icon
+            local Decal = Instance.new("ImageLabel")
+            Decal.Size = UDim2.new(0, 55, 0, 55)  -- Adjust size as needed
+            Decal.Position = UDim2.new(0, 47, 0.757, -10)  -- Adjust position to fit within the button
+            Decal.BackgroundTransparency = 1  -- Ensure the background is transparent
+            Decal.Image = "rbxassetid://125979786113028"  -- Replace with your decal ID
+            Decal.ImageColor3 = Color3.fromRGB(90, 100, 150)  -- Set the image color if needed
+            Decal.AnchorPoint = Vector2.new(1, 0.5)  -- Anchor to the right and center vertically
+            Decal.Parent = KeybindButton
+
         local UserInputService = game:GetService("UserInputService")
 
         -- Track current keybind and connection
