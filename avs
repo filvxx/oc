@@ -357,6 +357,15 @@ local function createDropdown(tabName, dropdownName, options, callback)
     end
 end
 
+
+    return {
+        NewTab = createTab,
+        NewButton = createButton,
+        NewToggle = createToggle,
+        NewDropdown = createDropdown
+    }
+end
+
 local RollButton = Instance.new("TextButton")
 RollButton.Name = "RollButton"
 RollButton.Parent = MainFrame
@@ -402,14 +411,6 @@ for _, child in pairs(MainFrame:GetChildren()) do
     if child ~= RollButton then
         child.Visible = true
     end
-end
-
-    return {
-        NewTab = createTab,
-        NewButton = createButton,
-        NewToggle = createToggle,
-        NewDropdown = createDropdown
-    }
 end
 
 return Library
