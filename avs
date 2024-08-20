@@ -1,3 +1,4 @@
+-woz
 local Library = {}
 
 function Library.CreateLib(title)
@@ -125,6 +126,41 @@ function Library.CreateLib(title)
     CloseButton.MouseButton1Click:Connect(function()
         ScreenGui:Destroy()
     end)
+
+-- Create the "-" button for collapsing and expanding the GUI
+local CollapseButton = Instance.new("TextButton")
+CollapseButton.Name = "CollapseButton"
+CollapseButton.Parent = TitleBar
+CollapseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)  -- Red button for collapsing
+CollapseButton.Position = UDim2.new(1, -50, 0, 5)  -- Position it to the right of the title bar
+CollapseButton.Size = UDim2.new(0, 20, 0, 20)
+CollapseButton.Font = Enum.Font.SourceSansBold
+CollapseButton.Text = "-"
+CollapseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CollapseButton.TextSize = 18
+CollapseButton.BorderSizePixel = 0
+CollapseButton.ZIndex = 2
+
+local isCollapsed = false
+
+CollapseButton.MouseButton1Click:Connect(function()
+    if isCollapsed then
+        -- Expand the GUI
+        MainFrame.Size = UDim2.new(0, 500, 0, 350)
+        TabsFrame.Visible = true
+        ContentsFrame.Visible = true
+        TitleBar.Visible = true
+        CollapseButton.Text = "-"
+    else
+        -- Collapse the GUI
+        MainFrame.Size = UDim2.new(0, 500, 0, 40)  -- Adjust the height to only show the title bar
+        TabsFrame.Visible = false
+        ContentsFrame.Visible = false
+        TitleBar.Visible = true
+        CollapseButton.Text = "+"
+    end
+    isCollapsed = not isCollapsed
+end)
 
     local TabButtons = {}
 
