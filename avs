@@ -162,6 +162,7 @@ CollapseButton.MouseButton1Click:Connect(function()
     isCollapsed = not isCollapsed
 end)
 
+
     local TabButtons = {}
 
     local function createTab(name, position)
