@@ -1,4 +1,4 @@
---ups
+--ho
 local Library = {}
 
 function Library.CreateLib(title)
@@ -224,7 +224,7 @@ end)
     local function getNextPosition(tabContent)
         local yPos = 5
         for _, child in ipairs(tabContent:GetChildren()) do
-            if child:IsA("TextButton") or child:IsA("Frame") then
+            if child:IsA("TextButton") or child:IsA("TextLabel") then
                 yPos = yPos + child.Size.Y.Offset + 5
             end
         end
@@ -527,21 +527,14 @@ end
 local function createTextBox(tabName, labelText, placeholderText, callback)
     local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
     if tabContent then
-        -- Create a container for the label and text box
-        local container = Instance.new("Frame")
-        container.Name = labelText .. "Container"
-        container.Parent = tabContent
-        container.BackgroundTransparency = 1
-        container.Size = UDim2.new(1, 0, 0, 50)
-        container.Position = getNextPosition(tabContent)
-        
+
         -- Create the label for the text box
         local label = Instance.new("TextLabel")
         label.Name = labelText .. "Label"
-        label.Parent = container
+        label.Parent = tabContent
         label.BackgroundTransparency = 1
-        label.Position = UDim2.new(0, 0, 0, 10)
-        label.Size = UDim2.new(0, 150, 0, 30) -- Adjust size as needed
+        label.Position = getNextPosition(tabContent)
+        label.Size = UDim2.new(1, -20, 0, 40) -- Adjust size as needed
         label.Font = Enum.Font.SourceSans
         label.Text = labelText
         label.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -550,7 +543,7 @@ local function createTextBox(tabName, labelText, placeholderText, callback)
         -- Create the text box
         local TextBox = Instance.new("TextBox")
         TextBox.Name = labelText .. "TextBox"
-        TextBox.Parent = container
+        TextBox.Parent = label
         TextBox.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
         TextBox.Position = UDim2.new(0, 160, 0, 0) -- Positioned next to the label
         TextBox.Size = UDim2.new(1, -170, 0, 40)
