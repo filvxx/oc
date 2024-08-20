@@ -1,4 +1,4 @@
---ha
+--hatt
 local Library = {}
 
 function Library.CreateLib(title)
@@ -546,8 +546,8 @@ local function createTextBox(tabName, labelText, placeholderText, callback)
         label.Name = labelText .. "Label"
         label.Parent = tabContent
         label.BackgroundTransparency = 1
-        label.Position = UDim2.new(TextBox.Position.X.Scale, TextBox.Position.X.Offset, TextBox.Position.Y.Scale, TextBox.Position.Y.Offset - 50) -- Position above the TextBox
-        label.Size = UDim2.new(TextBox.Size.X.Scale, TextBox.Size.X.Offset, 0, 20) -- Adjust size as needed
+        label.Position = UDim2.new(TextBox.Position.X.Scale, TextBox.Position.X.Offset - 100, TextBox.Position.Y.Scale, TextBox.Position.Y.Offset) 
+        label.Size = UDim2.new(0, 100, 0, 40) -- Adjust size as needed
         label.Font = Enum.Font.SourceSans
         label.Text = labelText
         label.TextColor3 = Color3.fromRGB(255, 255, 255)
