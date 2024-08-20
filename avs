@@ -170,51 +170,62 @@ CollapseButton.MouseButton1Click:Connect(function()
     isCollapsed = not isCollapsed
 end)
 
--- Function to create a ScrollingFrame with dynamic visibility
-local function createDynamicScrollingFrame(parent, elements, position, size)
-    local scrollingFrame = Instance.new("ScrollingFrame")
-    scrollingFrame.Name = "DynamicScrollingFrame"
-    scrollingFrame.Parent = parent
-    scrollingFrame.Position = position
-    scrollingFrame.Size = size
-    scrollingFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    scrollingFrame.BorderSizePixel = 0
-    scrollingFrame.ScrollBarThickness = 8
-    scrollingFrame.Visible = false -- Initially hidden
-    scrollingFrame.ClipsDescendants = true -- Ensure content outside bounds is hidden
-
-    local UIListLayout = Instance.new("UIListLayout")
-    UIListLayout.Parent = scrollingFrame
-    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    UIListLayout.Padding = UDim.new(0, 10) -- Adjust spacing as needed
-
-    -- Add elements to the ScrollingFrame
-    for _, element in ipairs(elements) do
-        local uiElement = Instance.new(element.Type)
-        uiElement.Name = element.Name
-        uiElement.Parent = scrollingFrame
-        uiElement.Size = element.Size
-        uiElement.Position = element.Position
-        uiElement.BackgroundColor3 = element.BackgroundColor3
-        uiElement.TextColor3 = element.TextColor3
-        uiElement.Text = element.Text
-        -- Add additional properties as needed
-    end
-
-    -- Update the CanvasSize based on the content
-    scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, UIListLayout.AbsoluteContentSize.Y)
+local function updateScrollingFrame()
+    -- Check if ContentsFrame has more than 6 buttons or other elements
+    local contentFrameChildren = ContentsFrame:GetChildren()
+    local elementCount = 0
     
-    -- Update the visibility of the ScrollingFrame
-    local function updateVisibility()
-        local contentHeight = UIListLayout.AbsoluteContentSize.Y
-        local frameHeight = scrollingFrame.Size.Y.Offset
-        scrollingFrame.Visible = contentHeight > frameHeight
+    for _, child in ipairs(contentFrameChildren) do
+        if child:IsA("TextButton") or child:IsA("TextBox") or child:IsA("TextLabel") then
+            elementCount = elementCount + 1
+        end
     end
 
-    -- Update visibility initially and whenever content changes
-    updateVisibility()
-    UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateVisibility)
+    -- If there are more than 6 elements, ensure a ScrollingFrame exists
+    if elementCount > 6 then
+        -- Create the ScrollingFrame if it doesn't already exist
+        local scrollingFrame = ContentsFrame:FindFirstChild("ScrollingFrame")
+        if not scrollingFrame then
+            scrollingFrame = Instance.new("ScrollingFrame")
+            scrollingFrame.Name = "ScrollingFrame"
+            scrollingFrame.Parent = ContentsFrame
+            scrollingFrame.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
+            scrollingFrame.Position = UDim2.new(0, 0, 0, 0)
+            scrollingFrame.Size = UDim2.new(1, 0, 1, 0)
+            scrollingFrame.BorderSizePixel = 0
+            scrollingFrame.ScrollBarThickness = 8
+            scrollingFrame.ClipsDescendants = true
+            
+            local uiListLayout = Instance.new("UIListLayout")
+            uiListLayout.Parent = scrollingFrame
+            uiListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+            uiListLayout.Padding = UDim.new(0, 5)
+        end
+
+        -- Move existing content into ScrollingFrame
+        for _, child in ipairs(contentFrameChildren) do
+            if child:IsA("TextButton") or child:IsA("TextBox") or child:IsA("TextLabel") then
+                child.Parent = scrollingFrame
+            end
+        end
+    else
+        -- If there are 6 or fewer elements, keep the layout without a ScrollingFrame
+        local scrollingFrame = ContentsFrame:FindFirstChild("ScrollingFrame")
+        if scrollingFrame then
+            -- Move elements out of the ScrollingFrame and into ContentsFrame
+            for _, child in ipairs(scrollingFrame:GetChildren()) do
+                if child:IsA("TextButton") or child:IsA("TextBox") or child:IsA("TextLabel") then
+                    child.Parent = ContentsFrame
+                end
+            end
+            -- Remove the ScrollingFrame
+            scrollingFrame:Destroy()
+        end
+    end
 end
+
+-- Call updateScrollingFrame after adding buttons or other elements
+updateScrollingFrame()  -- This line calls the function to update the scrolling frame
 
     local TabButtons = {}
 
