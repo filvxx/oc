@@ -546,7 +546,7 @@ local function createTextBox(tabName, labelText, placeholderText, callback)
         label.Name = labelText .. "Label"
         label.Parent = tabContent
         label.BackgroundTransparency = 1
-        label.Position = UDim2.new(TextBox.Position.X.Scale, TextBox.Position.X.Offset - 100, TextBox.Position.Y.Scale, TextBox.Position.Y.Offset) 
+        label.Position = UDim2.new(TextBox.Position.X.Scale, TextBox.Position.X.Offset -50, TextBox.Position.Y.Scale, TextBox.Position.Y.Offset) 
         label.Size = UDim2.new(0, 100, 0, 40) -- Adjust size as needed
         label.Font = Enum.Font.SourceSans
         label.Text = labelText
