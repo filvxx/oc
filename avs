@@ -1,4 +1,4 @@
---update
+--up
 local Library = {}
 
 function Library.CreateLib(title)
@@ -224,7 +224,7 @@ end)
     local function getNextPosition(tabContent)
         local yPos = 5
         for _, child in ipairs(tabContent:GetChildren()) do
-            if child:IsA("TextButton") then
+            if child:IsA("TextButton") or child:IsA("TextBox") then
                 yPos = yPos + child.Size.Y.Offset + 5
             end
         end
@@ -524,26 +524,47 @@ local function createKeybind(tabName, keybindName, initialKeyCode, callback)
     end
 end
 
-local function createTextBox(tabName, textBoxName, callback)
+local function createTextBox(tabName, textBoxName, nameLabel, callback)
     local tabContent = ContentsFrame:FindFirstChild(tabName .. "Content")
     if tabContent then
+        -- Create a container for the text box and its label
+        local container = Instance.new("Frame")
+        container.Name = textBoxName .. "Container"
+        container.Parent = tabContent
+        container.BackgroundTransparency = 1
+        container.Size = UDim2.new(1, 0, 0, 50)
+        container.Position = getNextPosition(tabContent)
+        
+        -- Create the label for the text box name
+        local label = Instance.new("TextLabel")
+        label.Name = textBoxName .. "Label"
+        label.Parent = container
+        label.BackgroundTransparency = 1
+        label.Position = UDim2.new(0, 0, 0, 10)
+        label.Size = UDim2.new(0, 100, 0, 30)
+        label.Font = Enum.Font.SourceSans
+        label.Text = nameLabel or textBoxName
+        label.TextColor3 = Color3.fromRGB(255, 255, 255)
+        label.TextSize = 18
+        
+        -- Create the text box
         local TextBox = Instance.new("TextBox")
         TextBox.Name = textBoxName .. "TextBox"
-        TextBox.Parent = tabContent
+        TextBox.Parent = container
         TextBox.BackgroundColor3 = Color3.fromRGB(70, 75, 105)
-        TextBox.Position = getNextPosition(tabContent)
-        TextBox.Size = UDim2.new(1, -20, 0, 40)
+        TextBox.Position = UDim2.new(0, 110, 0, 0)
+        TextBox.Size = UDim2.new(1, -120, 0, 40)
         TextBox.Font = Enum.Font.SourceSans
-        TextBox.PlaceholderText = textBoxName .. ": "  
+        TextBox.PlaceholderText = textBoxName .. "..."
         TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
         TextBox.TextSize = 18
         TextBox.BorderSizePixel = 0
         TextBox.ClearTextOnFocus = false
-
+        
         local TextBoxCorner = Instance.new("UICorner")
         TextBoxCorner.CornerRadius = UDim.new(0, 12)
         TextBoxCorner.Parent = TextBox
-
+        
         local Decal = Instance.new("ImageLabel")
         Decal.Size = UDim2.new(0, 50, 0, 50)
         Decal.Position = UDim2.new(0, -2, 0.4, -15)
@@ -551,7 +572,7 @@ local function createTextBox(tabName, textBoxName, callback)
         Decal.Image = "rbxassetid://117641907759948"
         Decal.ImageColor3 = Color3.fromRGB(90, 100, 150)
         Decal.Parent = TextBox
-
+        
         TextBox.FocusLost:Connect(function(enterPressed)
             if enterPressed then
                 callback(TextBox.Text)
