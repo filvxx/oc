@@ -1,4 +1,4 @@
---last
+--lala
 local Library = {}
 
 function Library.CreateLib(title)
@@ -467,19 +467,16 @@ local function createKeybind(tabName, keybindName, initialKeyCode, callback)
         local function updateKeybind(newKeyCode)
             currentKeybind = newKeyCode
             KeybindButton.Text = keybindName .. ": " .. newKeyCode.Name
-        end
 
-        local function onKeyPress(input)
-            if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == currentKeybind then
-                callback()
-            end
-        end
-
-        local function disconnectCurrentConnection()
+            -- Reconnect the key press handler to use the new keybind
             if currentConnection then
                 currentConnection:Disconnect()
-                currentConnection = nil
             end
+            currentConnection = UserInputService.InputBegan:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == currentKeybind then
+                    callback()
+                end
+            end)
         end
 
         -- Set up new keybind on button click
@@ -489,22 +486,27 @@ local function createKeybind(tabName, keybindName, initialKeyCode, callback)
             KeybindButton.Text = keybindName .. ": Press a new key"
 
             -- Disconnect the previous connection if it exists
-            disconnectCurrentConnection()
+            if currentConnection then
+                currentConnection:Disconnect()
+            end
 
             -- Listen for a new key press
             currentConnection = UserInputService.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.Keyboard then
                     updateKeybind(input.KeyCode)
                     -- Immediately disconnect after setting the new keybind
-                    disconnectCurrentConnection()
+                    currentConnection:Disconnect()
                     isChangingKeybind = false  -- Allow future key changes
                 end
             end)
         end)
 
-        -- Connect the key press handler to the UserInputService
-        disconnectCurrentConnection()  -- Ensure no previous listeners are active
-        currentConnection = UserInputService.InputBegan:Connect(onKeyPress)
+        -- Initial connection for the initial keybind
+        currentConnection = UserInputService.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == currentKeybind then
+                callback()
+            end
+        end)
     else
         warn("Tab '" .. tabName .. "' not found.")
     end
