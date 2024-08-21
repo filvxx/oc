@@ -67,45 +67,41 @@ function Library.CreateLib(title)
     ContentsFrameCorner.CornerRadius = UDim.new(0, 12)
     ContentsFrameCorner.Parent = ContentsFrame
 
-    -- Add scrolling frame for TabsFrame
-    local TabsScrollFrame = Instance.new("ScrollingFrame")
-    TabsScrollFrame.Name = "TabsScrollFrame"
-    TabsScrollFrame.Parent = TabsFrame
-    TabsScrollFrame.BackgroundTransparency = 1
-    TabsScrollFrame.Size = UDim2.new(1, 0, 1, 0)
-    TabsScrollFrame.ScrollBarThickness = 6
-    TabsScrollFrame.ScrollBarImageColor3 = Color3.fromRGB(90, 100, 150)
-    TabsScrollFrame.CanvasSize = UDim2.new(0, 0, 0, 0) -- Will be updated dynamically
+-- Create a scrolling frame for TabsFrame
+local TabsScrollingFrame = Instance.new("ScrollingFrame")
+TabsScrollingFrame.Name = "TabsScrollingFrame"
+TabsScrollingFrame.Parent = MainFrame
+TabsScrollingFrame.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
+TabsScrollingFrame.Position = UDim2.new(0, 0, 0, 40)
+TabsScrollingFrame.Size = UDim2.new(0.3, 0, 1, -40)
+TabsScrollingFrame.BorderSizePixel = 0
+TabsScrollingFrame.ScrollBarThickness = 8
+TabsScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 0)  -- Adjust canvas size dynamically
+TabsScrollingFrame.ClipsDescendants = false
 
-    local TabsLayout = Instance.new("UIListLayout")
-    TabsLayout.Parent = TabsScrollFrame
-    TabsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+local TabsScrollingFrameCorner = Instance.new("UICorner")
+TabsScrollingFrameCorner.CornerRadius = UDim.new(0, 12)
+TabsScrollingFrameCorner.Parent = TabsScrollingFrame
 
-    local ContentsFrame = Instance.new("Frame")
-    ContentsFrame.Name = "ContentsFrame"
-    ContentsFrame.Parent = MainFrame
-    ContentsFrame.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
-    ContentsFrame.Position = UDim2.new(0.3, 10, 0, 40)
-    ContentsFrame.Size = UDim2.new(0.7, -12, 1, -40)
-    ContentsFrame.BorderSizePixel = 0
+-- Create a scrolling frame for ContentsFrame
+local ContentsScrollingFrame = Instance.new("ScrollingFrame")
+ContentsScrollingFrame.Name = "ContentsScrollingFrame"
+ContentsScrollingFrame.Parent = MainFrame
+ContentsScrollingFrame.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
+ContentsScrollingFrame.Position = UDim2.new(0.3, 10, 0, 40)
+ContentsScrollingFrame.Size = UDim2.new(0.7, -12, 1, -40)
+ContentsScrollingFrame.BorderSizePixel = 0
+ContentsScrollingFrame.ScrollBarThickness = 8
+ContentsScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 0)  -- Adjust canvas size dynamically
+ContentsScrollingFrame.ClipsDescendants = false
 
-    local ContentsFrameCorner = Instance.new("UICorner")
-    ContentsFrameCorner.CornerRadius = UDim.new(0, 12)
-    ContentsFrameCorner.Parent = ContentsFrame
+local ContentsScrollingFrameCorner = Instance.new("UICorner")
+ContentsScrollingFrameCorner.CornerRadius = UDim.new(0, 12)
+ContentsScrollingFrameCorner.Parent = ContentsScrollingFrame
 
-    -- Add scrolling frame for ContentsFrame
-    local ContentsScrollFrame = Instance.new("ScrollingFrame")
-    ContentsScrollFrame.Name = "ContentsScrollFrame"
-    ContentsScrollFrame.Parent = ContentsFrame
-    ContentsScrollFrame.BackgroundTransparency = 1
-    ContentsScrollFrame.Size = UDim2.new(1, 0, 1, 0)
-    ContentsScrollFrame.ScrollBarThickness = 6
-    ContentsScrollFrame.ScrollBarImageColor3 = Color3.fromRGB(90, 100, 150)
-    ContentsScrollFrame.CanvasSize = UDim2.new(0, 0, 0, 0) -- Will be updated dynamically
-
-    local ContentsLayout = Instance.new("UIListLayout")
-    ContentsLayout.Parent = ContentsScrollFrame
-    ContentsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+-- Replace TabsFrame and ContentsFrame with their scrolling counterparts
+TabsFrame.Parent = TabsScrollingFrame
+ContentsFrame.Parent = ContentsScrollingFrame
 
     -- Dragging functionality
     local dragging = false
