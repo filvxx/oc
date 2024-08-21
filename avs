@@ -67,6 +67,46 @@ function Library.CreateLib(title)
     ContentsFrameCorner.CornerRadius = UDim.new(0, 12)
     ContentsFrameCorner.Parent = ContentsFrame
 
+    -- Add scrolling frame for TabsFrame
+    local TabsScrollFrame = Instance.new("ScrollingFrame")
+    TabsScrollFrame.Name = "TabsScrollFrame"
+    TabsScrollFrame.Parent = TabsFrame
+    TabsScrollFrame.BackgroundTransparency = 1
+    TabsScrollFrame.Size = UDim2.new(1, 0, 1, 0)
+    TabsScrollFrame.ScrollBarThickness = 6
+    TabsScrollFrame.ScrollBarImageColor3 = Color3.fromRGB(90, 100, 150)
+    TabsScrollFrame.CanvasSize = UDim2.new(0, 0, 0, 0) -- Will be updated dynamically
+
+    local TabsLayout = Instance.new("UIListLayout")
+    TabsLayout.Parent = TabsScrollFrame
+    TabsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+    local ContentsFrame = Instance.new("Frame")
+    ContentsFrame.Name = "ContentsFrame"
+    ContentsFrame.Parent = MainFrame
+    ContentsFrame.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
+    ContentsFrame.Position = UDim2.new(0.3, 10, 0, 40)
+    ContentsFrame.Size = UDim2.new(0.7, -12, 1, -40)
+    ContentsFrame.BorderSizePixel = 0
+
+    local ContentsFrameCorner = Instance.new("UICorner")
+    ContentsFrameCorner.CornerRadius = UDim.new(0, 12)
+    ContentsFrameCorner.Parent = ContentsFrame
+
+    -- Add scrolling frame for ContentsFrame
+    local ContentsScrollFrame = Instance.new("ScrollingFrame")
+    ContentsScrollFrame.Name = "ContentsScrollFrame"
+    ContentsScrollFrame.Parent = ContentsFrame
+    ContentsScrollFrame.BackgroundTransparency = 1
+    ContentsScrollFrame.Size = UDim2.new(1, 0, 1, 0)
+    ContentsScrollFrame.ScrollBarThickness = 6
+    ContentsScrollFrame.ScrollBarImageColor3 = Color3.fromRGB(90, 100, 150)
+    ContentsScrollFrame.CanvasSize = UDim2.new(0, 0, 0, 0) -- Will be updated dynamically
+
+    local ContentsLayout = Instance.new("UIListLayout")
+    ContentsLayout.Parent = ContentsScrollFrame
+    ContentsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
     -- Dragging functionality
     local dragging = false
     local dragInput, startPos, startDragPos
