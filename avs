@@ -81,47 +81,6 @@ ContentsFrame.Position = UDim2.new(0.3, 10, 0, 40)
 ContentsFrame.Size = UDim2.new(0.7, -12, 1, -40)
 ContentsFrame.Parent = MainFrame
 
--- Create Scrolling Frames
-local TabsScrollingFrame = Instance.new("ScrollingFrame")
-TabsScrollingFrame.Name = "TabsScrollingFrame"
-TabsScrollingFrame.Parent = MainFrame
-TabsScrollingFrame.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
-TabsScrollingFrame.Position = UDim2.new(0, 0, 0, 40)
-TabsScrollingFrame.Size = UDim2.new(0.3, 0, 1, -40)
-TabsScrollingFrame.BorderSizePixel = 0
-TabsScrollingFrame.ScrollBarThickness = 8
-TabsScrollingFrame.ClipsDescendants = false
-TabsScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, TabsFrame.AbsoluteContentSize.Y)
-
-  local TabsScrollingFrame = Instance.new("ScrollingFrame")
-    TabsScrollingFrame.Name = "TabsScrollingFrame"
-    TabsScrollingFrame.Parent = MainFrame
-    TabsScrollingFrame.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
-    TabsScrollingFrame.Position = UDim2.new(0, 0, 0, 40)
-    TabsScrollingFrame.Size = UDim2.new(0.3, 0, 1, -40)
-    TabsScrollingFrame.BorderSizePixel = 0
-    TabsScrollingFrame.ScrollBarThickness = 8
-    TabsScrollingFrame.ClipsDescendants = false
-    TabsScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
-
-    local TabsScrollingFrameCorner = Instance.new("UICorner")
-    TabsScrollingFrameCorner.CornerRadius = UDim.new(0, 12)
-    TabsScrollingFrameCorner.Parent = TabsScrollingFrame
-
-    local ContentsScrollingFrame = Instance.new("ScrollingFrame")
-    ContentsScrollingFrame.Name = "ContentsScrollingFrame"
-    ContentsScrollingFrame.Parent = MainFrame
-    ContentsScrollingFrame.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
-    ContentsScrollingFrame.Position = UDim2.new(0.3, 10, 0, 40)
-    ContentsScrollingFrame.Size = UDim2.new(0.7, -12, 1, -40)
-    ContentsScrollingFrame.BorderSizePixel = 0
-    ContentsScrollingFrame.ScrollBarThickness = 8
-    ContentsScrollingFrame.ClipsDescendants = false
-    ContentsScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
-
-    local ContentsScrollingFrameCorner = Instance.new("UICorner")
-    ContentsScrollingFrameCorner.CornerRadius = UDim.new(0, 12)
-    ContentsScrollingFrameCorner.Parent = ContentsScrollingFrame
 
     -- Dragging functionality
     local dragging = false
