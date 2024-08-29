@@ -1,4 +1,4 @@
---bia
+--mits
 local Library = {}
 
 function Library.CreateLib(title)
