@@ -1,3 +1,4 @@
+--updated
 local Library = {}
 
 function Library.CreateLib(title)
@@ -171,6 +172,7 @@ end)
 
 
 
+
     local TabButtons = {}
 
     local function createTab(name, position)
@@ -220,6 +222,46 @@ end)
 
         return ContentFrame
     end
+
+-- Your existing UI code
+
+local ContentsFrame = Instance.new("ScrollingFrame")
+ContentsFrame.Name = "ContentsFrame"
+ContentsFrame.Parent = MainFrame
+ContentsFrame.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
+ContentsFrame.Position = UDim2.new(0.3, 10, 0, 40)
+ContentsFrame.Size = UDim2.new(0.7, -12, 1, -40)
+ContentsFrame.BorderSizePixel = 0
+ContentsFrame.ScrollBarThickness = 6  -- Set the thickness of the scrollbar
+ContentsFrame.CanvasSize = UDim2.new(0, 0, 0, 0) -- This will be adjusted dynamically
+
+local ContentsFrameCorner = Instance.new("UICorner")
+ContentsFrameCorner.CornerRadius = UDim.new(0, 12)
+ContentsFrameCorner.Parent = ContentsFrame
+
+local ListLayout = Instance.new("UIListLayout")
+ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+ListLayout.Padding = UDim.new(0, 5)  -- Add padding between elements
+ListLayout.Parent = ContentsFrame
+
+local Padding = Instance.new("UIPadding")
+Padding.PaddingTop = UDim.new(0, 5)
+Padding.PaddingBottom = UDim.new(0, 5)
+Padding.PaddingLeft = UDim.new(0, 10)
+Padding.PaddingRight = UDim.new(0, 10)
+Padding.Parent = ContentsFrame
+
+-- Code to update CanvasSize based on content size
+local function updateCanvasSize()
+    local contentSize = ListLayout.AbsoluteContentSize
+    ContentsFrame.CanvasSize = UDim2.new(0, 0, 0, contentSize.Y + 10)
+end
+
+-- Connect the function to ListLayout's `Changed` event
+ListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateCanvasSize)
+
+-- Initial call to set the CanvasSize
+updateCanvasSize()
 
     local function getNextPosition(tabContent)
         local yPos = 5
