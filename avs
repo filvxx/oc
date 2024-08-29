@@ -67,21 +67,6 @@ function Library.CreateLib(title)
     ContentsFrameCorner.CornerRadius = UDim.new(0, 12)
     ContentsFrameCorner.Parent = ContentsFrame
 
--- Define Frames
-local TabsFrame = Instance.new("Frame")
-TabsFrame.Name = "TabsFrame"
-TabsFrame.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
-TabsFrame.Size = UDim2.new(0, 0, 1, 0)
-TabsFrame.Parent = MainFrame
-
-local ContentsFrame = Instance.new("Frame")
-ContentsFrame.Name = "ContentsFrame"
-ContentsFrame.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
-ContentsFrame.Position = UDim2.new(0.3, 10, 0, 40)
-ContentsFrame.Size = UDim2.new(0.7, -12, 1, -40)
-ContentsFrame.Parent = MainFrame
-
-
     -- Dragging functionality
     local dragging = false
     local dragInput, startPos, startDragPos
