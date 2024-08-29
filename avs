@@ -170,41 +170,6 @@ CollapseButton.MouseButton1Click:Connect(function()
     isCollapsed = not isCollapsed
 end)
 
--- Create TabsScrollingFrame on the right side of TabsFrame
-
-local TabsScrollingFrame = Instance.new("ScrollingFrame")
-TabsScrollingFrame.Name = "TabsScrollingFrame"
-TabsScrollingFrame.Parent = TabsFrame
-TabsScrollingFrame.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
-TabsScrollingFrame.Position = UDim2.new(1, -200, 0, 0) -- Adjust to be on the right side
-TabsScrollingFrame.Size = UDim2.new(0, 200, 1, 0) -- Adjust width and height as needed
-TabsScrollingFrame.BorderSizePixel = 0
-TabsScrollingFrame.ScrollBarThickness = 8
-TabsScrollingFrame.CanvasSize = UDim2.new(0, 0, 1, 0) -- Adjust for scrolling
-TabsScrollingFrame.ClipsDescendants = true
-
--- Create ScrollingFrames for each child in ContentsFrame
-
-local function createContentsScrollingFrame(parent)
-    local ContentsScrollingFrame = Instance.new("ScrollingFrame")
-    ContentsScrollingFrame.Name = "ContentsScrollingFrame"
-    ContentsScrollingFrame.Parent = parent
-    ContentsScrollingFrame.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
-    ContentsScrollingFrame.Size = UDim2.new(1, 0, 1, 0)  -- Fill parent frame
-    ContentsScrollingFrame.BorderSizePixel = 0
-    ContentsScrollingFrame.ScrollBarThickness = 8
-    ContentsScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 0) -- Adjust for content size
-    ContentsScrollingFrame.ClipsDescendants = true
-end
-
--- Assuming ContentsFrame has children, apply scrolling frames to each child
-
-for _, child in ipairs(ContentsFrame:GetChildren()) do
-    if child:IsA("Frame") then -- or use another type if needed
-        createContentsScrollingFrame(child)
-    end
-end
-
 
     local TabButtons = {}
 
