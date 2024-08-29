@@ -170,67 +170,29 @@ CollapseButton.MouseButton1Click:Connect(function()
     isCollapsed = not isCollapsed
 end)
 
--- MainFrame
-local MainFrame = script.Parent
-
--- Create TabsScrollingFrame
 local TabsScrollingFrame = Instance.new("ScrollingFrame")
 TabsScrollingFrame.Name = "TabsScrollingFrame"
-TabsScrollingFrame.Parent = MainFrame
+TabsScrollingFrame.Parent = TabsFrame
 TabsScrollingFrame.BackgroundColor3 = Color3.fromRGB(50, 55, 85)
 TabsScrollingFrame.Position = UDim2.new(0, 0, 0, 40)
 TabsScrollingFrame.Size = UDim2.new(0.3, 0, 1, -40)
 TabsScrollingFrame.BorderSizePixel = 0
 TabsScrollingFrame.BackgroundTransparency = 1
 TabsScrollingFrame.ScrollBarThickness = 8
-TabsScrollingFrame.ClipsDescendants = false  -- Allow content to overflow
+TabsScrollingFrame.CanvasSize = UDim2.new(0, 0, 1, 0) -- Set initial CanvasSize
+TabsScrollingFrame.ClipsDescendants = true
 
--- Create TabsFrame inside TabsScrollingFrame
-local TabsFrame = Instance.new("Frame")
-TabsFrame.Name = "TabsFrame"
-TabsFrame.Parent = TabsScrollingFrame
-TabsFrame.BackgroundTransparency = 1
-TabsFrame.Size = UDim2.new(1, 0, 1, 0)
-
--- Create UIListLayout for TabsFrame
-local TabsListLayout = Instance.new("UIListLayout")
-TabsListLayout.Parent = TabsFrame
-TabsListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-TabsListLayout.Padding = UDim.new(0, 5)
-
--- Create ContentsScrollingFrame
 local ContentsScrollingFrame = Instance.new("ScrollingFrame")
 ContentsScrollingFrame.Name = "ContentsScrollingFrame"
-ContentsScrollingFrame.Parent = MainFrame
+ContentsScrollingFrame.Parent = ContentsFrame
 ContentsScrollingFrame.BackgroundColor3 = Color3.fromRGB(41, 45, 70)
 ContentsScrollingFrame.Position = UDim2.new(0.3, 10, 0, 40)
 ContentsScrollingFrame.Size = UDim2.new(0.7, -12, 1, -40)
 ContentsScrollingFrame.BorderSizePixel = 0
 ContentsScrollingFrame.BackgroundTransparency = 1
 ContentsScrollingFrame.ScrollBarThickness = 8
-ContentsScrollingFrame.ClipsDescendants = false  -- Allow content to overflow
-
--- Create ContentsFrame inside ContentsScrollingFrame
-local ContentsFrame = Instance.new("Frame")
-ContentsFrame.Name = "ContentsFrame"
-ContentsFrame.Parent = ContentsScrollingFrame
-ContentsFrame.BackgroundTransparency = 1
-ContentsFrame.Size = UDim2.new(1, 0, 1, 0)
-
--- Create UIListLayout for ContentsFrame
-local ContentsListLayout = Instance.new("UIListLayout")
-ContentsListLayout.Parent = ContentsFrame
-ContentsListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-ContentsListLayout.Padding = UDim.new(0, 5)
-
--- Function to update CanvasSize based on content
-local function updateCanvasSize()
-    TabsScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, TabsFrame.UIListLayout.AbsoluteContentSize.Y)
-    ContentsScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, ContentsFrame.UIListLayout.AbsoluteContentSize.Y)
-end
-
--- Call updateCanvasSize whenever tabs or content change
-updateCanvasSize()
+ContentsScrollingFrame.CanvasSize = UDim2.new(0, 0, 1, 0) -- Set initial CanvasSize
+ContentsScrollingFrame.ClipsDescendants = true
 
 
 
