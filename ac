@@ -1,0 +1,136 @@
+local KavoUI = {}
+
+-- Services
+local tween = game:GetService("TweenService")
+local inputService = game:GetService("UserInputService")
+local runService = game:GetService("RunService")
+
+-- Basic Utility Functions
+local function TweenObject(obj, properties, duration)
+    local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, true)
+    tween:Create(obj, tweenInfo, properties):Play()
+end
+
+local function DraggingEnabled(frame)
+    local dragging = false
+    local dragInput, mousePos, framePos
+
+    frame.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            mousePos = input.Position
+            framePos = frame.Position
+
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
+
+    frame.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
+            dragInput = input
+        end
+    end)
+
+    inputService.InputChanged:Connect(function(input)
+        if input == dragInput and dragging then
+            local delta = input.Position - mousePos
+            frame.Position = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
+        end
+    end)
+end
+
+-- UI Object Creation
+function KavoUI:CreateLib(title, theme)
+    local window = Instance.new("Frame")
+    window.Name = title
+    window.Size = UDim2.new(0, 400, 0, 300)
+    window.BackgroundColor3 = theme.Background
+    window.Position = UDim2.new(0.5, -200, 0.5, -150)
+    window.AnchorPoint = Vector2.new(0.5, 0.5)
+
+    local header = Instance.new("TextLabel")
+    header.Parent = window
+    header.Text = title
+    header.Size = UDim2.new(1, 0, 0, 30)
+    header.BackgroundColor3 = theme.Header
+    header.TextColor3 = theme.TextColor
+    header.TextSize = 18
+    header.TextAlign = Enum.TextXAlignment.Center
+    header.Font = Enum.Font.GothamBold
+
+    -- Enable dragging on the window
+    DraggingEnabled(window)
+
+    return window
+end
+
+function KavoUI:NewTab(window, tabName)
+    local tab = Instance.new("Frame")
+    tab.Name = tabName
+    tab.Size = UDim2.new(1, 0, 1, -30)
+    tab.Position = UDim2.new(0, 0, 0, 30)
+    tab.BackgroundTransparency = 1
+    tab.Parent = window
+
+    return tab
+end
+
+function KavoUI:NewButton(tab, text, callback)
+    local button = Instance.new("TextButton")
+    button.Text = text
+    button.Size = UDim2.new(0, 200, 0, 30)
+    button.Position = UDim2.new(0.5, -100, 0, 10)
+    button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.TextSize = 14
+    button.Font = Enum.Font.Gotham
+
+    button.MouseButton1Click:Connect(callback)
+    button.Parent = tab
+
+    return button
+end
+
+function KavoUI:NewToggle(tab, text, callback)
+    local toggle = Instance.new("TextButton")
+    toggle.Text = text
+    toggle.Size = UDim2.new(0, 200, 0, 30)
+    toggle.Position = UDim2.new(0.5, -100, 0, 50)
+    toggle.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    toggle.TextSize = 14
+    toggle.Font = Enum.Font.Gotham
+
+    toggle.MouseButton1Click:Connect(function()
+        callback(not toggle.TextColor3 == Color3.fromRGB(255, 255, 255))
+        toggle.TextColor3 = toggle.TextColor3 == Color3.fromRGB(255, 255, 255) and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 255, 255)
+    end)
+    toggle.Parent = tab
+
+    return toggle
+end
+
+-- Example usage of KavoUI
+local theme = {
+    Background = Color3.fromRGB(30, 30, 30),
+    Header = Color3.fromRGB(50, 50, 50),
+    TextColor = Color3.fromRGB(255, 255, 255),
+}
+
+local window = KavoUI:CreateLib("Example UI", theme)
+local tab = KavoUI:NewTab(window, "Main Tab")
+
+KavoUI:NewButton(tab, "Click Me", function()
+    print("Button Clicked!")
+end)
+
+KavoUI:NewToggle(tab, "Enable Feature", function(state)
+    print("Feature " .. (state and "Enabled" or "Disabled"))
+end)
+
+-- Show window in game
+window.Parent = game.CoreGui
