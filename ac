@@ -1,136 +1,123 @@
 local KavoUI = {}
 
 -- Services
-local tween = game:GetService("TweenService")
-local inputService = game:GetService("UserInputService")
-local runService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 
--- Basic Utility Functions
-local function TweenObject(obj, properties, duration)
-    local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, true)
-    tween:Create(obj, tweenInfo, properties):Play()
-end
-
-local function DraggingEnabled(frame)
-    local dragging = false
-    local dragInput, mousePos, framePos
-
-    frame.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = true
-            mousePos = input.Position
-            framePos = frame.Position
-
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    dragging = false
-                end
-            end)
-        end
-    end)
-
-    frame.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement then
-            dragInput = input
-        end
-    end)
-
-    inputService.InputChanged:Connect(function(input)
-        if input == dragInput and dragging then
-            local delta = input.Position - mousePos
-            frame.Position = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
-        end
-    end)
-end
-
--- UI Object Creation
+-- Create main library
 function KavoUI:CreateLib(title, theme)
-    local window = Instance.new("Frame")
-    window.Name = title
-    window.Size = UDim2.new(0, 400, 0, 300)
-    window.BackgroundColor3 = theme.Background
-    window.Position = UDim2.new(0.5, -200, 0.5, -150)
-    window.AnchorPoint = Vector2.new(0.5, 0.5)
+    local Library = {}
+    
+    -- ScreenGui
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Name = "KavoLibrary"
+    ScreenGui.Parent = PlayerGui
 
-    local header = Instance.new("TextLabel")
-    header.Parent = window
-    header.Text = title
-    header.Size = UDim2.new(1, 0, 0, 30)
-    header.BackgroundColor3 = theme.Header
-    header.TextColor3 = theme.TextColor
-    header.TextSize = 18
-    header.TextAlign = Enum.TextXAlignment.Center
-    header.Font = Enum.Font.GothamBold
+    -- Main Frame
+    local MainFrame = Instance.new("Frame")
+    MainFrame.Name = "MainFrame"
+    MainFrame.Parent = ScreenGui
+    MainFrame.BackgroundColor3 = theme.Background
+    MainFrame.Size = UDim2.new(0, 500, 0, 300)
+    MainFrame.Position = UDim2.new(0.5, -250, 0.5, -150)
+    MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+    MainFrame.BorderSizePixel = 0
+    MainFrame.Visible = true
 
-    -- Enable dragging on the window
-    DraggingEnabled(window)
+    -- Title Bar
+    local TitleBar = Instance.new("Frame")
+    TitleBar.Name = "TitleBar"
+    TitleBar.Parent = MainFrame
+    TitleBar.BackgroundColor3 = theme.Header
+    TitleBar.Size = UDim2.new(1, 0, 0, 30)
+    TitleBar.BorderSizePixel = 0
 
-    return window
+    local Title = Instance.new("TextLabel")
+    Title.Name = "Title"
+    Title.Parent = TitleBar
+    Title.Text = title
+    Title.Size = UDim2.new(1, 0, 1, 0)
+    Title.TextColor3 = theme.TextColor
+    Title.TextSize = 18
+    Title.Font = Enum.Font.GothamBold
+    Title.BackgroundTransparency = 1
+
+    -- Enable dragging
+    local function EnableDragging(frame)
+        local dragging = false
+        local dragStart, startPos
+        frame.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                dragging = true
+                dragStart = input.Position
+                startPos = frame.Position
+            end
+        end)
+        frame.InputChanged:Connect(function(input)
+            if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+                local delta = input.Position - dragStart
+                frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+            end
+        end)
+        frame.InputEnded:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                dragging = false
+            end
+        end)
+    end
+    EnableDragging(MainFrame)
+
+    Library.MainFrame = MainFrame
+    return Library
 end
 
-function KavoUI:NewTab(window, tabName)
-    local tab = Instance.new("Frame")
-    tab.Name = tabName
-    tab.Size = UDim2.new(1, 0, 1, -30)
-    tab.Position = UDim2.new(0, 0, 0, 30)
-    tab.BackgroundTransparency = 1
-    tab.Parent = window
+-- Tab Creation
+function KavoUI:NewTab(Library, tabName)
+    local Tab = {}
+    
+    -- Tab Button (For tab switching UI)
+    -- Placeholder logic for tabs to be created here.
 
-    return tab
+    return Tab
 end
 
-function KavoUI:NewButton(tab, text, callback)
-    local button = Instance.new("TextButton")
-    button.Text = text
-    button.Size = UDim2.new(0, 200, 0, 30)
-    button.Position = UDim2.new(0.5, -100, 0, 10)
-    button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    button.TextColor3 = Color3.fromRGB(255, 255, 255)
-    button.TextSize = 14
-    button.Font = Enum.Font.Gotham
-
-    button.MouseButton1Click:Connect(callback)
-    button.Parent = tab
-
-    return button
+-- Add Button
+function KavoUI:NewButton(Tab, text, callback)
+    local Button = Instance.new("TextButton")
+    Button.Name = text
+    Button.Parent = Tab
+    Button.Size = UDim2.new(0, 200, 0, 30)
+    Button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    Button.Text = text
+    Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Button.TextSize = 14
+    Button.Font = Enum.Font.Gotham
+    Button.MouseButton1Click:Connect(callback)
+    return Button
 end
 
-function KavoUI:NewToggle(tab, text, callback)
-    local toggle = Instance.new("TextButton")
-    toggle.Text = text
-    toggle.Size = UDim2.new(0, 200, 0, 30)
-    toggle.Position = UDim2.new(0.5, -100, 0, 50)
-    toggle.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
-    toggle.TextSize = 14
-    toggle.Font = Enum.Font.Gotham
+-- Add Toggle
+function KavoUI:NewToggle(Tab, text, callback)
+    local Toggle = Instance.new("TextButton")
+    Toggle.Name = text
+    Toggle.Parent = Tab
+    Toggle.Size = UDim2.new(0, 200, 0, 30)
+    Toggle.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    Toggle.Text = text .. " [OFF]"
+    Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Toggle.TextSize = 14
+    Toggle.Font = Enum.Font.Gotham
 
-    toggle.MouseButton1Click:Connect(function()
-        callback(not toggle.TextColor3 == Color3.fromRGB(255, 255, 255))
-        toggle.TextColor3 = toggle.TextColor3 == Color3.fromRGB(255, 255, 255) and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 255, 255)
+    local State = false
+    Toggle.MouseButton1Click:Connect(function()
+        State = not State
+        Toggle.Text = text .. (State and " [ON]" or " [OFF]")
+        callback(State)
     end)
-    toggle.Parent = tab
 
-    return toggle
+    return Toggle
 end
 
--- Example usage of KavoUI
-local theme = {
-    Background = Color3.fromRGB(30, 30, 30),
-    Header = Color3.fromRGB(50, 50, 50),
-    TextColor = Color3.fromRGB(255, 255, 255),
-}
-
-local window = KavoUI:CreateLib("Example UI", theme)
-local tab = KavoUI:NewTab(window, "Main Tab")
-
-KavoUI:NewButton(tab, "Click Me", function()
-    print("Button Clicked!")
-end)
-
-KavoUI:NewToggle(tab, "Enable Feature", function(state)
-    print("Feature " .. (state and "Enabled" or "Disabled"))
-end)
-
--- Show window in game
-window.Parent = game.CoreGui
+return KavoUI
